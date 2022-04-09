@@ -2,7 +2,9 @@ import 'dart:async';
 
 import 'package:face_to_face_voting/theme/app_theme.dart';
 import 'package:face_to_face_voting/utils/spacing.dart';
+import 'package:face_to_face_voting/widgets/container.dart';
 import 'package:face_to_face_voting/widgets/text.dart';
+import 'package:face_to_face_voting/widgets/votes_banner.dart';
 import 'package:flutter/material.dart';
 
 class QuizQuestionScreen extends StatefulWidget {
@@ -61,17 +63,22 @@ class _QuizQuestionScreenState extends State<QuizQuestionScreen> {
                       // questionOption(option: "Carburetor", index: 3),
                     ],
                   ),
-                  const SizedBox(height: 50),
-                  CustomText.bodySmall(
-                    "Голосование завершится автоматически, когда все участники проголосуют. Если вы не успеете завершить голосование, ваш голос автоматически отправится как \"воздержусь\".",
-                    color: AppTheme.theme.colorScheme.onBackground,
-                    muted: true,
-                    textAlign: TextAlign.justify,
-                  )
                 ],
               ),
             ),
           ),
+          const VotesBanner(),
+          const SizedBox(height: 25),
+          Container(
+            padding: Spacing.fromLTRB(48, 0, 48, 0),
+            child: CustomText.bodySmall(
+              "Голосование завершится автоматически, когда все участники проголосуют. Если вы не успеете завершить голосование, ваш голос автоматически отправится как \"воздержусь\".",
+              color: AppTheme.theme.colorScheme.onBackground,
+              muted: true,
+              textAlign: TextAlign.justify,
+            ),
+          ),
+          const SizedBox(height: 25),
         ],
       ),
     );
