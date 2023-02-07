@@ -33,9 +33,9 @@ class ProfileScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                CustomText.headlineSmall("Сергей Дмитриев",
+                const CustomText.headlineSmall("Сергей Дмитриев",
                     fontWeight: 700, letterSpacing: 0),
-                CustomText.titleSmall("ИКБО-30-20", fontWeight: 600),
+                const CustomText.titleSmall("ИКБО-30-20", fontWeight: 600),
               ],
             ),
           ),
@@ -46,7 +46,7 @@ class ProfileScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  CustomText.titleMedium(
+                  const CustomText.titleMedium(
                       "Пройденные отчётно-выборочные мероприятия",
                       letterSpacing: 0,
                       fontWeight: 700),

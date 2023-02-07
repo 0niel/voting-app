@@ -1,8 +1,6 @@
-import 'dart:async';
 
 import 'package:face_to_face_voting/theme/app_theme.dart';
 import 'package:face_to_face_voting/utils/spacing.dart';
-import 'package:face_to_face_voting/widgets/container.dart';
 import 'package:face_to_face_voting/widgets/text.dart';
 import 'package:face_to_face_voting/widgets/votes_banner.dart';
 import 'package:flutter/material.dart';

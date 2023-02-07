@@ -184,7 +184,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     AppTheme.theme.colorScheme.primary,
                   )
                 : AlwaysStoppedAnimation<Color>(
-                    AppTheme.theme.errorColor,
+                    AppTheme.theme.colorScheme.error,
                   ),
             value: (quizTimeSecond - remainingSecond) / quizTimeSecond,
           ),
@@ -275,7 +275,7 @@ class _Drawer extends StatelessWidget {
                               color: const Color(0xff639fdc).withAlpha(20),
                             ),
                             Spacing.width(16),
-                            Expanded(
+                            const Expanded(
                               child: CustomText.bodyLarge("Анкеты кандидатов"),
                             ),
                             Spacing.width(16),
@@ -305,7 +305,7 @@ class _Drawer extends StatelessWidget {
                               color: const Color(0xffb38220).withAlpha(20),
                             ),
                             Spacing.width(16),
-                            Expanded(
+                            const Expanded(
                               child: CustomText.bodyLarge("Регламент"),
                             ),
                             Spacing.width(16),
@@ -335,7 +335,7 @@ class _Drawer extends StatelessWidget {
                               color: const Color(0xffb38220).withAlpha(20),
                             ),
                             Spacing.width(16),
-                            Expanded(
+                            const Expanded(
                               child: CustomText.bodyLarge("Резолюция"),
                             ),
                             Spacing.width(16),

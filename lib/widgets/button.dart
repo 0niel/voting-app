@@ -38,8 +38,8 @@ class CustomButton extends StatelessWidget {
 
   final Widget child;
 
-  CustomButton(
-      {this.onPressed,
+  const CustomButton(
+      {super.key, this.onPressed,
       required this.child,
       this.msPadding,
       this.padding,
@@ -63,8 +63,8 @@ class CustomButton extends StatelessWidget {
       this.shadowColor,
       this.splashColor});
 
-  CustomButton.rounded(
-      {required this.onPressed,
+  const CustomButton.rounded(
+      {super.key, required this.onPressed,
       required this.child,
       this.msPadding,
       this.padding,
@@ -88,8 +88,8 @@ class CustomButton extends StatelessWidget {
       this.shadowColor,
       this.splashColor});
 
-  CustomButton.small(
-      {required this.onPressed,
+  const CustomButton.small(
+      {super.key, required this.onPressed,
       required this.child,
       this.msPadding,
       this.padding = const EdgeInsets.fromLTRB(8, 4, 8, 4),
@@ -113,8 +113,8 @@ class CustomButton extends StatelessWidget {
       this.shadowColor,
       this.splashColor});
 
-  CustomButton.medium(
-      {required this.onPressed,
+  const CustomButton.medium(
+      {super.key, required this.onPressed,
       required this.child,
       this.msPadding,
       this.padding = const EdgeInsets.fromLTRB(24, 16, 24, 16),
@@ -138,8 +138,8 @@ class CustomButton extends StatelessWidget {
       this.shadowColor,
       this.splashColor});
 
-  CustomButton.text(
-      {required this.onPressed,
+  const CustomButton.text(
+      {super.key, required this.onPressed,
       required this.child,
       this.msPadding,
       this.padding = const EdgeInsets.fromLTRB(24, 16, 24, 16),
@@ -163,8 +163,8 @@ class CustomButton extends StatelessWidget {
       this.shadowColor,
       this.splashColor});
 
-  CustomButton.block(
-      {required this.onPressed,
+  const CustomButton.block(
+      {super.key, required this.onPressed,
       required this.child,
       this.msPadding,
       this.padding = const EdgeInsets.fromLTRB(24, 16, 24, 16),
@@ -188,8 +188,8 @@ class CustomButton extends StatelessWidget {
       this.shadowColor,
       this.splashColor});
 
-  CustomButton.outlined(
-      {required this.onPressed,
+  const CustomButton.outlined(
+      {super.key, required this.onPressed,
       required this.child,
       this.msPadding,
       this.padding = const EdgeInsets.fromLTRB(24, 16, 24, 16),
@@ -213,8 +213,8 @@ class CustomButton extends StatelessWidget {
       this.shadowColor,
       this.splashColor});
 
-  CustomButton.large(
-      {required this.onPressed,
+  const CustomButton.large(
+      {super.key, required this.onPressed,
       required this.child,
       this.msPadding,
       this.padding = const EdgeInsets.fromLTRB(36, 20, 36, 20),

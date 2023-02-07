@@ -1,9 +1,11 @@
 import 'package:face_to_face_voting/theme/app_theme.dart';
-import 'package:face_to_face_voting/views/home.dart';
 import 'package:face_to_face_voting/views/login/login_screen.dart';
 import 'package:flutter/material.dart';
+import 'service_locator.dart' as serviceLocator;
 
 void main() {
+  serviceLocator.setup();
+
   runApp(const MyApp());
 }
 
@@ -15,7 +17,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Система очного голосования',
       theme: AppTheme.theme,
-      home: const LoginScreen(),
+      home: LoginScreen(),
       debugShowCheckedModeBanner: false,
     );
   }

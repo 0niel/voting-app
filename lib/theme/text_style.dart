@@ -261,9 +261,7 @@ class CustomTextStyle {
       double? height,
       double wordSpacing = 0,
       double? fontSize}) {
-    double? finalFontSize = fontSize != null
-        ? fontSize
-        : (textStyle == null ? 40 : textStyle.fontSize);
+    double? finalFontSize = fontSize ?? (textStyle == null ? 40 : textStyle.fontSize);
 
     Color? finalColor;
     if (color == null) {

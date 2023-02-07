@@ -13,7 +13,7 @@ class QuickActionBottomSheet {
           color: Colors.transparent,
           child: Container(
             decoration: BoxDecoration(
-                color: AppTheme.theme.backgroundColor,
+                color: AppTheme.theme.colorScheme.background,
                 borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(16),
                     topRight: Radius.circular(16))),
@@ -22,7 +22,7 @@ class QuickActionBottomSheet {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  CustomText.titleMedium("Быстрые действия", fontWeight: 700),
+                  const CustomText.titleMedium("Быстрые действия", fontWeight: 700),
                   Container(
                     margin: Spacing.top(16),
                     child: Column(

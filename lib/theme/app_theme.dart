@@ -38,9 +38,6 @@ class AppTheme {
 
     /// Primary Color
     primaryColor: const Color(0xff34459b),
-
-    /// Scaffold and Background color
-    backgroundColor: const Color(0xffffffff),
     scaffoldBackgroundColor: const Color(0xffffffff),
     canvasColor: Colors.transparent,
 
@@ -55,11 +52,7 @@ class AppTheme {
     cardColor: const Color(0xfff0f0f0),
 
     textTheme: TextTheme(
-        headline6: GoogleFonts.aBeeZee(), bodyText1: GoogleFonts.abel()),
-
-    /// Colorscheme
-    colorScheme: ColorScheme.fromSeed(
-        seedColor: const Color(0xff34459b), brightness: Brightness.light),
+        titleLarge: GoogleFonts.aBeeZee(), bodyLarge: GoogleFonts.abel()),
 
     /// Floating Action Theme
     floatingActionButtonTheme: FloatingActionButtonThemeData(
@@ -73,7 +66,7 @@ class AppTheme {
 
     /// Divider Theme
     dividerTheme:
-        const DividerThemeData(color: const Color(0xffe8e8e8), thickness: 1),
+        const DividerThemeData(color: Color(0xffe8e8e8), thickness: 1),
     dividerColor: const Color(0xffe8e8e8),
 
     /// Bottom AppBar Theme
@@ -149,7 +142,7 @@ class AppTheme {
     /// Other Colors
     splashColor: Colors.white.withAlpha(100),
     indicatorColor: const Color(0xffeeeeee),
-    highlightColor: const Color(0xffeeeeee),
-    errorColor: const Color(0xfff0323c),
+    highlightColor: const Color(0xffeeeeee), colorScheme: ColorScheme.fromSeed(
+        seedColor: const Color(0xff34459b), brightness: Brightness.light).copyWith(background: const Color(0xffffffff)).copyWith(error: const Color(0xfff0323c)),
   );
 }

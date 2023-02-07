@@ -22,7 +22,7 @@ class VotesBanner extends StatelessWidget {
                     color: AppTheme.theme.colorScheme.primary, fontWeight: 700),
                 Container(
                   margin: const EdgeInsets.only(top: 4),
-                  child: CustomText.labelSmall("За",
+                  child: const CustomText.labelSmall("За",
                       fontWeight: 600, letterSpacing: 0.2),
                 ),
               ],
@@ -41,7 +41,7 @@ class VotesBanner extends StatelessWidget {
                     color: AppTheme.theme.colorScheme.primary, fontWeight: 700),
                 Container(
                   margin: const EdgeInsets.only(top: 4),
-                  child: CustomText.labelSmall("Против",
+                  child: const CustomText.labelSmall("Против",
                       fontWeight: 600, letterSpacing: 0.2),
                 ),
               ],
@@ -60,7 +60,7 @@ class VotesBanner extends StatelessWidget {
                     color: AppTheme.theme.colorScheme.primary, fontWeight: 700),
                 Container(
                   margin: const EdgeInsets.only(top: 4),
-                  child: CustomText.labelSmall("Воздержалось",
+                  child: const CustomText.labelSmall("Воздержалось",
                       fontWeight: 600, letterSpacing: 0.2),
                 ),
               ],

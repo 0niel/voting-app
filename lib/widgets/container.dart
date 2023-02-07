@@ -1,4 +1,3 @@
-import 'dart:ui';
 
 import 'package:face_to_face_voting/theme/app_theme.dart';
 import 'package:flutter/material.dart';
