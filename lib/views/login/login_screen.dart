@@ -45,17 +45,15 @@ class LoginScreen extends StatelessWidget {
                 padding: Spacing.y(12),
                 borderRadiusAll: 4,
                 onPressed: () {
-                  account
-                      .createOAuth2Session(
-                        provider: 'mirea',
-                      )
-                      .then(
-                        (value) => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const HomeScreen()),
-                        ),
-                      );
+                  Future result = account.createOAuth2Session(
+                    provider: 'mirea',
+                  );
+
+                  result.then((response) {
+                    print(response);
+                  }).catchError((error) {
+                    print(error.response);
+                  });
                 },
                 child: Center(
                   child: CustomText.bodyMedium("ВОЙТИ",
