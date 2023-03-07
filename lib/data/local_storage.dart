@@ -1,18 +1,19 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class LocalStorage {
-  static const storage = FlutterSecureStorage();
+  final FlutterSecureStorage storage;
 
-  static Future<void> setTokenToCache(String token) async {
-    await storage.write(key: 'auth_token', value: token);
+  LocalStorage({required this.storage});
+
+  Future<void> setTokenToCache(String token) async {
+    await storage.write(key: 'jwt', value: token);
   }
 
-  static Future<String> getTokenFromCache() async {
-    String token = await storage.read(key: 'auth_token') ?? '';
-    return token;
+  Future<String?> getTokenFromCache() async {
+    return await storage.read(key: 'jwt');
   }
 
-  static Future<void> removeTokenFromCache() async {
+  Future<void> removeTokenFromCache() async {
     await storage.deleteAll();
   }
 }

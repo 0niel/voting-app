@@ -246,7 +246,6 @@ class CustomButton extends StatelessWidget {
     if (buttonType == ButtonType.outlined) {
       button = OutlinedButton(
         onPressed: onPressed,
-        child: child,
         style: style ??
             ButtonStyle(
                 side: msSide ??
@@ -270,6 +269,7 @@ class CustomButton extends StatelessWidget {
                     RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(borderRadiusAll ?? 2),
                     ))),
+        child: child,
       );
     } else if (buttonType == ButtonType.elevated) {
       button = ElevatedButton(

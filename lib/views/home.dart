@@ -1,14 +1,18 @@
 import 'dart:async';
 
+import 'package:face_to_face_voting/blocs/events/events_bloc.dart';
+import 'package:face_to_face_voting/blocs/poll/poll_bloc.dart';
 import 'package:face_to_face_voting/theme/app_theme.dart';
 import 'package:face_to_face_voting/utils/spacing.dart';
+import 'package:face_to_face_voting/views/events/events_screen.dart';
 import 'package:face_to_face_voting/views/profile/profile_screen.dart';
 import 'package:face_to_face_voting/views/qrcode/qrcode_screen.dart';
-import 'package:face_to_face_voting/views/quiz/quiz_screen.dart';
+import 'package:face_to_face_voting/views/poll/poll_screen.dart';
 import 'package:face_to_face_voting/widgets/container.dart';
 import 'package:face_to_face_voting/widgets/quick_action_bottom_sheet.dart';
 import 'package:face_to_face_voting/widgets/text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:screen_brightness/screen_brightness.dart';
@@ -25,19 +29,11 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    startTimer();
   }
 
   final ValueNotifier<int> value = ValueNotifier<int>(30);
   int _currentScreen = 1;
-  final _screens = const [
-    QrCodeScreen(),
-    QuizQuestionScreen(),
-    ProfileScreen()
-  ];
-
-  int quizTimeSecond = 30;
-  double remainingSecond = 30;
+  final _screens = const [QrCodeScreen(), PollScreen(), ProfileScreen()];
 
   late Timer _timer;
 
@@ -45,22 +41,6 @@ class _HomeScreenState extends State<HomeScreen> {
   void dispose() {
     super.dispose();
     _timer.cancel();
-  }
-
-  void startTimer() {
-    _timer = Timer.periodic(
-      const Duration(milliseconds: 200),
-      (Timer timer) => {
-        setState(() {
-          if (remainingSecond > 0.200) {
-            remainingSecond = remainingSecond - 0.200;
-          } else {
-            remainingSecond = 0;
-            timer.cancel();
-          }
-        })
-      },
-    );
   }
 
   void _changeCurrentScreen(int page) {
@@ -107,92 +87,123 @@ class _HomeScreenState extends State<HomeScreen> {
           onPressed: () {
             QuickActionBottomSheet.showBottomSheet(context);
           },
+          elevation: 2,
+          backgroundColor: AppTheme.theme.colorScheme.primary,
           child: Icon(
             Icons.flash_on_outlined,
             size: 26,
             color: AppTheme.theme.colorScheme.onPrimary,
           ),
-          elevation: 2,
-          backgroundColor: AppTheme.theme.colorScheme.primary,
         ),
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: _screens[_currentScreen],
-          ),
-          Container(
-            color: AppTheme.theme.cardColor,
-            padding: Spacing.fromLTRB(32, 16, 32, 16),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                InkWell(
-                  onTap: () => _changeCurrentScreen(0),
-                  child: Icon(
-                    MdiIcons.qrcode,
-                    color: _currentScreen == 0
-                        ? AppTheme.theme.colorScheme.primary
-                        : AppTheme.theme.colorScheme.onBackground,
-                    size: 26,
-                  ),
-                ),
-                _currentScreen != 1
-                    ? SizedBox(
-                        width: 48,
-                        height: 48,
-                        child: InkWell(
-                          onTap: () => _changeCurrentScreen(1),
-                          child: Icon(
-                            MdiIcons.vote,
-                            color: AppTheme.theme.colorScheme.onBackground,
-                            size: 26,
-                          ),
-                        ),
-                      )
-                    : Center(
-                        child: _buildTimer(),
-                      ),
-                InkWell(
-                  onTap: () => _changeCurrentScreen(2),
-                  child: Icon(
-                    MdiIcons.account,
-                    color: _currentScreen == 2
-                        ? AppTheme.theme.colorScheme.primary
-                        : AppTheme.theme.colorScheme.onBackground,
-                    size: 26,
-                  ),
-                )
-              ],
+      body: BlocBuilder<EventsBloc, EventsState>(builder: (context, state) {
+        return Column(
+          children: [
+            Expanded(
+              child: state.maybeMap(
+                  initial: (value) => _currentScreen == 1
+                      ? const Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      : _screens[_currentScreen],
+                  eventsListLoaded: (value) => _currentScreen == 1
+                      ? EventsScreen(events: value.events)
+                      : _screens[_currentScreen],
+                  orElse: () => _screens[_currentScreen]),
             ),
-          )
-        ],
-      ),
+            Container(
+              color: AppTheme.theme.cardColor,
+              padding: Spacing.fromLTRB(32, 16, 32, 16),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  InkWell(
+                    onTap: () => _changeCurrentScreen(0),
+                    child: Icon(
+                      MdiIcons.qrcode,
+                      color: _currentScreen == 0
+                          ? AppTheme.theme.colorScheme.primary
+                          : AppTheme.theme.colorScheme.onBackground,
+                      size: 26,
+                    ),
+                  ),
+                  _currentScreen != 1 ||
+                          state.maybeMap(
+                              eventsListLoaded: (value) => true,
+                              orElse: () => false)
+                      ? SizedBox(
+                          width: 48,
+                          height: 48,
+                          child: InkWell(
+                            onTap: () => _changeCurrentScreen(1),
+                            child: Icon(
+                              MdiIcons.vote,
+                              color: AppTheme.theme.colorScheme.onBackground,
+                              size: 26,
+                            ),
+                          ),
+                        )
+                      : Center(
+                          child: _buildTimer(),
+                        ),
+                  InkWell(
+                    onTap: () => _changeCurrentScreen(2),
+                    child: Icon(
+                      MdiIcons.account,
+                      color: _currentScreen == 2
+                          ? AppTheme.theme.colorScheme.primary
+                          : AppTheme.theme.colorScheme.onBackground,
+                      size: 26,
+                    ),
+                  )
+                ],
+              ),
+            )
+          ],
+        );
+      }),
     );
   }
 
   Widget _buildTimer() {
-    return SizedBox(
-      width: 48,
-      height: 48,
-      child: Stack(
-        alignment: Alignment.center,
-        children: <Widget>[
-          CircularProgressIndicator(
-            valueColor: remainingSecond > 5
-                ? AlwaysStoppedAnimation<Color>(
-                    AppTheme.theme.colorScheme.primary,
-                  )
-                : AlwaysStoppedAnimation<Color>(
-                    AppTheme.theme.colorScheme.error,
-                  ),
-            value: (quizTimeSecond - remainingSecond) / quizTimeSecond,
-          ),
-          CustomText.bodyLarge(remainingSecond.ceil().toString(),
-              color: AppTheme.theme.colorScheme.onBackground, fontWeight: 600)
-        ],
-      ),
-    );
+    return BlocBuilder<PollBloc, PollState>(builder: (context, state) {
+      return state.maybeMap(
+          success: (value) => SizedBox(
+                width: 48,
+                height: 48,
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: <Widget>[
+                    CircularProgressIndicator(
+                      valueColor: value.timeLeft.inSeconds > 0
+                          ? AlwaysStoppedAnimation<Color>(
+                              AppTheme.theme.colorScheme.primary,
+                            )
+                          : AlwaysStoppedAnimation<Color>(
+                              AppTheme.theme.colorScheme.error,
+                            ),
+                      value: value.timeLeft.inSeconds.toDouble(),
+                    ),
+                    CustomText.bodyLarge(value.timeLeft.inSeconds.toString(),
+                        color: AppTheme.theme.colorScheme.onBackground,
+                        fontWeight: 600)
+                  ],
+                ),
+              ),
+          orElse: () => SizedBox(
+                width: 48,
+                height: 48,
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: <Widget>[
+                    Text(""),
+                    CustomText.bodyLarge("0",
+                        color: AppTheme.theme.colorScheme.onBackground,
+                        fontWeight: 600)
+                  ],
+                ),
+              ));
+    });
   }
 }
 
@@ -267,12 +278,12 @@ class _Drawer extends StatelessWidget {
                             CustomContainer(
                               paddingAll: 12,
                               borderRadiusAll: 4,
+                              color: const Color(0xff639fdc).withAlpha(20),
                               child: const Icon(
                                 FeatherIcons.user,
                                 size: 20,
                                 color: Color(0xff639fdc),
                               ),
-                              color: const Color(0xff639fdc).withAlpha(20),
                             ),
                             Spacing.width(16),
                             const Expanded(
@@ -297,12 +308,12 @@ class _Drawer extends StatelessWidget {
                             CustomContainer(
                               paddingAll: 12,
                               borderRadiusAll: 4,
+                              color: const Color(0xffb38220).withAlpha(20),
                               child: const Icon(
                                 FeatherIcons.user,
                                 size: 20,
                                 color: Color(0xffb38220),
                               ),
-                              color: const Color(0xffb38220).withAlpha(20),
                             ),
                             Spacing.width(16),
                             const Expanded(
@@ -327,12 +338,12 @@ class _Drawer extends StatelessWidget {
                             CustomContainer(
                               paddingAll: 12,
                               borderRadiusAll: 4,
+                              color: const Color(0xffb38220).withAlpha(20),
                               child: const Icon(
                                 FeatherIcons.file,
                                 size: 20,
                                 color: Color(0xffb38220),
                               ),
-                              color: const Color(0xffb38220).withAlpha(20),
                             ),
                             Spacing.width(16),
                             const Expanded(
