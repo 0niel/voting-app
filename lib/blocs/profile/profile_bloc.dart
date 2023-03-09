@@ -3,11 +3,16 @@ import 'dart:convert';
 import 'package:appwrite/appwrite.dart';
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
+import 'package:face_to_face_voting/constants.dart';
 import 'package:face_to_face_voting/data/local_storage.dart';
 import 'package:flutter/widgets.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'package:appwrite/models.dart' as Models;
+
+import '../../service_locator.dart';
+import '../events/events_bloc.dart';
+import '../poll/poll_bloc.dart';
 
 part 'profile_event.dart';
 part 'profile_state.dart';
@@ -15,9 +20,48 @@ part 'profile_bloc.freezed.dart';
 
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   final Client client;
+  final Databases databases;
   final Account account;
   final Avatars avatars;
+  final Teams teams;
   final LocalStorage localStorage;
+  final Realtime realtime;
+
+  late final RealtimeSubscription subscription;
+
+  void subscribeRealtime() async {
+    subscription = realtime.subscribe([
+      'databases.$databaseId.collections.$eventsCollectionId.documents',
+      'databases.$databaseId.collections.$pollsCollectionId.documents',
+      'databases.$databaseId.collections.$votesCollectionId.documents',
+    ]);
+    subscription.stream.listen(
+      (event) {
+        print("New event: $event recieved");
+
+        final eventAction = event.events.first.split('.').last;
+
+        if (eventAction != 'create' &&
+            eventAction != 'update' &&
+            eventAction != 'delete') {
+          return;
+        }
+
+        print('Event action: $eventAction');
+
+        final doc = Models.Document.fromMap(event.payload);
+
+        if (doc.$collectionId == eventsCollectionId) {
+          getIt<EventsBloc>().add(EventsEvent.processRealtimeEvent(event));
+        } else if (doc.$collectionId == pollsCollectionId) {
+          getIt<PollBloc>().add(PollEvent.processRealtimeEvent(event));
+        }
+      },
+      onError: (error) {
+        print("Error while listening to realtime events: $error");
+      },
+    );
+  }
 
   String _cyryllicToLat(String text) {
     final Map<String, String> cyrillicToLatin = {
@@ -112,11 +156,29 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
         final avatar = Image.memory(avatarByteList);
 
+        final events = await databases.listDocuments(
+            databaseId: databaseId, collectionId: eventsCollectionId);
+        final eventsList = events.documents;
+
+        // Получение списка команд, в которых мы состоим
+        final teamsList = await teams.list();
+
+        // Получение списка events, в которых мы состоим в команде participants_team_id
+        final eventsWithMembership = eventsList.where((element) =>
+            element.data['participants_team_id'] != null &&
+            teamsList.teams
+                .map((e) => e.$id)
+                .contains(element.data['participants_team_id']));
+
+        // Должно вызываться последним
+        subscribeRealtime();
+
         emit(_Success(
           user,
           prefs,
           jwt,
           avatar,
+          List<String>.from(eventsWithMembership.map((e) => e.data['name'])),
         ));
       }
     }
@@ -127,22 +189,18 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     required this.account,
     required this.avatars,
     required this.localStorage,
+    required this.databases,
+    required this.teams,
+    required this.realtime,
   }) : super(const _Initial()) {
     on<_Started>(((event, emit) async {
       try {
         emit(const _Loading());
-        final jwt = await localStorage.getTokenFromCache();
-        if (jwt != null) {
-          client.setJWT(jwt);
-          await _loadUserData(emit);
-        } else {
-          emit(const _LoginScreen());
-        }
+
+        await account.get();
+
+        await _loadUserData(emit);
       } catch (e) {
-        // Очищаем токен при ошибке
-        if (e.toString().contains('user_jwt_invalid')) {
-          await localStorage.removeTokenFromCache();
-        }
         emit(const _LoginScreen());
       }
     }));
@@ -151,16 +209,9 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       try {
         emit(const _Loading());
 
-        final jwt = await localStorage.getTokenFromCache();
-        if (jwt != null) {
-          client.setJWT(jwt);
-        } else {
-          await account.createOAuth2Session(
-            provider: 'mirea',
-          );
-          final jwt = (await account.createJWT());
-          await localStorage.setTokenToCache(jwt.jwt);
-        }
+        await account.createOAuth2Session(
+          provider: 'mirea',
+        );
 
         await _loadUserData(emit);
       } catch (e) {

@@ -18,39 +18,39 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$PollEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() started,
     required TResult Function(String eventId) loadPolls,
+    required TResult Function(RealtimeMessage message) processRealtimeEvent,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? started,
     TResult? Function(String eventId)? loadPolls,
+    TResult? Function(RealtimeMessage message)? processRealtimeEvent,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? started,
     TResult Function(String eventId)? loadPolls,
+    TResult Function(RealtimeMessage message)? processRealtimeEvent,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_Started value) started,
     required TResult Function(_LoadPolls value) loadPolls,
+    required TResult Function(_ProcessRealtimeEvent value) processRealtimeEvent,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Started value)? started,
     TResult? Function(_LoadPolls value)? loadPolls,
+    TResult? Function(_ProcessRealtimeEvent value)? processRealtimeEvent,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Started value)? started,
     TResult Function(_LoadPolls value)? loadPolls,
+    TResult Function(_ProcessRealtimeEvent value)? processRealtimeEvent,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -71,107 +71,6 @@ class _$PollEventCopyWithImpl<$Res, $Val extends PollEvent>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
-}
-
-/// @nodoc
-abstract class _$$_StartedCopyWith<$Res> {
-  factory _$$_StartedCopyWith(
-          _$_Started value, $Res Function(_$_Started) then) =
-      __$$_StartedCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$_StartedCopyWithImpl<$Res>
-    extends _$PollEventCopyWithImpl<$Res, _$_Started>
-    implements _$$_StartedCopyWith<$Res> {
-  __$$_StartedCopyWithImpl(_$_Started _value, $Res Function(_$_Started) _then)
-      : super(_value, _then);
-}
-
-/// @nodoc
-
-class _$_Started implements _Started {
-  const _$_Started();
-
-  @override
-  String toString() {
-    return 'PollEvent.started()';
-  }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$_Started);
-  }
-
-  @override
-  int get hashCode => runtimeType.hashCode;
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() started,
-    required TResult Function(String eventId) loadPolls,
-  }) {
-    return started();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? started,
-    TResult? Function(String eventId)? loadPolls,
-  }) {
-    return started?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? started,
-    TResult Function(String eventId)? loadPolls,
-    required TResult orElse(),
-  }) {
-    if (started != null) {
-      return started();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_Started value) started,
-    required TResult Function(_LoadPolls value) loadPolls,
-  }) {
-    return started(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Started value)? started,
-    TResult? Function(_LoadPolls value)? loadPolls,
-  }) {
-    return started?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Started value)? started,
-    TResult Function(_LoadPolls value)? loadPolls,
-    required TResult orElse(),
-  }) {
-    if (started != null) {
-      return started(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _Started implements PollEvent {
-  const factory _Started() = _$_Started;
 }
 
 /// @nodoc
@@ -238,8 +137,8 @@ class _$_LoadPolls implements _LoadPolls {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() started,
     required TResult Function(String eventId) loadPolls,
+    required TResult Function(RealtimeMessage message) processRealtimeEvent,
   }) {
     return loadPolls(eventId);
   }
@@ -247,8 +146,8 @@ class _$_LoadPolls implements _LoadPolls {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? started,
     TResult? Function(String eventId)? loadPolls,
+    TResult? Function(RealtimeMessage message)? processRealtimeEvent,
   }) {
     return loadPolls?.call(eventId);
   }
@@ -256,8 +155,8 @@ class _$_LoadPolls implements _LoadPolls {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? started,
     TResult Function(String eventId)? loadPolls,
+    TResult Function(RealtimeMessage message)? processRealtimeEvent,
     required TResult orElse(),
   }) {
     if (loadPolls != null) {
@@ -269,8 +168,8 @@ class _$_LoadPolls implements _LoadPolls {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_Started value) started,
     required TResult Function(_LoadPolls value) loadPolls,
+    required TResult Function(_ProcessRealtimeEvent value) processRealtimeEvent,
   }) {
     return loadPolls(this);
   }
@@ -278,8 +177,8 @@ class _$_LoadPolls implements _LoadPolls {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Started value)? started,
     TResult? Function(_LoadPolls value)? loadPolls,
+    TResult? Function(_ProcessRealtimeEvent value)? processRealtimeEvent,
   }) {
     return loadPolls?.call(this);
   }
@@ -287,8 +186,8 @@ class _$_LoadPolls implements _LoadPolls {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Started value)? started,
     TResult Function(_LoadPolls value)? loadPolls,
+    TResult Function(_ProcessRealtimeEvent value)? processRealtimeEvent,
     required TResult orElse(),
   }) {
     if (loadPolls != null) {
@@ -304,6 +203,141 @@ abstract class _LoadPolls implements PollEvent {
   String get eventId;
   @JsonKey(ignore: true)
   _$$_LoadPollsCopyWith<_$_LoadPolls> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$_ProcessRealtimeEventCopyWith<$Res> {
+  factory _$$_ProcessRealtimeEventCopyWith(_$_ProcessRealtimeEvent value,
+          $Res Function(_$_ProcessRealtimeEvent) then) =
+      __$$_ProcessRealtimeEventCopyWithImpl<$Res>;
+  @useResult
+  $Res call({RealtimeMessage message});
+}
+
+/// @nodoc
+class __$$_ProcessRealtimeEventCopyWithImpl<$Res>
+    extends _$PollEventCopyWithImpl<$Res, _$_ProcessRealtimeEvent>
+    implements _$$_ProcessRealtimeEventCopyWith<$Res> {
+  __$$_ProcessRealtimeEventCopyWithImpl(_$_ProcessRealtimeEvent _value,
+      $Res Function(_$_ProcessRealtimeEvent) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? message = null,
+  }) {
+    return _then(_$_ProcessRealtimeEvent(
+      null == message
+          ? _value.message
+          : message // ignore: cast_nullable_to_non_nullable
+              as RealtimeMessage,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$_ProcessRealtimeEvent implements _ProcessRealtimeEvent {
+  const _$_ProcessRealtimeEvent(this.message);
+
+  @override
+  final RealtimeMessage message;
+
+  @override
+  String toString() {
+    return 'PollEvent.processRealtimeEvent(message: $message)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$_ProcessRealtimeEvent &&
+            (identical(other.message, message) || other.message == message));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, message);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$_ProcessRealtimeEventCopyWith<_$_ProcessRealtimeEvent> get copyWith =>
+      __$$_ProcessRealtimeEventCopyWithImpl<_$_ProcessRealtimeEvent>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String eventId) loadPolls,
+    required TResult Function(RealtimeMessage message) processRealtimeEvent,
+  }) {
+    return processRealtimeEvent(message);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String eventId)? loadPolls,
+    TResult? Function(RealtimeMessage message)? processRealtimeEvent,
+  }) {
+    return processRealtimeEvent?.call(message);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String eventId)? loadPolls,
+    TResult Function(RealtimeMessage message)? processRealtimeEvent,
+    required TResult orElse(),
+  }) {
+    if (processRealtimeEvent != null) {
+      return processRealtimeEvent(message);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_LoadPolls value) loadPolls,
+    required TResult Function(_ProcessRealtimeEvent value) processRealtimeEvent,
+  }) {
+    return processRealtimeEvent(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_LoadPolls value)? loadPolls,
+    TResult? Function(_ProcessRealtimeEvent value)? processRealtimeEvent,
+  }) {
+    return processRealtimeEvent?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_LoadPolls value)? loadPolls,
+    TResult Function(_ProcessRealtimeEvent value)? processRealtimeEvent,
+    required TResult orElse(),
+  }) {
+    if (processRealtimeEvent != null) {
+      return processRealtimeEvent(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _ProcessRealtimeEvent implements PollEvent {
+  const factory _ProcessRealtimeEvent(final RealtimeMessage message) =
+      _$_ProcessRealtimeEvent;
+
+  RealtimeMessage get message;
+  @JsonKey(ignore: true)
+  _$$_ProcessRealtimeEventCopyWith<_$_ProcessRealtimeEvent> get copyWith =>
       throw _privateConstructorUsedError;
 }
 

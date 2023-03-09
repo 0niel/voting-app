@@ -25,15 +25,16 @@ class _PollScreenState extends State<PollScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocBuilder<EventsBloc, EventsState>(
-        builder: (context, state) {
+      body: BlocConsumer<EventsBloc, EventsState>(
+        listener: (context, state) {
           state.maybeWhen(
               orElse: () {},
               eventLoaded: (events) {
                 BlocProvider.of<PollBloc>(context)
                     .add(PollEvent.loadPolls(events.$id));
               });
-
+        },
+        builder: (context, state) {
           return state.maybeMap(
             eventLoaded: (eventLoadedStateValue) =>
                 BlocBuilder<PollBloc, PollState>(
@@ -52,8 +53,16 @@ class _PollScreenState extends State<PollScreen> {
                         ..update(vote, (count) => count + 1, ifAbsent: () => 1);
                     });
 
-                    return _buildPoll(eventName, question, options, votesMap);
+                    return _buildPoll(
+                        eventName,
+                        question,
+                        options,
+                        votesMap,
+                        (timeLeft.isNegative || timeLeft.inSeconds == 0)
+                            ? false
+                            : true);
                   },
+                  noPoll: () => _NoPoll(eventName: eventName),
                   orElse: () {
                     return Container();
                   },
@@ -71,7 +80,7 @@ class _PollScreenState extends State<PollScreen> {
   }
 
   Widget _buildPoll(String eventName, String question, List<String> options,
-      Map<String, int> votes) {
+      Map<String, int> votes, bool isActive) {
     return Column(
       children: <Widget>[
         Container(
@@ -82,7 +91,7 @@ class _PollScreenState extends State<PollScreen> {
                   color: AppTheme.theme.colorScheme.onBackground,
                   fontWeight: 700),
               CustomText.bodySmall(
-                "Идёт голосование",
+                isActive ? "Идёт голосование" : "Голосование завершено",
                 color: AppTheme.theme.colorScheme.onBackground,
                 fontWeight: 500,
               )
@@ -160,6 +169,56 @@ class _PollScreenState extends State<PollScreen> {
               fontWeight: 600),
         ),
       ),
+    );
+  }
+}
+
+class _NoPoll extends StatelessWidget {
+  const _NoPoll({Key? key, required this.eventName}) : super(key: key);
+
+  final String eventName;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        Container(
+          padding: Spacing.fromLTRB(16, 42, 16, 0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              CustomText.titleMedium(eventName, //value.event.data['name'],
+                  color: AppTheme.theme.colorScheme.onBackground,
+                  fontWeight: 700,
+                  textAlign: TextAlign.center),
+              CustomText.bodySmall(
+                "Сейчас нет доступных голосований",
+                color: AppTheme.theme.colorScheme.onBackground,
+                fontWeight: 500,
+                textAlign: TextAlign.center,
+              )
+            ],
+          ),
+        ),
+        Expanded(
+          child: Container(
+            padding: Spacing.fromLTRB(48, 0, 48, 0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                CustomText.titleLarge(
+                  "Подождите, пока начнётся голосование",
+                  letterSpacing: 0.2,
+                  wordSpacing: 0.5,
+                  color: AppTheme.theme.colorScheme.onBackground,
+                  fontWeight: 600,
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

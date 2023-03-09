@@ -21,6 +21,7 @@ mixin _$EventsEvent {
     required TResult Function() started,
     required TResult Function(RealtimeMessage? event) loadEventsList,
     required TResult Function(String id) loadEvent,
+    required TResult Function(RealtimeMessage message) processRealtimeEvent,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -28,6 +29,7 @@ mixin _$EventsEvent {
     TResult? Function()? started,
     TResult? Function(RealtimeMessage? event)? loadEventsList,
     TResult? Function(String id)? loadEvent,
+    TResult? Function(RealtimeMessage message)? processRealtimeEvent,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -35,6 +37,7 @@ mixin _$EventsEvent {
     TResult Function()? started,
     TResult Function(RealtimeMessage? event)? loadEventsList,
     TResult Function(String id)? loadEvent,
+    TResult Function(RealtimeMessage message)? processRealtimeEvent,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -43,6 +46,7 @@ mixin _$EventsEvent {
     required TResult Function(_Started value) started,
     required TResult Function(_LoadEventsList value) loadEventsList,
     required TResult Function(_LoadEvent value) loadEvent,
+    required TResult Function(_ProcessRealtimeEvent value) processRealtimeEvent,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -50,6 +54,7 @@ mixin _$EventsEvent {
     TResult? Function(_Started value)? started,
     TResult? Function(_LoadEventsList value)? loadEventsList,
     TResult? Function(_LoadEvent value)? loadEvent,
+    TResult? Function(_ProcessRealtimeEvent value)? processRealtimeEvent,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -57,6 +62,7 @@ mixin _$EventsEvent {
     TResult Function(_Started value)? started,
     TResult Function(_LoadEventsList value)? loadEventsList,
     TResult Function(_LoadEvent value)? loadEvent,
+    TResult Function(_ProcessRealtimeEvent value)? processRealtimeEvent,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -120,6 +126,7 @@ class _$_Started implements _Started {
     required TResult Function() started,
     required TResult Function(RealtimeMessage? event) loadEventsList,
     required TResult Function(String id) loadEvent,
+    required TResult Function(RealtimeMessage message) processRealtimeEvent,
   }) {
     return started();
   }
@@ -130,6 +137,7 @@ class _$_Started implements _Started {
     TResult? Function()? started,
     TResult? Function(RealtimeMessage? event)? loadEventsList,
     TResult? Function(String id)? loadEvent,
+    TResult? Function(RealtimeMessage message)? processRealtimeEvent,
   }) {
     return started?.call();
   }
@@ -140,6 +148,7 @@ class _$_Started implements _Started {
     TResult Function()? started,
     TResult Function(RealtimeMessage? event)? loadEventsList,
     TResult Function(String id)? loadEvent,
+    TResult Function(RealtimeMessage message)? processRealtimeEvent,
     required TResult orElse(),
   }) {
     if (started != null) {
@@ -154,6 +163,7 @@ class _$_Started implements _Started {
     required TResult Function(_Started value) started,
     required TResult Function(_LoadEventsList value) loadEventsList,
     required TResult Function(_LoadEvent value) loadEvent,
+    required TResult Function(_ProcessRealtimeEvent value) processRealtimeEvent,
   }) {
     return started(this);
   }
@@ -164,6 +174,7 @@ class _$_Started implements _Started {
     TResult? Function(_Started value)? started,
     TResult? Function(_LoadEventsList value)? loadEventsList,
     TResult? Function(_LoadEvent value)? loadEvent,
+    TResult? Function(_ProcessRealtimeEvent value)? processRealtimeEvent,
   }) {
     return started?.call(this);
   }
@@ -174,6 +185,7 @@ class _$_Started implements _Started {
     TResult Function(_Started value)? started,
     TResult Function(_LoadEventsList value)? loadEventsList,
     TResult Function(_LoadEvent value)? loadEvent,
+    TResult Function(_ProcessRealtimeEvent value)? processRealtimeEvent,
     required TResult orElse(),
   }) {
     if (started != null) {
@@ -254,6 +266,7 @@ class _$_LoadEventsList implements _LoadEventsList {
     required TResult Function() started,
     required TResult Function(RealtimeMessage? event) loadEventsList,
     required TResult Function(String id) loadEvent,
+    required TResult Function(RealtimeMessage message) processRealtimeEvent,
   }) {
     return loadEventsList(event);
   }
@@ -264,6 +277,7 @@ class _$_LoadEventsList implements _LoadEventsList {
     TResult? Function()? started,
     TResult? Function(RealtimeMessage? event)? loadEventsList,
     TResult? Function(String id)? loadEvent,
+    TResult? Function(RealtimeMessage message)? processRealtimeEvent,
   }) {
     return loadEventsList?.call(event);
   }
@@ -274,6 +288,7 @@ class _$_LoadEventsList implements _LoadEventsList {
     TResult Function()? started,
     TResult Function(RealtimeMessage? event)? loadEventsList,
     TResult Function(String id)? loadEvent,
+    TResult Function(RealtimeMessage message)? processRealtimeEvent,
     required TResult orElse(),
   }) {
     if (loadEventsList != null) {
@@ -288,6 +303,7 @@ class _$_LoadEventsList implements _LoadEventsList {
     required TResult Function(_Started value) started,
     required TResult Function(_LoadEventsList value) loadEventsList,
     required TResult Function(_LoadEvent value) loadEvent,
+    required TResult Function(_ProcessRealtimeEvent value) processRealtimeEvent,
   }) {
     return loadEventsList(this);
   }
@@ -298,6 +314,7 @@ class _$_LoadEventsList implements _LoadEventsList {
     TResult? Function(_Started value)? started,
     TResult? Function(_LoadEventsList value)? loadEventsList,
     TResult? Function(_LoadEvent value)? loadEvent,
+    TResult? Function(_ProcessRealtimeEvent value)? processRealtimeEvent,
   }) {
     return loadEventsList?.call(this);
   }
@@ -308,6 +325,7 @@ class _$_LoadEventsList implements _LoadEventsList {
     TResult Function(_Started value)? started,
     TResult Function(_LoadEventsList value)? loadEventsList,
     TResult Function(_LoadEvent value)? loadEvent,
+    TResult Function(_ProcessRealtimeEvent value)? processRealtimeEvent,
     required TResult orElse(),
   }) {
     if (loadEventsList != null) {
@@ -394,6 +412,7 @@ class _$_LoadEvent implements _LoadEvent {
     required TResult Function() started,
     required TResult Function(RealtimeMessage? event) loadEventsList,
     required TResult Function(String id) loadEvent,
+    required TResult Function(RealtimeMessage message) processRealtimeEvent,
   }) {
     return loadEvent(id);
   }
@@ -404,6 +423,7 @@ class _$_LoadEvent implements _LoadEvent {
     TResult? Function()? started,
     TResult? Function(RealtimeMessage? event)? loadEventsList,
     TResult? Function(String id)? loadEvent,
+    TResult? Function(RealtimeMessage message)? processRealtimeEvent,
   }) {
     return loadEvent?.call(id);
   }
@@ -414,6 +434,7 @@ class _$_LoadEvent implements _LoadEvent {
     TResult Function()? started,
     TResult Function(RealtimeMessage? event)? loadEventsList,
     TResult Function(String id)? loadEvent,
+    TResult Function(RealtimeMessage message)? processRealtimeEvent,
     required TResult orElse(),
   }) {
     if (loadEvent != null) {
@@ -428,6 +449,7 @@ class _$_LoadEvent implements _LoadEvent {
     required TResult Function(_Started value) started,
     required TResult Function(_LoadEventsList value) loadEventsList,
     required TResult Function(_LoadEvent value) loadEvent,
+    required TResult Function(_ProcessRealtimeEvent value) processRealtimeEvent,
   }) {
     return loadEvent(this);
   }
@@ -438,6 +460,7 @@ class _$_LoadEvent implements _LoadEvent {
     TResult? Function(_Started value)? started,
     TResult? Function(_LoadEventsList value)? loadEventsList,
     TResult? Function(_LoadEvent value)? loadEvent,
+    TResult? Function(_ProcessRealtimeEvent value)? processRealtimeEvent,
   }) {
     return loadEvent?.call(this);
   }
@@ -448,6 +471,7 @@ class _$_LoadEvent implements _LoadEvent {
     TResult Function(_Started value)? started,
     TResult Function(_LoadEventsList value)? loadEventsList,
     TResult Function(_LoadEvent value)? loadEvent,
+    TResult Function(_ProcessRealtimeEvent value)? processRealtimeEvent,
     required TResult orElse(),
   }) {
     if (loadEvent != null) {
@@ -463,6 +487,153 @@ abstract class _LoadEvent implements EventsEvent {
   String get id;
   @JsonKey(ignore: true)
   _$$_LoadEventCopyWith<_$_LoadEvent> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$_ProcessRealtimeEventCopyWith<$Res> {
+  factory _$$_ProcessRealtimeEventCopyWith(_$_ProcessRealtimeEvent value,
+          $Res Function(_$_ProcessRealtimeEvent) then) =
+      __$$_ProcessRealtimeEventCopyWithImpl<$Res>;
+  @useResult
+  $Res call({RealtimeMessage message});
+}
+
+/// @nodoc
+class __$$_ProcessRealtimeEventCopyWithImpl<$Res>
+    extends _$EventsEventCopyWithImpl<$Res, _$_ProcessRealtimeEvent>
+    implements _$$_ProcessRealtimeEventCopyWith<$Res> {
+  __$$_ProcessRealtimeEventCopyWithImpl(_$_ProcessRealtimeEvent _value,
+      $Res Function(_$_ProcessRealtimeEvent) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? message = null,
+  }) {
+    return _then(_$_ProcessRealtimeEvent(
+      null == message
+          ? _value.message
+          : message // ignore: cast_nullable_to_non_nullable
+              as RealtimeMessage,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$_ProcessRealtimeEvent implements _ProcessRealtimeEvent {
+  const _$_ProcessRealtimeEvent(this.message);
+
+  @override
+  final RealtimeMessage message;
+
+  @override
+  String toString() {
+    return 'EventsEvent.processRealtimeEvent(message: $message)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$_ProcessRealtimeEvent &&
+            (identical(other.message, message) || other.message == message));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, message);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$_ProcessRealtimeEventCopyWith<_$_ProcessRealtimeEvent> get copyWith =>
+      __$$_ProcessRealtimeEventCopyWithImpl<_$_ProcessRealtimeEvent>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() started,
+    required TResult Function(RealtimeMessage? event) loadEventsList,
+    required TResult Function(String id) loadEvent,
+    required TResult Function(RealtimeMessage message) processRealtimeEvent,
+  }) {
+    return processRealtimeEvent(message);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? started,
+    TResult? Function(RealtimeMessage? event)? loadEventsList,
+    TResult? Function(String id)? loadEvent,
+    TResult? Function(RealtimeMessage message)? processRealtimeEvent,
+  }) {
+    return processRealtimeEvent?.call(message);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? started,
+    TResult Function(RealtimeMessage? event)? loadEventsList,
+    TResult Function(String id)? loadEvent,
+    TResult Function(RealtimeMessage message)? processRealtimeEvent,
+    required TResult orElse(),
+  }) {
+    if (processRealtimeEvent != null) {
+      return processRealtimeEvent(message);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Started value) started,
+    required TResult Function(_LoadEventsList value) loadEventsList,
+    required TResult Function(_LoadEvent value) loadEvent,
+    required TResult Function(_ProcessRealtimeEvent value) processRealtimeEvent,
+  }) {
+    return processRealtimeEvent(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Started value)? started,
+    TResult? Function(_LoadEventsList value)? loadEventsList,
+    TResult? Function(_LoadEvent value)? loadEvent,
+    TResult? Function(_ProcessRealtimeEvent value)? processRealtimeEvent,
+  }) {
+    return processRealtimeEvent?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Started value)? started,
+    TResult Function(_LoadEventsList value)? loadEventsList,
+    TResult Function(_LoadEvent value)? loadEvent,
+    TResult Function(_ProcessRealtimeEvent value)? processRealtimeEvent,
+    required TResult orElse(),
+  }) {
+    if (processRealtimeEvent != null) {
+      return processRealtimeEvent(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _ProcessRealtimeEvent implements EventsEvent {
+  const factory _ProcessRealtimeEvent(final RealtimeMessage message) =
+      _$_ProcessRealtimeEvent;
+
+  RealtimeMessage get message;
+  @JsonKey(ignore: true)
+  _$$_ProcessRealtimeEventCopyWith<_$_ProcessRealtimeEvent> get copyWith =>
       throw _privateConstructorUsedError;
 }
 

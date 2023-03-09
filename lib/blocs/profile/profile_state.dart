@@ -10,6 +10,7 @@ class ProfileState with _$ProfileState {
     Models.Preferences prefs,
     Models.Jwt jwt,
     Image avatar,
+    List<String> events,
   ) = _Success;
   const factory ProfileState.error(String message) = _Error;
 }
