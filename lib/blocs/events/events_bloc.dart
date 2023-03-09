@@ -16,9 +16,6 @@ class EventsBloc extends Bloc<EventsEvent, EventsState> {
   final Teams teams;
   final Realtime realtime;
 
-  final RealtimeSubscription subscription;
-  late final Models.Account me;
-
   EventsBloc({
     required this.client,
     required this.account,
@@ -26,32 +23,26 @@ class EventsBloc extends Bloc<EventsEvent, EventsState> {
     required this.databases,
     required this.teams,
     required this.realtime,
-    required this.subscription,
   }) : super(const _Initial()) {
-    subscription.stream.listen((event) {
-      final eventAction = event.events.first.split('.').last;
-
-      if (eventAction != 'create' &&
-          eventAction != 'update' &&
-          eventAction != 'delete') {
-        return;
-      }
-
-      print('Event action: $eventAction');
-
-      final doc = Models.Document.fromMap(event.payload);
-
-      if (doc.$collectionId == eventsCollectionId) {
-        add(EventsEvent.loadEventsList(event: event));
-      }
-    });
-
     on<_LoadEventsList>(_loadEventsList);
-    on<_LoadEvent>(loadEvent);
-    on<_Started>(_loadEventsList);
+    on<_LoadEvent>(_loadEvent);
+    on<_Started>(_started);
+    on<_ProcessRealtimeEvent>(_processRealtimeEvent);
   }
 
-  Future<void> loadEvent(_LoadEvent e, Emitter<EventsState> emit) async {
+  Future<void> _processRealtimeEvent(
+    _ProcessRealtimeEvent e,
+    Emitter<EventsState> emit,
+  ) async {
+    final payload = e.message.payload;
+    final doc = Models.Document.fromMap(payload);
+
+    if (doc.$collectionId == eventsCollectionId) {
+      add(EventsEvent.loadEventsList(event: e.message));
+    }
+  }
+
+  Future<void> _loadEvent(_LoadEvent e, Emitter<EventsState> emit) async {
     emit(const EventsState.loading());
 
     final documentResponse = await databases.getDocument(
@@ -63,14 +54,15 @@ class EventsBloc extends Bloc<EventsEvent, EventsState> {
     emit(EventsState.eventLoaded(documentResponse));
   }
 
-  Future<void> _loadEventsList(
-    EventsEvent e,
-    Emitter<EventsState> emit, {
-    RealtimeMessage? event,
-  }) async {
-    emit(const EventsState.loading());
+  Future<void> _started(
+    _Started e,
+    Emitter<EventsState> emit,
+  ) async {
+    await _loadEventsList(e, emit);
+  }
 
-    me = await account.get();
+  Future<void> _loadEventsList(EventsEvent e, Emitter<EventsState> emit) async {
+    emit(const EventsState.loading());
 
     // получаем список событий из коллекции events сортирую по дате
     final documentsResponse = await databases.listDocuments(
@@ -79,39 +71,22 @@ class EventsBloc extends Bloc<EventsEvent, EventsState> {
       queries: [Query.orderDesc('start_at')],
     );
 
-    print('Events: ${documentsResponse.documents}');
-
     // если есть события с атрибутом is_active = true, в которых мы являемся
     // участникам (находимся в team с id = participants_team_id в events)
     // то мы мы переключаем состояние на eventLoaded  иначе на eventsListLoaded
     if (documentsResponse.total > 0) {
-      Models.Document? firstActiveEvent;
-
       for (final event in documentsResponse.documents) {
         if (event.data['is_active'] == true) {
-          firstActiveEvent = event;
-          break;
-        }
-      }
-
-      if (firstActiveEvent != null) {
-        final membershipResponse = await teams.listMemberships(
-          teamId: firstActiveEvent.data['participants_team_id'],
-        );
-
-        // Если пользователь является участником активного на данный момент события
-        if (membershipResponse.total > 0) {
-          final List<String> members =
-              membershipResponse.memberships.map((e) => e.userId).toList();
-
-          if (members.contains(me.$id)) {
-            emit(EventsState.eventLoaded(firstActiveEvent));
+          try {
+            await teams.get(teamId: event.data['participants_team_id']);
+            emit(EventsState.eventLoaded(event));
+            print('Event loaded: $event');
             return;
-          }
+          } catch (e) {}
         }
       }
     }
-
+    print('Events list loaded: ${documentsResponse.documents}');
     emit(EventsState.eventsListLoaded(documentsResponse));
   }
 }

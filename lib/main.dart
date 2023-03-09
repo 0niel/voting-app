@@ -29,6 +29,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<ProfileBloc>(
+            lazy: false,
             create: (context) => service_locator.getIt<ProfileBloc>()
               ..add(const ProfileEvent.started())),
         BlocProvider<EventsBloc>(

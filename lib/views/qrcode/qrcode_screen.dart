@@ -1,6 +1,8 @@
+import 'package:face_to_face_voting/blocs/profile/profile_bloc.dart';
 import 'package:face_to_face_voting/theme/app_theme.dart';
 import 'package:face_to_face_voting/widgets/text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class QrCodeScreen extends StatelessWidget {
@@ -30,10 +32,21 @@ class QrCodeScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 10),
-              QrImage(
-                data: "1234567890",
-                version: QrVersions.auto,
-                size: MediaQuery.of(context).size.width * 0.7,
+              BlocBuilder<ProfileBloc, ProfileState>(
+                builder: (context, state) {
+                  return state.maybeMap(
+                    success: (state) {
+                      return QrImage(
+                        data: state.user.$id,
+                        version: QrVersions.auto,
+                        size: MediaQuery.of(context).size.width * 0.7,
+                      );
+                    },
+                    orElse: () => const Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  );
+                },
               ),
             ],
           ),

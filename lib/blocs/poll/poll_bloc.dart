@@ -20,7 +20,6 @@ class PollBloc extends Bloc<PollEvent, PollState> {
   final Realtime realtime;
   final dart_appwrite.Health health;
 
-  final RealtimeSubscription subscription;
   late DateTime serverTime;
   Timer? timer;
 
@@ -62,102 +61,6 @@ class PollBloc extends Bloc<PollEvent, PollState> {
     return timeLeft.isNegative ? Duration.zero : timeLeft;
   }
 
-  void subscribe(emit) {
-    subscription.stream.listen((event) async {
-      print('New event: $event, state: $state');
-      // Если состояние не успело загрузиться, то ничего не делаем
-      if (state.maybeMap(success: (value) => false, orElse: () => true)) {
-        return;
-      }
-
-      final currentState = state as _Success;
-
-      print('New event: $event');
-      final eventAction = event.events.first.split('.').last;
-
-      // Нас интересуют только события, которые могут изменить данные
-      if (eventAction != 'create' &&
-          eventAction != 'update' &&
-          eventAction != 'delete') {
-        return;
-      }
-
-      print('Event action: $eventAction');
-
-      final doc = Models.Document.fromMap(event.payload);
-
-      if (doc.$collectionId == pollsCollectionId) {
-        if (doc.data['event_id'] == currentState.eventId) {
-          print('Poll changed');
-
-          serverTime = await _getServerTime();
-
-          final polls = await databases.listDocuments(
-            databaseId: databaseId,
-            collectionId: pollsCollectionId,
-            queries: [
-              Query.equal('event_id', currentState.eventId),
-              Query.orderDesc('start_at'),
-            ],
-          );
-
-          final poll = await _getActiveOrLastPoll(polls);
-
-          if (poll == null) {
-            emit(const PollState.noPoll());
-            return;
-          }
-
-          final timeLeft = _calculateTimeLeft(poll);
-
-          emit(PollState.success(
-            currentState.eventId,
-            poll,
-            currentState.votes,
-            timeLeft,
-          ));
-
-          // Обновляем таймер
-          timer?.cancel();
-          timer = Timer.periodic(const Duration(seconds: 1), (_) {
-            final newTimeLeft = _calculateTimeLeft(poll);
-            if (state.maybeMap(
-                orElse: () => false,
-                success: (state) => state.timeLeft != newTimeLeft)) {
-              emit(PollState.success(
-                currentState.eventId,
-                poll,
-                currentState.votes,
-                newTimeLeft,
-              ));
-            }
-          });
-        }
-      }
-
-      if (doc.$collectionId == votesCollectionId) {
-        final pollId = doc.data['poll_id'];
-
-        if (currentState.poll.$id == pollId) {
-          print('Vote changed');
-
-          final votes = await databases.listDocuments(
-            databaseId: databaseId,
-            collectionId: votesCollectionId,
-            queries: [Query.equal('poll_id', pollId)],
-          );
-
-          emit(PollState.success(
-            currentState.eventId,
-            currentState.poll,
-            votes,
-            currentState.timeLeft,
-          ));
-        }
-      }
-    });
-  }
-
   PollBloc({
     required this.client,
     required this.account,
@@ -165,13 +68,101 @@ class PollBloc extends Bloc<PollEvent, PollState> {
     required this.teams,
     required this.realtime,
     required this.health,
-    required this.subscription,
-  }) : super(PollState.initial()) {
-    on<_LoadPolls>((event, emit) async {
-      emit(PollState.loading());
-      final eventId = event.eventId;
+  }) : super(const PollState.initial()) {
+    on<_ProcessRealtimeEvent>(_processRealtimeEvent);
+    on<_LoadPolls>(_loadPolls);
+  }
 
-      // try {
+  Future<void> _processRealtimeEvent(
+    _ProcessRealtimeEvent e,
+    Emitter<PollState> emit,
+  ) async {
+    if (state.maybeMap(success: (value) => false, orElse: () => true)) {
+      return;
+    }
+
+    final currentState = state as _Success;
+
+    final payload = e.message.payload;
+    final doc = Models.Document.fromMap(payload);
+
+    if (doc.$collectionId == pollsCollectionId) {
+      if (doc.data['event_id'] == currentState.eventId) {
+        print('Poll changed!');
+
+        serverTime = await _getServerTime();
+
+        final polls = await databases.listDocuments(
+          databaseId: databaseId,
+          collectionId: pollsCollectionId,
+          queries: [
+            Query.equal('event_id', currentState.eventId),
+            Query.orderDesc('start_at'),
+          ],
+        );
+
+        final poll = await _getActiveOrLastPoll(polls);
+
+        if (poll == null) {
+          emit(const PollState.noPoll());
+          return;
+        }
+
+        final timeLeft = _calculateTimeLeft(poll);
+
+        emit(PollState.success(
+          currentState.eventId,
+          poll,
+          currentState.votes,
+          timeLeft,
+        ));
+
+        // Обновляем таймер
+        timer?.cancel();
+        timer = Timer.periodic(const Duration(seconds: 1), (_) {
+          final newTimeLeft = _calculateTimeLeft(poll);
+          if (state.maybeMap(
+              orElse: () => false,
+              success: (state) => state.timeLeft != newTimeLeft)) {
+            emit(PollState.success(
+              currentState.eventId,
+              poll,
+              currentState.votes,
+              newTimeLeft,
+            ));
+          }
+        });
+      }
+    }
+
+    if (doc.$collectionId == votesCollectionId) {
+      final pollId = doc.data['poll_id'];
+
+      if (currentState.poll.$id == pollId) {
+        print('Vote changed');
+
+        final votes = await databases.listDocuments(
+          databaseId: databaseId,
+          collectionId: votesCollectionId,
+          queries: [Query.equal('poll_id', pollId)],
+        );
+
+        emit(PollState.success(
+          currentState.eventId,
+          currentState.poll,
+          votes,
+          currentState.timeLeft,
+        ));
+      }
+    }
+  }
+
+  Future<void> _loadPolls(_LoadPolls event, Emitter<PollState> emit) async {
+    emit(const PollState.loading());
+
+    final eventId = event.eventId;
+
+    try {
       final polls = await databases.listDocuments(
         databaseId: databaseId,
         collectionId: pollsCollectionId,
@@ -200,7 +191,6 @@ class PollBloc extends Bloc<PollEvent, PollState> {
         ));
 
         // Создаем таймер для обновления timeLeft каждую секунду
-
         timer = Timer.periodic(const Duration(seconds: 1), (_) {
           final newTimeLeft = _calculateTimeLeft(poll);
           if (state.maybeMap(
@@ -217,11 +207,8 @@ class PollBloc extends Bloc<PollEvent, PollState> {
       } else {
         emit(const PollState.noPoll());
       }
-
-      subscribe(emit);
-      // } catch (error) {
-      //   emit(PollState.error(error.toString()));
-      // }
-    });
+    } catch (error) {
+      emit(PollState.error(error.toString()));
+    }
   }
 }

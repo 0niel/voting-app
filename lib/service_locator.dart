@@ -1,5 +1,6 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:dart_appwrite/dart_appwrite.dart' as dart_appwrite;
+import 'package:appwrite/models.dart' as Models;
 import 'package:face_to_face_voting/blocs/events/events_bloc.dart';
 import 'package:face_to_face_voting/blocs/poll/poll_bloc.dart';
 import 'package:face_to_face_voting/data/local_storage.dart';
@@ -14,10 +15,14 @@ final getIt = GetIt.instance;
 
 Future<void> setup() async {
   getIt.registerFactory<ProfileBloc>(() => ProfileBloc(
-      client: getIt(),
-      account: getIt(),
-      avatars: getIt(),
-      localStorage: getIt()));
+        client: getIt(),
+        account: getIt(),
+        avatars: getIt(),
+        localStorage: getIt(),
+        databases: getIt(),
+        teams: getIt(),
+        realtime: getIt(),
+      ));
   getIt.registerFactory<EventsBloc>(() => EventsBloc(
         client: getIt(),
         account: getIt(),
@@ -25,7 +30,6 @@ Future<void> setup() async {
         databases: getIt(),
         teams: getIt(),
         realtime: getIt(),
-        subscription: getIt(),
       ));
   getIt.registerFactory<PollBloc>(() => PollBloc(
         client: getIt(),
@@ -34,7 +38,6 @@ Future<void> setup() async {
         teams: getIt(),
         realtime: getIt(),
         health: getIt(),
-        subscription: getIt(),
       ));
 
   getIt.registerLazySingleton<LocalStorage>(
@@ -42,23 +45,15 @@ Future<void> setup() async {
 
   final Client client = Client();
 
-  getIt.registerLazySingleton<Client>((() => client
-      .setEndpoint(appwriteEndpoint)
-      .setProject(appwriteProjectId)
-      .setSelfSigned(status: true)));
+  getIt.registerLazySingleton<Client>((() =>
+      client.setEndpoint(appwriteEndpoint).setProject(appwriteProjectId)));
 
-  getIt.registerLazySingleton<Account>(() => Account(getIt()));
-  getIt.registerLazySingleton<Storage>(() => Storage(getIt()));
-  getIt.registerLazySingleton<Databases>(() => Databases(getIt()));
-  getIt.registerLazySingleton<Avatars>(() => Avatars(getIt()));
-  getIt.registerLazySingleton<Teams>(() => Teams(getIt()));
-  getIt.registerLazySingleton<Realtime>(() => Realtime(getIt()));
-  RealtimeSubscription subscription = getIt<Realtime>().subscribe([
-    'databases.$databaseId.collections.$eventsCollectionId',
-    'databases.$databaseId.collections.$pollsCollectionId.documents',
-    'databases.$databaseId.collections.$votesCollectionId.documents',
-  ]);
-  getIt.registerLazySingleton<RealtimeSubscription>(() => subscription);
+  getIt.registerLazySingleton<Account>(() => Account(getIt<Client>()));
+  getIt.registerLazySingleton<Storage>(() => Storage(getIt<Client>()));
+  getIt.registerLazySingleton<Databases>(() => Databases(getIt<Client>()));
+  getIt.registerLazySingleton<Avatars>(() => Avatars(getIt<Client>()));
+  getIt.registerLazySingleton<Teams>(() => Teams(getIt<Client>()));
+  getIt.registerLazySingleton<Realtime>(() => Realtime(getIt<Client>()));
 
   final dart_appwrite.Client dartClient = dart_appwrite.Client()
       .setEndpoint(appwriteEndpoint)
