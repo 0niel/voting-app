@@ -1,4 +1,3 @@
-
 import 'package:face_to_face_voting/theme/app_theme.dart';
 import 'package:face_to_face_voting/theme/text_style.dart';
 import 'package:face_to_face_voting/utils/spacing.dart';
@@ -9,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
-import '../../blocs/profile/profile_bloc.dart';
+import '../../blocs/profile/profile_cubit.dart';
 import '../../utils/validators.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -29,7 +28,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = AppTheme.theme;
-    return BlocBuilder<ProfileBloc, ProfileState>(
+    return BlocBuilder<ProfileCubit, ProfileState>(
       builder: (context, state) {
         return Scaffold(
             key: _scaffoldKey,

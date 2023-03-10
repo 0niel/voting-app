@@ -1,5 +1,7 @@
-import 'package:face_to_face_voting/blocs/events/events_bloc.dart';
-import 'package:face_to_face_voting/blocs/poll/poll_bloc.dart';
+import 'package:collection/collection.dart';
+import 'package:face_to_face_voting/blocs/events/events_cubit.dart';
+import 'package:face_to_face_voting/blocs/poll/poll_cubit.dart';
+import 'package:face_to_face_voting/blocs/profile/profile_cubit.dart';
 import 'package:face_to_face_voting/theme/app_theme.dart';
 import 'package:face_to_face_voting/utils/spacing.dart';
 import 'package:face_to_face_voting/widgets/text.dart';
@@ -25,54 +27,80 @@ class _PollScreenState extends State<PollScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocConsumer<EventsBloc, EventsState>(
-        listener: (context, state) {
-          state.maybeWhen(
-              orElse: () {},
-              eventLoaded: (events) {
-                BlocProvider.of<PollBloc>(context)
-                    .add(PollEvent.loadPolls(events.$id));
-              });
-        },
-        builder: (context, state) {
-          return state.maybeMap(
-            eventLoaded: (eventLoadedStateValue) =>
-                BlocBuilder<PollBloc, PollState>(
-              builder: (context, pollState) {
-                final eventName = eventLoadedStateValue.event.data['name'];
-                return pollState.maybeWhen(
-                  success: (_, poll, votes, timeLeft) {
-                    final question = poll.data['question'] as String;
-                    final options =
-                        List<String>.from(poll.data['poll_options']);
-
-                    final votesMap =
-                        votes.documents.fold<Map<String, int>>({}, (map, doc) {
-                      final vote = doc.data['vote'] as String;
-                      return map
-                        ..update(vote, (count) => count + 1, ifAbsent: () => 1);
-                    });
-
-                    return _buildPoll(
-                        eventName,
-                        question,
-                        options,
-                        votesMap,
-                        (timeLeft.isNegative || timeLeft.inSeconds == 0)
-                            ? false
-                            : true);
-                  },
-                  noPoll: () => _NoPoll(eventName: eventName),
-                  orElse: () {
-                    return Container();
-                  },
-                );
-              },
-            ),
+      body: BlocBuilder<ProfileCubit, ProfileState>(
+        builder: (context, profileState) {
+          return profileState.maybeMap(
             orElse: () => Container(),
-            loading: (value) => const Center(
-              child: CircularProgressIndicator(),
-            ),
+            success: (user) {
+              return BlocConsumer<EventsCubit, EventsState>(
+                listener: (context, state) {
+                  state.maybeWhen(
+                      orElse: () {},
+                      eventLoaded: (events) {
+                        BlocProvider.of<PollCubit>(context)
+                            .loadPolls(events.$id);
+                      });
+                },
+                builder: (context, state) {
+                  return state.maybeMap(
+                    eventLoaded: (eventLoadedStateValue) =>
+                        BlocBuilder<PollCubit, PollState>(
+                      builder: (context, pollState) {
+                        final eventName =
+                            eventLoadedStateValue.event.data['name'];
+                        return pollState.maybeWhen(
+                          success: (eventId, poll, votes, timeLeft) {
+                            final question = poll.data['question'] as String;
+                            final options =
+                                List<String>.from(poll.data['poll_options']);
+
+                            final votesMap = votes.documents
+                                .fold<Map<String, int>>({}, (map, doc) {
+                              final vote = doc.data['vote'] as String;
+                              return map
+                                ..update(vote, (count) => count + 1,
+                                    ifAbsent: () => 1);
+                            });
+
+                            final meId = user.user.$id;
+
+                            final String? myVote;
+                            final myVoteDoc = votes.documents.firstWhereOrNull(
+                                (doc) => doc.data['voter_id'] == meId);
+                            if (myVoteDoc != null) {
+                              myVote = myVoteDoc.data['vote'] as String;
+                            } else {
+                              myVote = null;
+                            }
+
+                            return _buildPoll(
+                              eventName,
+                              question,
+                              options,
+                              votesMap,
+                              (timeLeft.isNegative || timeLeft.inSeconds == 0)
+                                  ? false
+                                  : true,
+                              eventId,
+                              poll.$id,
+                            );
+                          },
+                          noPoll: (eventId) =>
+                              _NoPollScreen(eventName: eventName),
+                          orElse: () {
+                            return Container();
+                          },
+                        );
+                      },
+                    ),
+                    orElse: () => Container(),
+                    loading: (value) => const Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  );
+                },
+              );
+            },
           );
         },
       ),
@@ -80,7 +108,7 @@ class _PollScreenState extends State<PollScreen> {
   }
 
   Widget _buildPoll(String eventName, String question, List<String> options,
-      Map<String, int> votes, bool isActive) {
+      Map<String, int> votes, bool isActive, String eventId, String pollId) {
     return Column(
       children: <Widget>[
         Container(
@@ -112,14 +140,26 @@ class _PollScreenState extends State<PollScreen> {
                   fontWeight: 600,
                   textAlign: TextAlign.center,
                 ),
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: options
-                      .asMap()
-                      .entries
-                      .map((e) => questionOption(option: e.value, index: e.key))
-                      .toList(),
-                ),
+                if (isActive)
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: options
+                        .asMap()
+                        .entries
+                        .map(
+                          (e) => questionOption(
+                            option: e.value,
+                            index: e.key,
+                            onTap: () {
+                              if (isActive) {
+                                BlocProvider.of<PollCubit>(context)
+                                    .sendVote(eventId, pollId, e.value);
+                              }
+                            },
+                          ),
+                        )
+                        .toList(),
+                  ),
               ],
             ),
           ),
@@ -140,10 +180,15 @@ class _PollScreenState extends State<PollScreen> {
     );
   }
 
-  Widget questionOption({required String option, int? index}) {
+  Widget questionOption({
+    required String option,
+    int? index,
+    required Function onTap,
+  }) {
     return GestureDetector(
       onTap: () {
         setState(() {
+          if (index != _selectedOption) onTap();
           _selectedOption = index;
         });
       },
@@ -173,8 +218,8 @@ class _PollScreenState extends State<PollScreen> {
   }
 }
 
-class _NoPoll extends StatelessWidget {
-  const _NoPoll({Key? key, required this.eventName}) : super(key: key);
+class _NoPollScreen extends StatelessWidget {
+  const _NoPollScreen({Key? key, required this.eventName}) : super(key: key);
 
   final String eventName;
 

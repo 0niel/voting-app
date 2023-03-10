@@ -1,3 +1,4 @@
+const String apiUrl = 'https://voting.mirea.ninja/api';
 const String appwriteEndpoint = 'https://appwrite.mirea.ninja/v1';
 const String appwriteProjectId = '63f74535e4d0790a5fac';
 

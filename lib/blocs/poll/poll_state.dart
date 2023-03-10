@@ -1,4 +1,4 @@
-part of 'poll_bloc.dart';
+part of 'poll_cubit.dart';
 
 @freezed
 class PollState with _$PollState {
@@ -11,5 +11,5 @@ class PollState with _$PollState {
     Duration timeLeft,
   ) = _Success;
   const factory PollState.error(String message) = _Error;
-  const factory PollState.noPoll() = _NoPoll;
+  const factory PollState.noPoll(String eventId) = _NoPoll;
 }

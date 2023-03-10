@@ -1,10 +1,9 @@
 import 'package:appwrite/models.dart';
-import 'package:face_to_face_voting/blocs/events/events_bloc.dart';
+import 'package:face_to_face_voting/blocs/events/events_cubit.dart';
 import 'package:face_to_face_voting/widgets/text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../poll/poll_screen.dart';
 
 class EventsScreen extends StatelessWidget {
   const EventsScreen({Key? key, required this.events}) : super(key: key);
@@ -13,7 +12,7 @@ class EventsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bloc = BlocProvider.of<EventsBloc>(context);
+    final bloc = BlocProvider.of<EventsCubit>(context);
     print("BUILDING EVENTS SCREEN. BLOC: $bloc");
     return Scaffold(
       appBar: AppBar(
@@ -21,19 +20,22 @@ class EventsScreen extends StatelessWidget {
         title: const CustomText.titleLarge('Предстоящие мероприятия',
             fontWeight: 700),
       ),
-      // body: BlocBuilder<EventsBloc, EventsState>(
-      //   bloc: bloc,
-      //   builder: (context, state) {
-      //     return state.map(
-      //       initial: (initialState) => const _Loading(),
-      //       loading: (loadingState) => const _Loading(),
-      //       eventsListLoaded: (eventsListLoadedState) =>
-      //           _Success(events: eventsListLoadedState.events),
-      //       eventLoaded: (eventLoadedState) => Container(),
-      //     );
-      //   },
-      // ),
-      body: _Success(events: events),
+      body: BlocConsumer<EventsCubit, EventsState>(
+        bloc: bloc,
+        listener: (context, state) {
+          print("LISTENING EVENTS SCREEN. STATE: $state");
+        },
+        builder: (context, state) {
+          print("BUILDING EVENTS SCREEN. STATE: $state");
+          return state.map(
+            initial: (initialState) => const _Loading(),
+            loading: (loadingState) => const _Loading(),
+            eventsListLoaded: (eventsListLoadedState) =>
+                _Success(events: eventsListLoadedState.events),
+            eventLoaded: (eventLoadedState) => Container(),
+          );
+        },
+      ),
     );
   }
 }

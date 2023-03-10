@@ -2,7 +2,7 @@ import 'package:face_to_face_voting/widgets/text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../blocs/profile/profile_bloc.dart';
+import '../../blocs/profile/profile_cubit.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -13,7 +13,7 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocBuilder<ProfileBloc, ProfileState>(builder: (context, state) {
+      body: BlocBuilder<ProfileCubit, ProfileState>(builder: (context, state) {
         return state.maybeMap(
           success: (usrState) => ListView(
             children: <Widget>[

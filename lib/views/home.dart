@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:face_to_face_voting/blocs/events/events_bloc.dart';
-import 'package:face_to_face_voting/blocs/poll/poll_bloc.dart';
+import 'package:face_to_face_voting/blocs/events/events_cubit.dart';
+import 'package:face_to_face_voting/blocs/poll/poll_cubit.dart';
 import 'package:face_to_face_voting/theme/app_theme.dart';
 import 'package:face_to_face_voting/utils/spacing.dart';
 import 'package:face_to_face_voting/views/events/events_screen.dart';
@@ -74,7 +74,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final bloc = BlocProvider.of<EventsBloc>(context);
+    final bloc = BlocProvider.of<EventsCubit>(context);
     print("BUILDING HOME SCREEN. BLOC: $bloc");
     return Scaffold(
       appBar: AppBar(
@@ -98,7 +98,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ),
-      body: BlocConsumer<EventsBloc, EventsState>(
+      body: BlocConsumer<EventsCubit, EventsState>(
         listener: (context, state) {
           print("STATE: $state");
         },
@@ -188,7 +188,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildTimer() {
-    return BlocBuilder<PollBloc, PollState>(builder: (context, state) {
+    return BlocBuilder<PollCubit, PollState>(builder: (context, state) {
       return state.maybeMap(
           success: (value) => SizedBox(
                 width: 48,
@@ -218,7 +218,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Stack(
                   alignment: Alignment.center,
                   children: <Widget>[
-                    Text(""),
+                    const Text(""),
                     CustomText.bodyLarge("0",
                         color: AppTheme.theme.colorScheme.onBackground,
                         fontWeight: 600)

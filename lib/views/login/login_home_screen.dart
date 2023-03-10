@@ -1,4 +1,4 @@
-import 'package:face_to_face_voting/blocs/events/events_bloc.dart';
+import 'package:face_to_face_voting/blocs/events/events_cubit.dart';
 import 'package:face_to_face_voting/theme/app_theme.dart';
 import 'package:face_to_face_voting/utils/spacing.dart';
 import 'package:face_to_face_voting/widgets/button.dart';
@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../blocs/profile/profile_bloc.dart';
+import '../../blocs/profile/profile_cubit.dart';
 import '../home.dart';
 
 class LoginHomeScreen extends StatelessWidget {
@@ -19,12 +19,11 @@ class LoginHomeScreen extends StatelessWidget {
       body: Container(
         padding: EdgeInsets.only(
             left: 20, right: 20, top: Spacing.safeAreaTop(context) + 48),
-        child: Center(child: BlocBuilder<ProfileBloc, ProfileState>(
+        child: Center(child: BlocBuilder<ProfileCubit, ProfileState>(
           builder: (context, state) {
             state.whenOrNull(
               success: (user, prefs, jwt, avatar, _) {
-                BlocProvider.of<EventsBloc>(context)
-                    .add(const EventsEvent.started());
+                BlocProvider.of<EventsCubit>(context).started();
                 WidgetsBinding.instance.addPostFrameCallback(
                   (_) => Navigator.of(context).pushReplacement(
                     MaterialPageRoute(
@@ -39,6 +38,7 @@ class LoginHomeScreen extends StatelessWidget {
                 initial: (_) => const _Loading(),
                 loading: (_) => const _Loading(),
                 error: (_) => _Failure(message: _.message),
+                success: (value) => const _Loading(),
                 orElse: () => const _Login());
           },
         )),
@@ -92,8 +92,7 @@ class _Failure extends StatelessWidget {
             padding: Spacing.y(12),
             borderRadiusAll: 4,
             onPressed: () {
-              BlocProvider.of<ProfileBloc>(context)
-                  .add(const ProfileEvent.login());
+              BlocProvider.of<ProfileCubit>(context).login();
             },
             child: Center(
               child: CustomText.bodyMedium(
@@ -142,8 +141,7 @@ class _Login extends StatelessWidget {
             padding: Spacing.y(12),
             borderRadiusAll: 4,
             onPressed: () {
-              BlocProvider.of<ProfileBloc>(context)
-                  .add(const ProfileEvent.login());
+              BlocProvider.of<ProfileCubit>(context).login();
             },
             child: Center(
               child: CustomText.bodyMedium(

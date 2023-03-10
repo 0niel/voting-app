@@ -4,11 +4,10 @@ import 'package:bloc/bloc.dart';
 import 'package:face_to_face_voting/constants.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'events_event.dart';
 part 'events_state.dart';
-part 'events_bloc.freezed.dart';
+part 'events_cubit.freezed.dart';
 
-class EventsBloc extends Bloc<EventsEvent, EventsState> {
+class EventsCubit extends Cubit<EventsState> {
   final Client client;
   final Account account;
   final Avatars avatars;
@@ -16,52 +15,43 @@ class EventsBloc extends Bloc<EventsEvent, EventsState> {
   final Teams teams;
   final Realtime realtime;
 
-  EventsBloc({
+  EventsCubit({
     required this.client,
     required this.account,
     required this.avatars,
     required this.databases,
     required this.teams,
     required this.realtime,
-  }) : super(const _Initial()) {
-    on<_LoadEventsList>(_loadEventsList);
-    on<_LoadEvent>(_loadEvent);
-    on<_Started>(_started);
-    on<_ProcessRealtimeEvent>(_processRealtimeEvent);
-  }
+  }) : super(const _Initial());
 
-  Future<void> _processRealtimeEvent(
-    _ProcessRealtimeEvent e,
-    Emitter<EventsState> emit,
+  Future<void> processRealtimeEvent(
+    RealtimeMessage message,
   ) async {
-    final payload = e.message.payload;
+    final payload = message.payload;
     final doc = Models.Document.fromMap(payload);
 
     if (doc.$collectionId == eventsCollectionId) {
-      add(EventsEvent.loadEventsList(event: e.message));
+      loadEventsList();
     }
   }
 
-  Future<void> _loadEvent(_LoadEvent e, Emitter<EventsState> emit) async {
+  void loadEvent(String id) async {
     emit(const EventsState.loading());
 
     final documentResponse = await databases.getDocument(
       databaseId: databaseId,
       collectionId: eventsCollectionId,
-      documentId: e.id,
+      documentId: id,
     );
 
     emit(EventsState.eventLoaded(documentResponse));
   }
 
-  Future<void> _started(
-    _Started e,
-    Emitter<EventsState> emit,
-  ) async {
-    await _loadEventsList(e, emit);
+  void started() async {
+    await loadEventsList();
   }
 
-  Future<void> _loadEventsList(EventsEvent e, Emitter<EventsState> emit) async {
+  Future<void> loadEventsList() async {
     emit(const EventsState.loading());
 
     // получаем список событий из коллекции events сортирую по дате
@@ -80,9 +70,10 @@ class EventsBloc extends Bloc<EventsEvent, EventsState> {
           try {
             await teams.get(teamId: event.data['participants_team_id']);
             emit(EventsState.eventLoaded(event));
-            print('Event loaded: $event');
             return;
-          } catch (e) {}
+          } catch (e) {
+            continue;
+          }
         }
       }
     }

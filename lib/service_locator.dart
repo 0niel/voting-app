@@ -1,20 +1,19 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:dart_appwrite/dart_appwrite.dart' as dart_appwrite;
-import 'package:appwrite/models.dart' as Models;
-import 'package:face_to_face_voting/blocs/events/events_bloc.dart';
-import 'package:face_to_face_voting/blocs/poll/poll_bloc.dart';
+import 'package:face_to_face_voting/blocs/events/events_cubit.dart';
+import 'package:face_to_face_voting/blocs/poll/poll_cubit.dart';
 import 'package:face_to_face_voting/data/local_storage.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'blocs/profile/profile_bloc.dart';
+import 'blocs/profile/profile_cubit.dart';
 import 'constants.dart';
 
 final getIt = GetIt.instance;
 
 Future<void> setup() async {
-  getIt.registerFactory<ProfileBloc>(() => ProfileBloc(
+  getIt.registerLazySingleton<ProfileCubit>(() => ProfileCubit(
         client: getIt(),
         account: getIt(),
         avatars: getIt(),
@@ -23,7 +22,7 @@ Future<void> setup() async {
         teams: getIt(),
         realtime: getIt(),
       ));
-  getIt.registerFactory<EventsBloc>(() => EventsBloc(
+  getIt.registerLazySingleton<EventsCubit>(() => EventsCubit(
         client: getIt(),
         account: getIt(),
         avatars: getIt(),
@@ -31,7 +30,7 @@ Future<void> setup() async {
         teams: getIt(),
         realtime: getIt(),
       ));
-  getIt.registerFactory<PollBloc>(() => PollBloc(
+  getIt.registerLazySingleton<PollCubit>(() => PollCubit(
         client: getIt(),
         account: getIt(),
         databases: getIt(),

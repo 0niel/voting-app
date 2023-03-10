@@ -11,14 +11,13 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:appwrite/models.dart' as Models;
 
 import '../../service_locator.dart';
-import '../events/events_bloc.dart';
-import '../poll/poll_bloc.dart';
+import '../events/events_cubit.dart';
+import '../poll/poll_cubit.dart';
 
-part 'profile_event.dart';
 part 'profile_state.dart';
-part 'profile_bloc.freezed.dart';
+part 'profile_cubit.freezed.dart';
 
-class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
+class ProfileCubit extends Cubit<ProfileState> {
   final Client client;
   final Databases databases;
   final Account account;
@@ -27,15 +26,22 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   final LocalStorage localStorage;
   final Realtime realtime;
 
-  late final RealtimeSubscription subscription;
+  RealtimeSubscription? subscription;
 
   void subscribeRealtime() async {
+    if (subscription != null) {
+      return;
+    }
+
     subscription = realtime.subscribe([
       'databases.$databaseId.collections.$eventsCollectionId.documents',
       'databases.$databaseId.collections.$pollsCollectionId.documents',
       'databases.$databaseId.collections.$votesCollectionId.documents',
     ]);
-    subscription.stream.listen(
+
+    print('Subscribed to realtime events');
+
+    subscription!.stream.listen(
       (event) {
         print("New event: $event recieved");
 
@@ -52,9 +58,10 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         final doc = Models.Document.fromMap(event.payload);
 
         if (doc.$collectionId == eventsCollectionId) {
-          getIt<EventsBloc>().add(EventsEvent.processRealtimeEvent(event));
-        } else if (doc.$collectionId == pollsCollectionId) {
-          getIt<PollBloc>().add(PollEvent.processRealtimeEvent(event));
+          getIt<EventsCubit>().processRealtimeEvent(event);
+        } else if (doc.$collectionId == pollsCollectionId ||
+            doc.$collectionId == votesCollectionId) {
+          getIt<PollCubit>().processRealtimeEvent(event);
         }
       },
       onError: (error) {
@@ -113,7 +120,17 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     return latinLetters.join();
   }
 
-  Future<void> _loadUserData(Emitter<ProfileState> emit) async {
+  ProfileCubit({
+    required this.client,
+    required this.account,
+    required this.avatars,
+    required this.localStorage,
+    required this.databases,
+    required this.teams,
+    required this.realtime,
+  }) : super(const _Initial());
+
+  Future<void> _loadUserData() async {
     final sessions = await account.listSessions();
     for (final session in sessions.sessions) {
       if (session.provider == 'mirea') {
@@ -139,7 +156,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
         await account.updatePrefs(prefs: {
           'id': data["ID"],
-          'email': data["arUser"]["EMAIL"],
           'course': int.parse(student["PROPERTIES"]["COURSE"]["VALUE"]),
           'personalNumber': student["PROPERTIES"]["PERSONAL_NUMBER"]["VALUE"],
           'academicGroup': student["PROPERTIES"]["ACADEMIC_GROUP"]
@@ -184,39 +200,29 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     }
   }
 
-  ProfileBloc({
-    required this.client,
-    required this.account,
-    required this.avatars,
-    required this.localStorage,
-    required this.databases,
-    required this.teams,
-    required this.realtime,
-  }) : super(const _Initial()) {
-    on<_Started>(((event, emit) async {
-      try {
-        emit(const _Loading());
+  void started() async {
+    try {
+      emit(const _Loading());
 
-        await account.get();
+      await account.get();
 
-        await _loadUserData(emit);
-      } catch (e) {
-        emit(const _LoginScreen());
-      }
-    }));
+      await _loadUserData();
+    } catch (e) {
+      emit(const _LoginScreen());
+    }
+  }
 
-    on<_Login>((event, emit) async {
-      try {
-        emit(const _Loading());
+  void login() async {
+    try {
+      emit(const _Loading());
 
-        await account.createOAuth2Session(
-          provider: 'mirea',
-        );
+      await account.createOAuth2Session(
+        provider: 'mirea',
+      );
 
-        await _loadUserData(emit);
-      } catch (e) {
-        emit(_Error(e.toString()));
-      }
-    });
+      await _loadUserData();
+    } catch (e) {
+      emit(_Error(e.toString()));
+    }
   }
 }

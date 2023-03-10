@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'poll_bloc.dart';
+part of 'poll_cubit.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -15,333 +15,6 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
-mixin _$PollEvent {
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(String eventId) loadPolls,
-    required TResult Function(RealtimeMessage message) processRealtimeEvent,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String eventId)? loadPolls,
-    TResult? Function(RealtimeMessage message)? processRealtimeEvent,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String eventId)? loadPolls,
-    TResult Function(RealtimeMessage message)? processRealtimeEvent,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_LoadPolls value) loadPolls,
-    required TResult Function(_ProcessRealtimeEvent value) processRealtimeEvent,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_LoadPolls value)? loadPolls,
-    TResult? Function(_ProcessRealtimeEvent value)? processRealtimeEvent,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_LoadPolls value)? loadPolls,
-    TResult Function(_ProcessRealtimeEvent value)? processRealtimeEvent,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $PollEventCopyWith<$Res> {
-  factory $PollEventCopyWith(PollEvent value, $Res Function(PollEvent) then) =
-      _$PollEventCopyWithImpl<$Res, PollEvent>;
-}
-
-/// @nodoc
-class _$PollEventCopyWithImpl<$Res, $Val extends PollEvent>
-    implements $PollEventCopyWith<$Res> {
-  _$PollEventCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-}
-
-/// @nodoc
-abstract class _$$_LoadPollsCopyWith<$Res> {
-  factory _$$_LoadPollsCopyWith(
-          _$_LoadPolls value, $Res Function(_$_LoadPolls) then) =
-      __$$_LoadPollsCopyWithImpl<$Res>;
-  @useResult
-  $Res call({String eventId});
-}
-
-/// @nodoc
-class __$$_LoadPollsCopyWithImpl<$Res>
-    extends _$PollEventCopyWithImpl<$Res, _$_LoadPolls>
-    implements _$$_LoadPollsCopyWith<$Res> {
-  __$$_LoadPollsCopyWithImpl(
-      _$_LoadPolls _value, $Res Function(_$_LoadPolls) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? eventId = null,
-  }) {
-    return _then(_$_LoadPolls(
-      null == eventId
-          ? _value.eventId
-          : eventId // ignore: cast_nullable_to_non_nullable
-              as String,
-    ));
-  }
-}
-
-/// @nodoc
-
-class _$_LoadPolls implements _LoadPolls {
-  const _$_LoadPolls(this.eventId);
-
-  @override
-  final String eventId;
-
-  @override
-  String toString() {
-    return 'PollEvent.loadPolls(eventId: $eventId)';
-  }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$_LoadPolls &&
-            (identical(other.eventId, eventId) || other.eventId == eventId));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, eventId);
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$_LoadPollsCopyWith<_$_LoadPolls> get copyWith =>
-      __$$_LoadPollsCopyWithImpl<_$_LoadPolls>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(String eventId) loadPolls,
-    required TResult Function(RealtimeMessage message) processRealtimeEvent,
-  }) {
-    return loadPolls(eventId);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String eventId)? loadPolls,
-    TResult? Function(RealtimeMessage message)? processRealtimeEvent,
-  }) {
-    return loadPolls?.call(eventId);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String eventId)? loadPolls,
-    TResult Function(RealtimeMessage message)? processRealtimeEvent,
-    required TResult orElse(),
-  }) {
-    if (loadPolls != null) {
-      return loadPolls(eventId);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_LoadPolls value) loadPolls,
-    required TResult Function(_ProcessRealtimeEvent value) processRealtimeEvent,
-  }) {
-    return loadPolls(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_LoadPolls value)? loadPolls,
-    TResult? Function(_ProcessRealtimeEvent value)? processRealtimeEvent,
-  }) {
-    return loadPolls?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_LoadPolls value)? loadPolls,
-    TResult Function(_ProcessRealtimeEvent value)? processRealtimeEvent,
-    required TResult orElse(),
-  }) {
-    if (loadPolls != null) {
-      return loadPolls(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _LoadPolls implements PollEvent {
-  const factory _LoadPolls(final String eventId) = _$_LoadPolls;
-
-  String get eventId;
-  @JsonKey(ignore: true)
-  _$$_LoadPollsCopyWith<_$_LoadPolls> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class _$$_ProcessRealtimeEventCopyWith<$Res> {
-  factory _$$_ProcessRealtimeEventCopyWith(_$_ProcessRealtimeEvent value,
-          $Res Function(_$_ProcessRealtimeEvent) then) =
-      __$$_ProcessRealtimeEventCopyWithImpl<$Res>;
-  @useResult
-  $Res call({RealtimeMessage message});
-}
-
-/// @nodoc
-class __$$_ProcessRealtimeEventCopyWithImpl<$Res>
-    extends _$PollEventCopyWithImpl<$Res, _$_ProcessRealtimeEvent>
-    implements _$$_ProcessRealtimeEventCopyWith<$Res> {
-  __$$_ProcessRealtimeEventCopyWithImpl(_$_ProcessRealtimeEvent _value,
-      $Res Function(_$_ProcessRealtimeEvent) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? message = null,
-  }) {
-    return _then(_$_ProcessRealtimeEvent(
-      null == message
-          ? _value.message
-          : message // ignore: cast_nullable_to_non_nullable
-              as RealtimeMessage,
-    ));
-  }
-}
-
-/// @nodoc
-
-class _$_ProcessRealtimeEvent implements _ProcessRealtimeEvent {
-  const _$_ProcessRealtimeEvent(this.message);
-
-  @override
-  final RealtimeMessage message;
-
-  @override
-  String toString() {
-    return 'PollEvent.processRealtimeEvent(message: $message)';
-  }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$_ProcessRealtimeEvent &&
-            (identical(other.message, message) || other.message == message));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, message);
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$_ProcessRealtimeEventCopyWith<_$_ProcessRealtimeEvent> get copyWith =>
-      __$$_ProcessRealtimeEventCopyWithImpl<_$_ProcessRealtimeEvent>(
-          this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(String eventId) loadPolls,
-    required TResult Function(RealtimeMessage message) processRealtimeEvent,
-  }) {
-    return processRealtimeEvent(message);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String eventId)? loadPolls,
-    TResult? Function(RealtimeMessage message)? processRealtimeEvent,
-  }) {
-    return processRealtimeEvent?.call(message);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String eventId)? loadPolls,
-    TResult Function(RealtimeMessage message)? processRealtimeEvent,
-    required TResult orElse(),
-  }) {
-    if (processRealtimeEvent != null) {
-      return processRealtimeEvent(message);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_LoadPolls value) loadPolls,
-    required TResult Function(_ProcessRealtimeEvent value) processRealtimeEvent,
-  }) {
-    return processRealtimeEvent(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_LoadPolls value)? loadPolls,
-    TResult? Function(_ProcessRealtimeEvent value)? processRealtimeEvent,
-  }) {
-    return processRealtimeEvent?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_LoadPolls value)? loadPolls,
-    TResult Function(_ProcessRealtimeEvent value)? processRealtimeEvent,
-    required TResult orElse(),
-  }) {
-    if (processRealtimeEvent != null) {
-      return processRealtimeEvent(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _ProcessRealtimeEvent implements PollEvent {
-  const factory _ProcessRealtimeEvent(final RealtimeMessage message) =
-      _$_ProcessRealtimeEvent;
-
-  RealtimeMessage get message;
-  @JsonKey(ignore: true)
-  _$$_ProcessRealtimeEventCopyWith<_$_ProcessRealtimeEvent> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
 mixin _$PollState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
@@ -351,7 +24,7 @@ mixin _$PollState {
             Models.DocumentList votes, Duration timeLeft)
         success,
     required TResult Function(String message) error,
-    required TResult Function() noPoll,
+    required TResult Function(String eventId) noPoll,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -362,7 +35,7 @@ mixin _$PollState {
             Models.DocumentList votes, Duration timeLeft)?
         success,
     TResult? Function(String message)? error,
-    TResult? Function()? noPoll,
+    TResult? Function(String eventId)? noPoll,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -373,7 +46,7 @@ mixin _$PollState {
             Models.DocumentList votes, Duration timeLeft)?
         success,
     TResult Function(String message)? error,
-    TResult Function()? noPoll,
+    TResult Function(String eventId)? noPoll,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -467,7 +140,7 @@ class _$_Initial implements _Initial {
             Models.DocumentList votes, Duration timeLeft)
         success,
     required TResult Function(String message) error,
-    required TResult Function() noPoll,
+    required TResult Function(String eventId) noPoll,
   }) {
     return initial();
   }
@@ -481,7 +154,7 @@ class _$_Initial implements _Initial {
             Models.DocumentList votes, Duration timeLeft)?
         success,
     TResult? Function(String message)? error,
-    TResult? Function()? noPoll,
+    TResult? Function(String eventId)? noPoll,
   }) {
     return initial?.call();
   }
@@ -495,7 +168,7 @@ class _$_Initial implements _Initial {
             Models.DocumentList votes, Duration timeLeft)?
         success,
     TResult Function(String message)? error,
-    TResult Function()? noPoll,
+    TResult Function(String eventId)? noPoll,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -592,7 +265,7 @@ class _$_Loading implements _Loading {
             Models.DocumentList votes, Duration timeLeft)
         success,
     required TResult Function(String message) error,
-    required TResult Function() noPoll,
+    required TResult Function(String eventId) noPoll,
   }) {
     return loading();
   }
@@ -606,7 +279,7 @@ class _$_Loading implements _Loading {
             Models.DocumentList votes, Duration timeLeft)?
         success,
     TResult? Function(String message)? error,
-    TResult? Function()? noPoll,
+    TResult? Function(String eventId)? noPoll,
   }) {
     return loading?.call();
   }
@@ -620,7 +293,7 @@ class _$_Loading implements _Loading {
             Models.DocumentList votes, Duration timeLeft)?
         success,
     TResult Function(String message)? error,
-    TResult Function()? noPoll,
+    TResult Function(String eventId)? noPoll,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -772,7 +445,7 @@ class _$_Success implements _Success {
             Models.DocumentList votes, Duration timeLeft)
         success,
     required TResult Function(String message) error,
-    required TResult Function() noPoll,
+    required TResult Function(String eventId) noPoll,
   }) {
     return success(eventId, poll, votes, timeLeft);
   }
@@ -786,7 +459,7 @@ class _$_Success implements _Success {
             Models.DocumentList votes, Duration timeLeft)?
         success,
     TResult? Function(String message)? error,
-    TResult? Function()? noPoll,
+    TResult? Function(String eventId)? noPoll,
   }) {
     return success?.call(eventId, poll, votes, timeLeft);
   }
@@ -800,7 +473,7 @@ class _$_Success implements _Success {
             Models.DocumentList votes, Duration timeLeft)?
         success,
     TResult Function(String message)? error,
-    TResult Function()? noPoll,
+    TResult Function(String eventId)? noPoll,
     required TResult orElse(),
   }) {
     if (success != null) {
@@ -931,7 +604,7 @@ class _$_Error implements _Error {
             Models.DocumentList votes, Duration timeLeft)
         success,
     required TResult Function(String message) error,
-    required TResult Function() noPoll,
+    required TResult Function(String eventId) noPoll,
   }) {
     return error(message);
   }
@@ -945,7 +618,7 @@ class _$_Error implements _Error {
             Models.DocumentList votes, Duration timeLeft)?
         success,
     TResult? Function(String message)? error,
-    TResult? Function()? noPoll,
+    TResult? Function(String eventId)? noPoll,
   }) {
     return error?.call(message);
   }
@@ -959,7 +632,7 @@ class _$_Error implements _Error {
             Models.DocumentList votes, Duration timeLeft)?
         success,
     TResult Function(String message)? error,
-    TResult Function()? noPoll,
+    TResult Function(String eventId)? noPoll,
     required TResult orElse(),
   }) {
     if (error != null) {
@@ -1022,6 +695,8 @@ abstract class _Error implements PollState {
 abstract class _$$_NoPollCopyWith<$Res> {
   factory _$$_NoPollCopyWith(_$_NoPoll value, $Res Function(_$_NoPoll) then) =
       __$$_NoPollCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String eventId});
 }
 
 /// @nodoc
@@ -1030,26 +705,50 @@ class __$$_NoPollCopyWithImpl<$Res>
     implements _$$_NoPollCopyWith<$Res> {
   __$$_NoPollCopyWithImpl(_$_NoPoll _value, $Res Function(_$_NoPoll) _then)
       : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? eventId = null,
+  }) {
+    return _then(_$_NoPoll(
+      null == eventId
+          ? _value.eventId
+          : eventId // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
 }
 
 /// @nodoc
 
 class _$_NoPoll implements _NoPoll {
-  const _$_NoPoll();
+  const _$_NoPoll(this.eventId);
+
+  @override
+  final String eventId;
 
   @override
   String toString() {
-    return 'PollState.noPoll()';
+    return 'PollState.noPoll(eventId: $eventId)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$_NoPoll);
+        (other.runtimeType == runtimeType &&
+            other is _$_NoPoll &&
+            (identical(other.eventId, eventId) || other.eventId == eventId));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode => Object.hash(runtimeType, eventId);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$_NoPollCopyWith<_$_NoPoll> get copyWith =>
+      __$$_NoPollCopyWithImpl<_$_NoPoll>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -1060,9 +759,9 @@ class _$_NoPoll implements _NoPoll {
             Models.DocumentList votes, Duration timeLeft)
         success,
     required TResult Function(String message) error,
-    required TResult Function() noPoll,
+    required TResult Function(String eventId) noPoll,
   }) {
-    return noPoll();
+    return noPoll(eventId);
   }
 
   @override
@@ -1074,9 +773,9 @@ class _$_NoPoll implements _NoPoll {
             Models.DocumentList votes, Duration timeLeft)?
         success,
     TResult? Function(String message)? error,
-    TResult? Function()? noPoll,
+    TResult? Function(String eventId)? noPoll,
   }) {
-    return noPoll?.call();
+    return noPoll?.call(eventId);
   }
 
   @override
@@ -1088,11 +787,11 @@ class _$_NoPoll implements _NoPoll {
             Models.DocumentList votes, Duration timeLeft)?
         success,
     TResult Function(String message)? error,
-    TResult Function()? noPoll,
+    TResult Function(String eventId)? noPoll,
     required TResult orElse(),
   }) {
     if (noPoll != null) {
-      return noPoll();
+      return noPoll(eventId);
     }
     return orElse();
   }
@@ -1139,5 +838,10 @@ class _$_NoPoll implements _NoPoll {
 }
 
 abstract class _NoPoll implements PollState {
-  const factory _NoPoll() = _$_NoPoll;
+  const factory _NoPoll(final String eventId) = _$_NoPoll;
+
+  String get eventId;
+  @JsonKey(ignore: true)
+  _$$_NoPollCopyWith<_$_NoPoll> get copyWith =>
+      throw _privateConstructorUsedError;
 }
