@@ -57,55 +57,59 @@ class _ParticipantsBottomSheet extends StatelessWidget {
                   ),
                 ]),
               ),
-              Container(
-                margin: Spacing.top(16),
-                child: BlocBuilder<EventsCubit, EventsState>(
-                  builder: (context, state) {
-                    return state.maybeMap(
-                      eventLoaded: (state) {
-                        context.read<ParticipantsCubit>().load(state.event.$id);
-                        return BlocBuilder<ParticipantsCubit,
-                            ParticipantsState>(
-                          builder: (context, state) {
-                            return state.maybeMap(
-                              loaded: (state) {
-                                return ListView.builder(
-                                  shrinkWrap: true,
-                                  itemCount: state.participants.total,
-                                  itemBuilder: (context, index) {
-                                    return ListTile(
-                                      title: CustomText.bodySmall(
-                                        state.participants.memberships[index]
-                                            .userName,
-                                        fontWeight: 700,
-                                      ),
-                                      subtitle: CustomText.bodySmall(
-                                        "Был приглашён: ${state.participants.memberships[index].joined}",
-                                        fontWeight: 500,
-                                      ),
-                                    );
-                                  },
-                                );
-                              },
-                              orElse: () => const Center(
-                                child: CircularProgressIndicator(),
-                              ),
-                            );
-                          },
-                        );
-                      },
-                      orElse: () => Center(
-                        child: Column(
-                          children: const [
-                            CustomText.bodySmall(
-                              "Для просмотра участников необходимо дождаться, пока начнется мероприятие",
-                              fontWeight: 500,
-                            )
-                          ],
+              Expanded(
+                child: Container(
+                  margin: Spacing.top(16),
+                  child: BlocBuilder<EventsCubit, EventsState>(
+                    builder: (context, state) {
+                      return state.maybeMap(
+                        eventLoaded: (state) {
+                          context
+                              .read<ParticipantsCubit>()
+                              .load(state.event.$id);
+                          return BlocBuilder<ParticipantsCubit,
+                              ParticipantsState>(
+                            builder: (context, state) {
+                              return state.maybeMap(
+                                loaded: (state) {
+                                  return ListView.builder(
+                                    shrinkWrap: true,
+                                    itemCount: state.participants.total,
+                                    itemBuilder: (context, index) {
+                                      return ListTile(
+                                        title: CustomText.bodySmall(
+                                          state.participants.memberships[index]
+                                              .userName,
+                                          fontWeight: 700,
+                                        ),
+                                        subtitle: CustomText.bodySmall(
+                                          "Был приглашён: ${state.participants.memberships[index].joined}",
+                                          fontWeight: 500,
+                                        ),
+                                      );
+                                    },
+                                  );
+                                },
+                                orElse: () => const Center(
+                                  child: CircularProgressIndicator(),
+                                ),
+                              );
+                            },
+                          );
+                        },
+                        orElse: () => Center(
+                          child: Column(
+                            children: const [
+                              CustomText.bodySmall(
+                                "Для просмотра участников необходимо дождаться, пока начнется мероприятие",
+                                fontWeight: 500,
+                              )
+                            ],
+                          ),
                         ),
-                      ),
-                    );
-                  },
+                      );
+                    },
+                  ),
                 ),
               )
             ],

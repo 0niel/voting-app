@@ -50,8 +50,10 @@ Future<void> setup() async {
 
   final Client client = Client();
 
-  getIt.registerLazySingleton<Client>((() =>
-      client.setEndpoint(appwriteEndpoint).setProject(appwriteProjectId)));
+  getIt.registerLazySingleton<Client>((() => client
+      .setEndpoint(appwriteEndpoint)
+      .setProject(appwriteProjectId)
+      .setSelfSigned(status: true)));
 
   getIt.registerLazySingleton<Account>(() => Account(getIt<Client>()));
   getIt.registerLazySingleton<Storage>(() => Storage(getIt<Client>()));
@@ -63,7 +65,8 @@ Future<void> setup() async {
   final dart_appwrite.Client dartClient = dart_appwrite.Client()
       .setEndpoint(appwriteEndpoint)
       .setProject(appwriteProjectId)
-      .setKey(appwriteClientHealthApiKey);
+      .setKey(appwriteClientHealthApiKey)
+      .setSelfSigned(status: true);
   getIt.registerLazySingleton<dart_appwrite.Health>(
       () => dart_appwrite.Health(dartClient));
 

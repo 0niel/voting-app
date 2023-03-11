@@ -165,14 +165,22 @@ class PollCubit extends Cubit<PollState> {
           return;
         }
 
-        final currentState = state as _Success;
+        late final Models.DocumentList votes;
+        if (state is _NoPoll) {
+          votes = await databases.listDocuments(
+              databaseId: databaseId,
+              collectionId: votesCollectionId,
+              queries: [Query.equal('poll_id', doc.$id)]);
+        } else {
+          votes = (state as _Success).votes;
+        }
 
         final timeLeft = _calculateTimeLeft(poll);
 
         emit(PollState.success(
           eventId,
           poll,
-          currentState.votes,
+          votes,
           timeLeft,
         ));
 
