@@ -64,9 +64,10 @@ class ProfileCubit extends Cubit<ProfileState> {
           getIt<PollCubit>().processRealtimeEvent(event);
         }
       },
-      onError: (error) {
-        print("Error while listening to realtime events: $error");
-      },
+      onError: (err, st) =>
+          debugPrint('realtime_mixin:onError: ${err.toString()}'),
+      onDone: () => debugPrint('realtime_mixin:onDone'),
+      cancelOnError: false,
     );
   }
 

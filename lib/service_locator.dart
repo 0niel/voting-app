@@ -1,6 +1,7 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:dart_appwrite/dart_appwrite.dart' as dart_appwrite;
 import 'package:face_to_face_voting/blocs/events/events_cubit.dart';
+import 'package:face_to_face_voting/blocs/participants_cubit/participants_cubit.dart';
 import 'package:face_to_face_voting/blocs/poll/poll_cubit.dart';
 import 'package:face_to_face_voting/data/local_storage.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -37,6 +38,11 @@ Future<void> setup() async {
         teams: getIt(),
         realtime: getIt(),
         health: getIt(),
+      ));
+  getIt.registerLazySingleton<ParticipantsCubit>(() => ParticipantsCubit(
+        client: getIt(),
+        databases: getIt(),
+        teams: getIt(),
       ));
 
   getIt.registerLazySingleton<LocalStorage>(

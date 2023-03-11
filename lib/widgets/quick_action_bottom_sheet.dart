@@ -1,8 +1,120 @@
+import 'package:face_to_face_voting/blocs/events/events_cubit.dart';
+import 'package:face_to_face_voting/blocs/participants_cubit/participants_cubit.dart';
 import 'package:face_to_face_voting/theme/app_theme.dart';
 import 'package:face_to_face_voting/utils/spacing.dart';
 import 'package:face_to_face_voting/widgets/text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+
+import 'button.dart';
+
+class _ParticipantsBottomSheet extends StatelessWidget {
+  const _ParticipantsBottomSheet({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.transparent,
+      child: Container(
+        height: MediaQuery.of(context).size.height * 0.8,
+        decoration: BoxDecoration(
+          color: AppTheme.theme.colorScheme.background,
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(16),
+            topRight: Radius.circular(16),
+          ),
+        ),
+        child: Padding(
+          padding: Spacing.all(16),
+          child: Column(
+            children: [
+              Padding(
+                padding: Spacing.horizontal(16),
+                child: Row(children: [
+                  const CustomText.titleMedium("Участники", fontWeight: 700),
+                  const Spacer(),
+                  Row(
+                    children: [
+                      CustomButton.text(
+                        onPressed: () {},
+                        backgroundColor: AppTheme.theme.colorScheme.primary,
+                        padding: Spacing.symmetric(vertical: 8, horizontal: 16),
+                        child: Row(
+                          children: const [
+                            Icon(
+                              MdiIcons.plus,
+                            ),
+                            SizedBox(width: 8),
+                            CustomText.bodySmall(
+                              "Добавить",
+                              fontWeight: 700,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ]),
+              ),
+              Container(
+                margin: Spacing.top(16),
+                child: BlocBuilder<EventsCubit, EventsState>(
+                  builder: (context, state) {
+                    return state.maybeMap(
+                      eventLoaded: (state) {
+                        context.read<ParticipantsCubit>().load(state.event.$id);
+                        return BlocBuilder<ParticipantsCubit,
+                            ParticipantsState>(
+                          builder: (context, state) {
+                            return state.maybeMap(
+                              loaded: (state) {
+                                return ListView.builder(
+                                  shrinkWrap: true,
+                                  itemCount: state.participants.total,
+                                  itemBuilder: (context, index) {
+                                    return ListTile(
+                                      title: CustomText.bodySmall(
+                                        state.participants.memberships[index]
+                                            .userName,
+                                        fontWeight: 700,
+                                      ),
+                                      subtitle: CustomText.bodySmall(
+                                        "Был приглашён: ${state.participants.memberships[index].joined}",
+                                        fontWeight: 500,
+                                      ),
+                                    );
+                                  },
+                                );
+                              },
+                              orElse: () => const Center(
+                                child: CircularProgressIndicator(),
+                              ),
+                            );
+                          },
+                        );
+                      },
+                      orElse: () => Center(
+                        child: Column(
+                          children: const [
+                            CustomText.bodySmall(
+                              "Для просмотра участников необходимо дождаться, пока начнется мероприятие",
+                              fontWeight: 500,
+                            )
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
 
 class QuickActionBottomSheet {
   static void showBottomSheet(BuildContext context) {
@@ -22,14 +134,15 @@ class QuickActionBottomSheet {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  const CustomText.titleMedium("Быстрые действия", fontWeight: 700),
+                  const CustomText.titleMedium("Быстрые действия",
+                      fontWeight: 700),
                   Container(
                     margin: Spacing.top(16),
                     child: Column(
                       children: <Widget>[
                         Row(
-                          children: const [
-                            Expanded(
+                          children: [
+                            const Expanded(
                               child: QuickActionWidget(
                                 iconData: Icons.qr_code,
                                 actionText: 'Сканировать',
@@ -39,14 +152,23 @@ class QuickActionBottomSheet {
                               child: QuickActionWidget(
                                 iconData: Icons.people,
                                 actionText: 'Участники',
+                                onTap: () {
+                                  showModalBottomSheet(
+                                    context: context,
+                                    isScrollControlled: true,
+                                    builder: (BuildContext buildContext) {
+                                      return const _ParticipantsBottomSheet();
+                                    },
+                                  );
+                                },
                               ),
                             ),
-                            Expanded(
-                              child: QuickActionWidget(
-                                iconData: MdiIcons.vote,
-                                actionText: 'Голосование',
-                              ),
-                            ),
+                            // const Expanded(
+                            //   child: QuickActionWidget(
+                            //     iconData: MdiIcons.vote,
+                            //     actionText: 'Голосование',
+                            //   ),
+                            // ),
                           ],
                         ),
                       ],
@@ -65,9 +187,10 @@ class QuickActionBottomSheet {
 class QuickActionWidget extends StatelessWidget {
   final IconData iconData;
   final String actionText;
+  final VoidCallback? onTap;
 
   const QuickActionWidget(
-      {Key? key, required this.iconData, required this.actionText})
+      {Key? key, required this.iconData, required this.actionText, this.onTap})
       : super(key: key);
 
   @override
@@ -83,6 +206,7 @@ class QuickActionWidget extends StatelessWidget {
               child: InkWell(
                 splashColor: AppTheme.theme.colorScheme.primary.withAlpha(100),
                 highlightColor: Colors.transparent,
+                onTap: onTap,
                 child: SizedBox(
                   width: 52,
                   height: 52,
@@ -91,7 +215,6 @@ class QuickActionWidget extends StatelessWidget {
                     color: AppTheme.theme.colorScheme.primary,
                   ),
                 ),
-                onTap: () {},
               ),
             ),
           ),
