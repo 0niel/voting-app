@@ -214,16 +214,10 @@ class ProfileCubit extends Cubit<ProfileState> {
   }
 
   void login() async {
-    try {
       emit(const _Loading());
 
       await account.createOAuth2Session(
         provider: 'mirea',
-      );
-
-      await _loadUserData();
-    } catch (e) {
-      emit(_Error(e.toString()));
-    }
+      ).then((value) => _loadUserData());
   }
 }
