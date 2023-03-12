@@ -99,10 +99,9 @@ class PollCubit extends Cubit<PollState> {
         final votes = await databases.listDocuments(
           databaseId: databaseId,
           collectionId: votesCollectionId,
-          queries: [Query.equal('poll_id', poll.$id)],
+          queries: [Query.equal('poll_id', poll.$id), Query.limit(100)],
         );
-
-        emit(PollState.success(
+        await databases.emit(PollState.success(
           eventId,
           poll,
           votes,
@@ -177,7 +176,7 @@ class PollCubit extends Cubit<PollState> {
           votes = await databases.listDocuments(
               databaseId: databaseId,
               collectionId: votesCollectionId,
-              queries: [Query.equal('poll_id', doc.$id)]);
+              queries: [Query.equal('poll_id', doc.$id), Query.limit(100)]);
         } else {
           votes = (state as _Success).votes;
         }
@@ -229,7 +228,7 @@ class PollCubit extends Cubit<PollState> {
         final votes = await databases.listDocuments(
           databaseId: databaseId,
           collectionId: votesCollectionId,
-          queries: [Query.equal('poll_id', pollId)],
+          queries: [Query.equal('poll_id', pollId), Query.limit(100)],
         );
 
         emit(PollState.success(
