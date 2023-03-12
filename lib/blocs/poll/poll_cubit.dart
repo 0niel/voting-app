@@ -101,7 +101,8 @@ class PollCubit extends Cubit<PollState> {
           collectionId: votesCollectionId,
           queries: [Query.equal('poll_id', poll.$id), Query.limit(100)],
         );
-        await databases.emit(PollState.success(
+
+        emit(PollState.success(
           eventId,
           poll,
           votes,
