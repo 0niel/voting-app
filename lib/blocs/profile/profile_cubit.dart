@@ -140,7 +140,7 @@ class ProfileCubit extends Cubit<ProfileState> {
         };
 
         final response = await Dio().get(
-            'https://lks.mirea.ninja/api/?action=getData&url=https://lk.mirea.ru/profile/',
+            'https://auth-app.mirea.ru/api/?action=getData&url=https://lk.mirea.ru/profile/',
             options: Options(headers: headers));
 
         final data = jsonDecode(response.data);
@@ -209,15 +209,27 @@ class ProfileCubit extends Cubit<ProfileState> {
 
       await _loadUserData();
     } catch (e) {
+      try {
+        final sessions = await account.listSessions();
+
+        for (final session in sessions.sessions) {
+          if (session.provider == 'mirea') {
+            await account.deleteSession(sessionId: session.$id);
+          }
+        }
+      } catch (e) {}
+
       emit(const _LoginScreen());
     }
   }
 
   void login() async {
-      emit(const _Loading());
+    emit(const _Loading());
 
-      await account.createOAuth2Session(
-        provider: 'mirea',
-      ).then((value) => _loadUserData());
+    await account
+        .createOAuth2Session(
+          provider: 'mirea',
+        )
+        .then((value) => _loadUserData());
   }
 }
