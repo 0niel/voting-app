@@ -47,6 +47,13 @@ class PollCubit extends Cubit<PollState> {
   Future<Models.Document?> _getActiveOrLastPoll(
       Models.DocumentList polls) async {
     if (polls.total > 0) {
+      polls.documents.sort((a, b) {
+        final aStartAt = DateTime.parse(a.data['start_at']);
+        final bStartAt = DateTime.parse(b.data['start_at']);
+
+        return bStartAt.compareTo(aStartAt);
+      });
+
       for (final poll in polls.documents) {
         final startAt = DateTime.parse(poll.data['start_at']);
         final endAt = DateTime.parse(poll.data['end_at']);
@@ -256,8 +263,6 @@ class PollCubit extends Cubit<PollState> {
           },
         ),
       );
-
-      print(response.data);
     } catch (error) {
       print(error);
     }
