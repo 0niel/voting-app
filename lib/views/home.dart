@@ -187,6 +187,14 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  double _getPercentLeft(int max, int left) {
+    if (left <= 0 || max <= 0) {
+      return 0;
+    }
+
+    return left / max;
+  }
+
   Widget _buildTimer() {
     return BlocBuilder<PollCubit, PollState>(builder: (context, state) {
       return state.maybeMap(
@@ -204,7 +212,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           : AlwaysStoppedAnimation<Color>(
                               AppTheme.theme.colorScheme.error,
                             ),
-                      value: value.timeLeft.inSeconds.toDouble(),
+                      value: _getPercentLeft(value.timeMaximum.inSeconds,
+                              value.timeLeft.inSeconds)
+                          .toDouble(),
                     ),
                     CustomText.bodyLarge(value.timeLeft.inSeconds.toString(),
                         color: AppTheme.theme.colorScheme.onBackground,

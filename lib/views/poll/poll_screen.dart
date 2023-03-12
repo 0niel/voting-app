@@ -49,7 +49,8 @@ class _PollScreenState extends State<PollScreen> {
                         final eventName =
                             eventLoadedStateValue.event.data['name'];
                         return pollState.maybeWhen(
-                          success: (eventId, poll, votes, timeLeft) {
+                          success:
+                              (eventId, poll, votes, timeLeft, timeMaximum) {
                             final question = poll.data['question'] as String;
                             final options =
                                 List<String>.from(poll.data['poll_options']);

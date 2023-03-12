@@ -21,7 +21,7 @@ mixin _$PollState {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(String eventId, Models.Document poll,
-            Models.DocumentList votes, Duration timeLeft)
+            Models.DocumentList votes, Duration timeLeft, Duration timeMaximum)
         success,
     required TResult Function(String message) error,
     required TResult Function(String eventId) noPoll,
@@ -32,7 +32,7 @@ mixin _$PollState {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(String eventId, Models.Document poll,
-            Models.DocumentList votes, Duration timeLeft)?
+            Models.DocumentList votes, Duration timeLeft, Duration timeMaximum)?
         success,
     TResult? Function(String message)? error,
     TResult? Function(String eventId)? noPoll,
@@ -43,7 +43,7 @@ mixin _$PollState {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(String eventId, Models.Document poll,
-            Models.DocumentList votes, Duration timeLeft)?
+            Models.DocumentList votes, Duration timeLeft, Duration timeMaximum)?
         success,
     TResult Function(String message)? error,
     TResult Function(String eventId)? noPoll,
@@ -137,7 +137,7 @@ class _$_Initial implements _Initial {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(String eventId, Models.Document poll,
-            Models.DocumentList votes, Duration timeLeft)
+            Models.DocumentList votes, Duration timeLeft, Duration timeMaximum)
         success,
     required TResult Function(String message) error,
     required TResult Function(String eventId) noPoll,
@@ -151,7 +151,7 @@ class _$_Initial implements _Initial {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(String eventId, Models.Document poll,
-            Models.DocumentList votes, Duration timeLeft)?
+            Models.DocumentList votes, Duration timeLeft, Duration timeMaximum)?
         success,
     TResult? Function(String message)? error,
     TResult? Function(String eventId)? noPoll,
@@ -165,7 +165,7 @@ class _$_Initial implements _Initial {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(String eventId, Models.Document poll,
-            Models.DocumentList votes, Duration timeLeft)?
+            Models.DocumentList votes, Duration timeLeft, Duration timeMaximum)?
         success,
     TResult Function(String message)? error,
     TResult Function(String eventId)? noPoll,
@@ -262,7 +262,7 @@ class _$_Loading implements _Loading {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(String eventId, Models.Document poll,
-            Models.DocumentList votes, Duration timeLeft)
+            Models.DocumentList votes, Duration timeLeft, Duration timeMaximum)
         success,
     required TResult Function(String message) error,
     required TResult Function(String eventId) noPoll,
@@ -276,7 +276,7 @@ class _$_Loading implements _Loading {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(String eventId, Models.Document poll,
-            Models.DocumentList votes, Duration timeLeft)?
+            Models.DocumentList votes, Duration timeLeft, Duration timeMaximum)?
         success,
     TResult? Function(String message)? error,
     TResult? Function(String eventId)? noPoll,
@@ -290,7 +290,7 @@ class _$_Loading implements _Loading {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(String eventId, Models.Document poll,
-            Models.DocumentList votes, Duration timeLeft)?
+            Models.DocumentList votes, Duration timeLeft, Duration timeMaximum)?
         success,
     TResult Function(String message)? error,
     TResult Function(String eventId)? noPoll,
@@ -357,7 +357,8 @@ abstract class _$$_SuccessCopyWith<$Res> {
       {String eventId,
       Models.Document poll,
       Models.DocumentList votes,
-      Duration timeLeft});
+      Duration timeLeft,
+      Duration timeMaximum});
 }
 
 /// @nodoc
@@ -374,6 +375,7 @@ class __$$_SuccessCopyWithImpl<$Res>
     Object? poll = null,
     Object? votes = null,
     Object? timeLeft = null,
+    Object? timeMaximum = null,
   }) {
     return _then(_$_Success(
       null == eventId
@@ -392,6 +394,10 @@ class __$$_SuccessCopyWithImpl<$Res>
           ? _value.timeLeft
           : timeLeft // ignore: cast_nullable_to_non_nullable
               as Duration,
+      null == timeMaximum
+          ? _value.timeMaximum
+          : timeMaximum // ignore: cast_nullable_to_non_nullable
+              as Duration,
     ));
   }
 }
@@ -399,7 +405,8 @@ class __$$_SuccessCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_Success implements _Success {
-  const _$_Success(this.eventId, this.poll, this.votes, this.timeLeft);
+  const _$_Success(
+      this.eventId, this.poll, this.votes, this.timeLeft, this.timeMaximum);
 
   @override
   final String eventId;
@@ -409,10 +416,12 @@ class _$_Success implements _Success {
   final Models.DocumentList votes;
   @override
   final Duration timeLeft;
+  @override
+  final Duration timeMaximum;
 
   @override
   String toString() {
-    return 'PollState.success(eventId: $eventId, poll: $poll, votes: $votes, timeLeft: $timeLeft)';
+    return 'PollState.success(eventId: $eventId, poll: $poll, votes: $votes, timeLeft: $timeLeft, timeMaximum: $timeMaximum)';
   }
 
   @override
@@ -424,11 +433,14 @@ class _$_Success implements _Success {
             (identical(other.poll, poll) || other.poll == poll) &&
             (identical(other.votes, votes) || other.votes == votes) &&
             (identical(other.timeLeft, timeLeft) ||
-                other.timeLeft == timeLeft));
+                other.timeLeft == timeLeft) &&
+            (identical(other.timeMaximum, timeMaximum) ||
+                other.timeMaximum == timeMaximum));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, eventId, poll, votes, timeLeft);
+  int get hashCode =>
+      Object.hash(runtimeType, eventId, poll, votes, timeLeft, timeMaximum);
 
   @JsonKey(ignore: true)
   @override
@@ -442,12 +454,12 @@ class _$_Success implements _Success {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(String eventId, Models.Document poll,
-            Models.DocumentList votes, Duration timeLeft)
+            Models.DocumentList votes, Duration timeLeft, Duration timeMaximum)
         success,
     required TResult Function(String message) error,
     required TResult Function(String eventId) noPoll,
   }) {
-    return success(eventId, poll, votes, timeLeft);
+    return success(eventId, poll, votes, timeLeft, timeMaximum);
   }
 
   @override
@@ -456,12 +468,12 @@ class _$_Success implements _Success {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(String eventId, Models.Document poll,
-            Models.DocumentList votes, Duration timeLeft)?
+            Models.DocumentList votes, Duration timeLeft, Duration timeMaximum)?
         success,
     TResult? Function(String message)? error,
     TResult? Function(String eventId)? noPoll,
   }) {
-    return success?.call(eventId, poll, votes, timeLeft);
+    return success?.call(eventId, poll, votes, timeLeft, timeMaximum);
   }
 
   @override
@@ -470,14 +482,14 @@ class _$_Success implements _Success {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(String eventId, Models.Document poll,
-            Models.DocumentList votes, Duration timeLeft)?
+            Models.DocumentList votes, Duration timeLeft, Duration timeMaximum)?
         success,
     TResult Function(String message)? error,
     TResult Function(String eventId)? noPoll,
     required TResult orElse(),
   }) {
     if (success != null) {
-      return success(eventId, poll, votes, timeLeft);
+      return success(eventId, poll, votes, timeLeft, timeMaximum);
     }
     return orElse();
   }
@@ -524,13 +536,18 @@ class _$_Success implements _Success {
 }
 
 abstract class _Success implements PollState {
-  const factory _Success(final String eventId, final Models.Document poll,
-      final Models.DocumentList votes, final Duration timeLeft) = _$_Success;
+  const factory _Success(
+      final String eventId,
+      final Models.Document poll,
+      final Models.DocumentList votes,
+      final Duration timeLeft,
+      final Duration timeMaximum) = _$_Success;
 
   String get eventId;
   Models.Document get poll;
   Models.DocumentList get votes;
   Duration get timeLeft;
+  Duration get timeMaximum;
   @JsonKey(ignore: true)
   _$$_SuccessCopyWith<_$_Success> get copyWith =>
       throw _privateConstructorUsedError;
@@ -601,7 +618,7 @@ class _$_Error implements _Error {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(String eventId, Models.Document poll,
-            Models.DocumentList votes, Duration timeLeft)
+            Models.DocumentList votes, Duration timeLeft, Duration timeMaximum)
         success,
     required TResult Function(String message) error,
     required TResult Function(String eventId) noPoll,
@@ -615,7 +632,7 @@ class _$_Error implements _Error {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(String eventId, Models.Document poll,
-            Models.DocumentList votes, Duration timeLeft)?
+            Models.DocumentList votes, Duration timeLeft, Duration timeMaximum)?
         success,
     TResult? Function(String message)? error,
     TResult? Function(String eventId)? noPoll,
@@ -629,7 +646,7 @@ class _$_Error implements _Error {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(String eventId, Models.Document poll,
-            Models.DocumentList votes, Duration timeLeft)?
+            Models.DocumentList votes, Duration timeLeft, Duration timeMaximum)?
         success,
     TResult Function(String message)? error,
     TResult Function(String eventId)? noPoll,
@@ -756,7 +773,7 @@ class _$_NoPoll implements _NoPoll {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(String eventId, Models.Document poll,
-            Models.DocumentList votes, Duration timeLeft)
+            Models.DocumentList votes, Duration timeLeft, Duration timeMaximum)
         success,
     required TResult Function(String message) error,
     required TResult Function(String eventId) noPoll,
@@ -770,7 +787,7 @@ class _$_NoPoll implements _NoPoll {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(String eventId, Models.Document poll,
-            Models.DocumentList votes, Duration timeLeft)?
+            Models.DocumentList votes, Duration timeLeft, Duration timeMaximum)?
         success,
     TResult? Function(String message)? error,
     TResult? Function(String eventId)? noPoll,
@@ -784,7 +801,7 @@ class _$_NoPoll implements _NoPoll {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(String eventId, Models.Document poll,
-            Models.DocumentList votes, Duration timeLeft)?
+            Models.DocumentList votes, Duration timeLeft, Duration timeMaximum)?
         success,
     TResult Function(String message)? error,
     TResult Function(String eventId)? noPoll,

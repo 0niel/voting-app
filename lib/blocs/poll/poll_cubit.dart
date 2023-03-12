@@ -78,6 +78,13 @@ class PollCubit extends Cubit<PollState> {
     return timeLeft.isNegative ? Duration.zero : timeLeft;
   }
 
+  Duration _calculateTimeMaximum(Models.Document poll) {
+    final startAt = DateTime.parse(poll.data['start_at']).toUtc();
+    final endAt = DateTime.parse(poll.data['end_at']).toUtc();
+
+    return endAt.difference(startAt);
+  }
+
   void loadPolls(String eventId) async {
     emit(const PollState.loading());
 
@@ -107,6 +114,7 @@ class PollCubit extends Cubit<PollState> {
           poll,
           votes,
           _calculateTimeLeft(poll),
+          _calculateTimeMaximum(poll),
         ));
 
         // Создаем таймер для обновления timeLeft каждую секунду
@@ -123,6 +131,7 @@ class PollCubit extends Cubit<PollState> {
                   poll,
                   state.votes,
                   newTimeLeft,
+                  _calculateTimeMaximum(poll),
                 ));
               }
             }
@@ -189,6 +198,7 @@ class PollCubit extends Cubit<PollState> {
           poll,
           votes,
           timeLeft,
+          _calculateTimeMaximum(poll),
         ));
 
         // Обновляем таймер
@@ -206,6 +216,7 @@ class PollCubit extends Cubit<PollState> {
                   poll,
                   state.votes,
                   newTimeLeft,
+                  _calculateTimeMaximum(poll),
                 ));
               }
             }
@@ -237,6 +248,7 @@ class PollCubit extends Cubit<PollState> {
           currentState.poll,
           votes,
           currentState.timeLeft,
+          _calculateTimeMaximum(currentState.poll),
         ));
       }
     }
