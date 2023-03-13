@@ -6,5 +6,8 @@ class EventsState with _$EventsState {
   const factory EventsState.loading() = _Loading;
   const factory EventsState.eventsListLoaded(Models.DocumentList events) =
       _EventsListLoaded;
-  const factory EventsState.eventLoaded(Models.Document event) = _EventLoaded;
+  const factory EventsState.eventLoaded(
+    Models.Document event,
+    bool isAcessModerator,
+  ) = _EventLoaded;
 }

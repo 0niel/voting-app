@@ -36,7 +36,7 @@ class _PollScreenState extends State<PollScreen> {
                 listener: (context, state) {
                   state.maybeWhen(
                       orElse: () {},
-                      eventLoaded: (events) {
+                      eventLoaded: (events, isAcessModerator) {
                         BlocProvider.of<PollCubit>(context)
                             .loadPolls(events.$id);
                       });

@@ -44,11 +44,23 @@ class EventsCubit extends Cubit<EventsState> {
       documentId: id,
     );
 
-    emit(EventsState.eventLoaded(documentResponse));
+    emit(EventsState.eventLoaded(
+      documentResponse,
+      await _isEventAcessModerator(documentResponse),
+    ));
   }
 
   void started() async {
     await loadEventsList();
+  }
+
+  Future<bool> _isEventAcessModerator(Models.Document event) async {
+    try {
+      await teams.get(teamId: event.data['access_moderators_team_id']);
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 
   Future<void> loadEventsList() async {
@@ -69,7 +81,10 @@ class EventsCubit extends Cubit<EventsState> {
         if (event.data['is_active'] == true) {
           try {
             await teams.get(teamId: event.data['participants_team_id']);
-            emit(EventsState.eventLoaded(event));
+            emit(EventsState.eventLoaded(
+              event,
+              await _isEventAcessModerator(event),
+            ));
             return;
           } catch (e) {
             continue;
@@ -77,6 +92,7 @@ class EventsCubit extends Cubit<EventsState> {
         }
       }
     }
+
     print('Events list loaded: ${documentsResponse.documents}');
     emit(EventsState.eventsListLoaded(documentsResponse));
   }

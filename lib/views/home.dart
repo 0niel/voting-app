@@ -82,26 +82,35 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       drawer: const _Drawer(),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      floatingActionButton: Padding(
-        padding: Spacing.bottom(42),
-        child: FloatingActionButton(
-          mini: false,
-          onPressed: () {
-            QuickActionBottomSheet.showBottomSheet(context);
-          },
-          elevation: 2,
-          backgroundColor: AppTheme.theme.colorScheme.primary,
-          child: Icon(
-            Icons.flash_on_outlined,
-            size: 26,
-            color: AppTheme.theme.colorScheme.onPrimary,
-          ),
-        ),
-      ),
-      body: BlocConsumer<EventsCubit, EventsState>(
-        listener: (context, state) {
-          print("STATE: $state");
+      floatingActionButton: BlocBuilder<EventsCubit, EventsState>(
+        builder: (context, state) {
+          return state.maybeMap(
+            eventLoaded: (value) {
+              if (!value.isAcessModerator) {
+                return const SizedBox();
+              }
+              return Padding(
+                padding: Spacing.bottom(42),
+                child: FloatingActionButton(
+                  mini: false,
+                  onPressed: () {
+                    QuickActionBottomSheet.showBottomSheet(context);
+                  },
+                  elevation: 2,
+                  backgroundColor: AppTheme.theme.colorScheme.primary,
+                  child: Icon(
+                    Icons.flash_on_outlined,
+                    size: 26,
+                    color: AppTheme.theme.colorScheme.onPrimary,
+                  ),
+                ),
+              );
+            },
+            orElse: () => const SizedBox(),
+          );
         },
+      ),
+      body: BlocBuilder<EventsCubit, EventsState>(
         bloc: bloc,
         builder: (context, state) {
           return Column(

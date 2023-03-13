@@ -21,7 +21,8 @@ mixin _$EventsState {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(Models.DocumentList events) eventsListLoaded,
-    required TResult Function(Models.Document event) eventLoaded,
+    required TResult Function(Models.Document event, bool isAcessModerator)
+        eventLoaded,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -29,7 +30,8 @@ mixin _$EventsState {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(Models.DocumentList events)? eventsListLoaded,
-    TResult? Function(Models.Document event)? eventLoaded,
+    TResult? Function(Models.Document event, bool isAcessModerator)?
+        eventLoaded,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -37,7 +39,7 @@ mixin _$EventsState {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(Models.DocumentList events)? eventsListLoaded,
-    TResult Function(Models.Document event)? eventLoaded,
+    TResult Function(Models.Document event, bool isAcessModerator)? eventLoaded,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -126,7 +128,8 @@ class _$_Initial implements _Initial {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(Models.DocumentList events) eventsListLoaded,
-    required TResult Function(Models.Document event) eventLoaded,
+    required TResult Function(Models.Document event, bool isAcessModerator)
+        eventLoaded,
   }) {
     return initial();
   }
@@ -137,7 +140,8 @@ class _$_Initial implements _Initial {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(Models.DocumentList events)? eventsListLoaded,
-    TResult? Function(Models.Document event)? eventLoaded,
+    TResult? Function(Models.Document event, bool isAcessModerator)?
+        eventLoaded,
   }) {
     return initial?.call();
   }
@@ -148,7 +152,7 @@ class _$_Initial implements _Initial {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(Models.DocumentList events)? eventsListLoaded,
-    TResult Function(Models.Document event)? eventLoaded,
+    TResult Function(Models.Document event, bool isAcessModerator)? eventLoaded,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -239,7 +243,8 @@ class _$_Loading implements _Loading {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(Models.DocumentList events) eventsListLoaded,
-    required TResult Function(Models.Document event) eventLoaded,
+    required TResult Function(Models.Document event, bool isAcessModerator)
+        eventLoaded,
   }) {
     return loading();
   }
@@ -250,7 +255,8 @@ class _$_Loading implements _Loading {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(Models.DocumentList events)? eventsListLoaded,
-    TResult? Function(Models.Document event)? eventLoaded,
+    TResult? Function(Models.Document event, bool isAcessModerator)?
+        eventLoaded,
   }) {
     return loading?.call();
   }
@@ -261,7 +267,7 @@ class _$_Loading implements _Loading {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(Models.DocumentList events)? eventsListLoaded,
-    TResult Function(Models.Document event)? eventLoaded,
+    TResult Function(Models.Document event, bool isAcessModerator)? eventLoaded,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -379,7 +385,8 @@ class _$_EventsListLoaded implements _EventsListLoaded {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(Models.DocumentList events) eventsListLoaded,
-    required TResult Function(Models.Document event) eventLoaded,
+    required TResult Function(Models.Document event, bool isAcessModerator)
+        eventLoaded,
   }) {
     return eventsListLoaded(events);
   }
@@ -390,7 +397,8 @@ class _$_EventsListLoaded implements _EventsListLoaded {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(Models.DocumentList events)? eventsListLoaded,
-    TResult? Function(Models.Document event)? eventLoaded,
+    TResult? Function(Models.Document event, bool isAcessModerator)?
+        eventLoaded,
   }) {
     return eventsListLoaded?.call(events);
   }
@@ -401,7 +409,7 @@ class _$_EventsListLoaded implements _EventsListLoaded {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(Models.DocumentList events)? eventsListLoaded,
-    TResult Function(Models.Document event)? eventLoaded,
+    TResult Function(Models.Document event, bool isAcessModerator)? eventLoaded,
     required TResult orElse(),
   }) {
     if (eventsListLoaded != null) {
@@ -464,7 +472,7 @@ abstract class _$$_EventLoadedCopyWith<$Res> {
           _$_EventLoaded value, $Res Function(_$_EventLoaded) then) =
       __$$_EventLoadedCopyWithImpl<$Res>;
   @useResult
-  $Res call({Models.Document event});
+  $Res call({Models.Document event, bool isAcessModerator});
 }
 
 /// @nodoc
@@ -479,12 +487,17 @@ class __$$_EventLoadedCopyWithImpl<$Res>
   @override
   $Res call({
     Object? event = null,
+    Object? isAcessModerator = null,
   }) {
     return _then(_$_EventLoaded(
       null == event
           ? _value.event
           : event // ignore: cast_nullable_to_non_nullable
               as Models.Document,
+      null == isAcessModerator
+          ? _value.isAcessModerator
+          : isAcessModerator // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -492,14 +505,16 @@ class __$$_EventLoadedCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_EventLoaded implements _EventLoaded {
-  const _$_EventLoaded(this.event);
+  const _$_EventLoaded(this.event, this.isAcessModerator);
 
   @override
   final Models.Document event;
+  @override
+  final bool isAcessModerator;
 
   @override
   String toString() {
-    return 'EventsState.eventLoaded(event: $event)';
+    return 'EventsState.eventLoaded(event: $event, isAcessModerator: $isAcessModerator)';
   }
 
   @override
@@ -507,11 +522,13 @@ class _$_EventLoaded implements _EventLoaded {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_EventLoaded &&
-            (identical(other.event, event) || other.event == event));
+            (identical(other.event, event) || other.event == event) &&
+            (identical(other.isAcessModerator, isAcessModerator) ||
+                other.isAcessModerator == isAcessModerator));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, event);
+  int get hashCode => Object.hash(runtimeType, event, isAcessModerator);
 
   @JsonKey(ignore: true)
   @override
@@ -525,9 +542,10 @@ class _$_EventLoaded implements _EventLoaded {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(Models.DocumentList events) eventsListLoaded,
-    required TResult Function(Models.Document event) eventLoaded,
+    required TResult Function(Models.Document event, bool isAcessModerator)
+        eventLoaded,
   }) {
-    return eventLoaded(event);
+    return eventLoaded(event, isAcessModerator);
   }
 
   @override
@@ -536,9 +554,10 @@ class _$_EventLoaded implements _EventLoaded {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(Models.DocumentList events)? eventsListLoaded,
-    TResult? Function(Models.Document event)? eventLoaded,
+    TResult? Function(Models.Document event, bool isAcessModerator)?
+        eventLoaded,
   }) {
-    return eventLoaded?.call(event);
+    return eventLoaded?.call(event, isAcessModerator);
   }
 
   @override
@@ -547,11 +566,11 @@ class _$_EventLoaded implements _EventLoaded {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(Models.DocumentList events)? eventsListLoaded,
-    TResult Function(Models.Document event)? eventLoaded,
+    TResult Function(Models.Document event, bool isAcessModerator)? eventLoaded,
     required TResult orElse(),
   }) {
     if (eventLoaded != null) {
-      return eventLoaded(event);
+      return eventLoaded(event, isAcessModerator);
     }
     return orElse();
   }
@@ -595,9 +614,12 @@ class _$_EventLoaded implements _EventLoaded {
 }
 
 abstract class _EventLoaded implements EventsState {
-  const factory _EventLoaded(final Models.Document event) = _$_EventLoaded;
+  const factory _EventLoaded(
+          final Models.Document event, final bool isAcessModerator) =
+      _$_EventLoaded;
 
   Models.Document get event;
+  bool get isAcessModerator;
   @JsonKey(ignore: true)
   _$$_EventLoadedCopyWith<_$_EventLoaded> get copyWith =>
       throw _privateConstructorUsedError;
