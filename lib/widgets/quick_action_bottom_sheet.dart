@@ -2,6 +2,7 @@ import 'package:face_to_face_voting/blocs/events/events_cubit.dart';
 import 'package:face_to_face_voting/blocs/participants_cubit/participants_cubit.dart';
 import 'package:face_to_face_voting/theme/app_theme.dart';
 import 'package:face_to_face_voting/utils/spacing.dart';
+import 'package:face_to_face_voting/views/qr_scanner/qr_scanner_screen.dart';
 import 'package:face_to_face_voting/widgets/text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -146,10 +147,17 @@ class QuickActionBottomSheet {
                       children: <Widget>[
                         Row(
                           children: [
-                            const Expanded(
+                            Expanded(
                               child: QuickActionWidget(
                                 iconData: Icons.qr_code,
                                 actionText: 'Сканировать',
+                                onTap: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) => QrScannerScreen(),
+                                    ),
+                                  );
+                                },
                               ),
                             ),
                             Expanded(
