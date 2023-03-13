@@ -37,6 +37,7 @@ class ProfileCubit extends Cubit<ProfileState> {
       'databases.$databaseId.collections.$eventsCollectionId.documents',
       'databases.$databaseId.collections.$pollsCollectionId.documents',
       'databases.$databaseId.collections.$votesCollectionId.documents',
+      'memberships'
     ]);
 
     print('Subscribed to realtime events');
@@ -46,6 +47,7 @@ class ProfileCubit extends Cubit<ProfileState> {
         print("New event: $event recieved");
 
         final eventAction = event.events.first.split('.').last;
+        final eventTarget = event.events.first.split('.').first;
 
         if (eventAction != 'create' &&
             eventAction != 'update' &&
@@ -62,6 +64,12 @@ class ProfileCubit extends Cubit<ProfileState> {
         } else if (doc.$collectionId == pollsCollectionId ||
             doc.$collectionId == votesCollectionId) {
           getIt<PollCubit>().processRealtimeEvent(event);
+        } else {
+          if (eventTarget == 'memberships') {
+            // Возможно, что пользователя удалили или добавили в список участников
+            // Поэтому нужно обновить список событий
+            getIt<EventsCubit>().loadEventsList();
+          }
         }
       },
       onError: (err, st) =>
