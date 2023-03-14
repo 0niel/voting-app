@@ -165,7 +165,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             autofocus: false,
                             textInputAction: TextInputAction.search,
                             textCapitalization: TextCapitalization.sentences,
-                            obscureText: _showPassword,
+                            obscureText: !_showPassword,
                           ),
                           Row(
                             children: [
@@ -192,7 +192,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   textInputAction: TextInputAction.search,
                                   textCapitalization:
                                       TextCapitalization.sentences,
-                                  obscureText: _showPassword,
+                                  obscureText: !_showPassword,
                                 ),
                               ),
                               CustomButton.text(
@@ -202,7 +202,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   });
                                 },
                                 child: CustomText.bodyMedium(
-                                  _showPassword ? "ПОКАЗАТь" : "СКРЫТЬ",
+                                  _showPassword ? "СКРЫТЬ" : "ПОКАЗАТЬ",
                                   letterSpacing: 0.5,
                                   color: AppTheme.theme.colorScheme.onBackground
                                       .withAlpha(140),

@@ -128,7 +128,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   textInputAction: TextInputAction.search,
                                   textCapitalization:
                                       TextCapitalization.sentences,
-                                  obscureText: _showPassword,
+                                  obscureText: !_showPassword,
                                 ),
                               ),
                               CustomButton.text(
@@ -138,7 +138,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   });
                                 },
                                 child: CustomText.bodyMedium(
-                                  _showPassword ? "ПОКАЗАТь" : "СКРЫТЬ",
+                                  _showPassword ? "СКРЫТЬ" : "ПОКАЗАТЬ",
                                   letterSpacing: 0.5,
                                   color: AppTheme.theme.colorScheme.onBackground
                                       .withAlpha(140),
