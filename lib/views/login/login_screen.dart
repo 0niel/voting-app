@@ -55,7 +55,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   Container(
                     margin: const EdgeInsets.only(left: 48, right: 48, top: 20),
                     child: CustomText.bodyLarge(
-                      "Введите ваши данные от Личного Кабинета Студента МИРЭА, чтобы продолжить",
+                      "Введите данные, которые вы указывали при регистрации",
                       softWrap: true,
                       fontWeight: 500,
                       height: 1.2,
