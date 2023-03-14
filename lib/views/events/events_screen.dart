@@ -4,7 +4,6 @@ import 'package:face_to_face_voting/widgets/text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-
 class EventsScreen extends StatelessWidget {
   const EventsScreen({Key? key, required this.events}) : super(key: key);
 
@@ -45,6 +44,13 @@ class _Success extends StatelessWidget {
 
   final DocumentList events;
 
+  String _formatDateTime(String? dateTimeString) {
+    if (dateTimeString == null) return "не указана";
+
+    final dateTime = DateTime.parse(dateTimeString);
+    return "${dateTime.day.toString().padLeft(2, '0')}.${dateTime.month.toString().padLeft(2, '0')}.${dateTime.year} ${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}";
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -70,7 +76,7 @@ class _Success extends StatelessWidget {
                         fontWeight: 700,
                       ),
                       subtitle: CustomText.bodySmall(
-                        "Дата проведения: ${events.documents[index].data['start_at'] != null ? events.documents[index].data['start_at'].toString() : "не указана"}",
+                        "Дата проведения: ${_formatDateTime(events.documents[index].data['start_at'])}",
                         fontWeight: 500,
                       ),
                     ),
