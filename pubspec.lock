@@ -261,10 +261,10 @@ packages:
     dependency: "direct main"
     description:
       name: dio
-      sha256: "9fdbf71baeb250fc9da847f6cb2052196f62c19906a3657adfc18631a667d316"
+      sha256: "7d328c4d898a61efc3cd93655a0955858e29a0aa647f0f9e02d59b3bb275e2e8"
       url: "https://pub.dev"
     source: hosted
-    version: "5.0.0"
+    version: "4.0.6"
   fake_async:
     dependency: transitive
     description:
@@ -569,7 +569,7 @@ packages:
     source: hosted
     version: "2.0.1"
   logging:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: logging
       sha256: "04094f2eb032cbb06c6f6e8d3607edcfcb0455e2bb6cbc010cb01171dcb64e6d"
@@ -873,6 +873,38 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.1.1"
+  sentry:
+    dependency: transitive
+    description:
+      name: sentry
+      sha256: a1529c545fcbc899e5dcc7c94ff1c6ad0c334dfc99a3cda366b1da98af7c5678
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.22.0"
+  sentry_dio:
+    dependency: "direct main"
+    description:
+      name: sentry_dio
+      sha256: "40ccc57633b5d2140cd76ad1e8e2f9c45ef70ba9fda7d021240553cce341bce9"
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.22.0"
+  sentry_flutter:
+    dependency: "direct main"
+    description:
+      name: sentry_flutter
+      sha256: cab07e99a8f27af94f399cabceaff6968011660505b30a0e2286728a81bc476c
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.22.0"
+  sentry_logging:
+    dependency: "direct main"
+    description:
+      name: sentry_logging
+      sha256: edd5107cef54b510b5339e85a3cdc0dee4259183e882ee25a653542734dfc90b
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.22.0"
   shared_preferences:
     dependency: "direct main"
     description:
@@ -1142,6 +1174,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.3"
+  uuid:
+    dependency: transitive
+    description:
+      name: uuid
+      sha256: "648e103079f7c64a36dc7d39369cabb358d377078a051d6ae2ad3aa539519313"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.7"
   vector_math:
     dependency: transitive
     description:
