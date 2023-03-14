@@ -38,6 +38,15 @@ class _LoginScreenState extends State<LoginScreen> {
       },
       builder: (context, state) {
         return Scaffold(
+          appBar: AppBar(
+            backgroundColor: theme.colorScheme.background,
+            elevation: 0,
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back_ios),
+              color: theme.colorScheme.onBackground,
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+          ),
           body: SafeArea(
             child: Container(
               margin: Spacing.top(Spacing.safeAreaTop(context) + 48),

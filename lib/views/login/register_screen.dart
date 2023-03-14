@@ -29,6 +29,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return BlocConsumer<ProfileCubit, ProfileState>(
       listener: (context, state) {
         state.maybeWhen(
@@ -48,6 +49,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
       },
       builder: (context, state) {
         return Scaffold(
+          appBar: AppBar(
+            backgroundColor: theme.colorScheme.background,
+            elevation: 0,
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back_ios),
+              color: theme.colorScheme.onBackground,
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+          ),
           body: SafeArea(
             child: Container(
               margin: Spacing.top(Spacing.safeAreaTop(context) + 48),
@@ -75,8 +85,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       textAlign: TextAlign.center,
                     ),
                   ),
-                  const CustomText.bodySmall(
-                    "Введённое вами ФИО будет отображаться у модераторов доступа",
+                  const Padding(
+                    padding: EdgeInsets.only(left: 24, right: 24),
+                    child: CustomText.bodySmall(
+                      "Введённое вами ФИО будет отображаться у модераторов доступа",
+                    ),
                   ),
                   Container(
                     margin: const EdgeInsets.only(left: 24, right: 24, top: 36),

@@ -39,7 +39,6 @@ class ProfileCubit extends Cubit<ProfileState> {
       'databases.$databaseId.collections.$votesCollectionId.documents',
       'memberships',
       'teams',
-      'account',
     ]);
 
     print('Subscribed to realtime events');
