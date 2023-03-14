@@ -37,7 +37,9 @@ class ProfileCubit extends Cubit<ProfileState> {
       'databases.$databaseId.collections.$eventsCollectionId.documents',
       'databases.$databaseId.collections.$pollsCollectionId.documents',
       'databases.$databaseId.collections.$votesCollectionId.documents',
-      'memberships'
+      'memberships',
+      'teams',
+      'account',
     ]);
 
     print('Subscribed to realtime events');
@@ -57,18 +59,18 @@ class ProfileCubit extends Cubit<ProfileState> {
 
         print('Event action: $eventAction');
 
-        final doc = Models.Document.fromMap(event.payload);
-
-        if (doc.$collectionId == eventsCollectionId) {
-          getIt<EventsCubit>().processRealtimeEvent(event);
-        } else if (doc.$collectionId == pollsCollectionId ||
-            doc.$collectionId == votesCollectionId) {
-          getIt<PollCubit>().processRealtimeEvent(event);
+        if (eventTarget == 'teams' || eventTarget == 'memberships') {
+          // Возможно, что пользователя удалили или добавили в список участников
+          // Поэтому нужно обновить список событий
+          getIt<EventsCubit>().loadEventsList();
         } else {
-          if (eventTarget == 'memberships') {
-            // Возможно, что пользователя удалили или добавили в список участников
-            // Поэтому нужно обновить список событий
-            getIt<EventsCubit>().loadEventsList();
+          final doc = Models.Document.fromMap(event.payload);
+
+          if (doc.$collectionId == eventsCollectionId) {
+            getIt<EventsCubit>().processRealtimeEvent(event);
+          } else if (doc.$collectionId == pollsCollectionId ||
+              doc.$collectionId == votesCollectionId) {
+            getIt<PollCubit>().processRealtimeEvent(event);
           }
         }
       },
@@ -157,43 +159,49 @@ class ProfileCubit extends Cubit<ProfileState> {
   }) : super(const _Initial());
 
   Future<void> _loadUserData() async {
-    final sessions = await account.listSessions();
-    for (final session in sessions.sessions) {
-      if (session.provider == 'mirea') {
-        try {
-          final headers = {
-            'Authorization': 'Bearer ${session.providerAccessToken}',
-          };
+    try {
+      final sessions = await account.listSessions();
+      for (final session in sessions.sessions) {
+        if (session.provider == 'mirea') {
+          try {
+            final headers = {
+              'Authorization': 'Bearer ${session.providerAccessToken}',
+            };
 
-          final response = await Dio().get(
-              'https://auth-app.mirea.ru/api/?action=getData&url=https://lk.mirea.ru/profile/',
-              options: Options(headers: headers));
+            final response = await Dio().get(
+                'https://auth-app.mirea.ru/api/?action=getData&url=https://lk.mirea.ru/profile/',
+                options: Options(headers: headers));
 
-          final data = jsonDecode(response.data);
+            final data = jsonDecode(response.data);
 
-          final students = data["STUDENTS"].values.where((element) =>
-              !element["PROPERTIES"]["PERSONAL_NUMBER"]["VALUE"]
-                  .contains("Д") &&
-              !element["PROPERTIES"]["PERSONAL_NUMBER"]["VALUE"].contains("Ж"));
+            final students = data["STUDENTS"].values.where((element) =>
+                !element["PROPERTIES"]["PERSONAL_NUMBER"]["VALUE"]
+                    .contains("Д") &&
+                !element["PROPERTIES"]["PERSONAL_NUMBER"]["VALUE"]
+                    .contains("Ж"));
 
-          final studentsList = students.toList();
+            final studentsList = students.toList();
 
-          final student = students.firstWhere(
-              (element) => element['status'] == 'активный',
-              orElse: () => students.first);
+            final student = students.firstWhere(
+                (element) => element['status'] == 'активный',
+                orElse: () => students.first);
 
-          await account.updatePrefs(prefs: {
-            'id': data["ID"],
-            'course': int.parse(student["PROPERTIES"]["COURSE"]["VALUE"]),
-            'personalNumber': student["PROPERTIES"]["PERSONAL_NUMBER"]["VALUE"],
-            'academicGroup': student["PROPERTIES"]["ACADEMIC_GROUP"]
-                ["VALUE_TEXT"],
-          });
-        } catch (e) {
-          print(e);
+            await account.updatePrefs(prefs: {
+              'id': data["ID"],
+              'course': int.parse(student["PROPERTIES"]["COURSE"]["VALUE"]),
+              'personalNumber': student["PROPERTIES"]["PERSONAL_NUMBER"]
+                  ["VALUE"],
+              'academicGroup': student["PROPERTIES"]["ACADEMIC_GROUP"]
+                  ["VALUE_TEXT"],
+            });
+          } catch (e) {
+            print(e);
+          }
+          break;
         }
-        break;
       }
+    } catch (e) {
+      print(e);
     }
 
     final user = await account.get();
