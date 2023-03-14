@@ -1,3 +1,4 @@
+import 'package:face_to_face_voting/views/login/login_home_screen.dart';
 import 'package:face_to_face_voting/views/login/login_screen.dart';
 import 'package:face_to_face_voting/widgets/button.dart';
 import 'package:face_to_face_voting/widgets/text.dart';
@@ -8,9 +9,6 @@ import '../../blocs/profile/profile_cubit.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({Key? key}) : super(key: key);
-
-  final String _aboutText =
-      "\u2022 Отчётно-выборная Конференция Института тонких химических\n\u2022 Отчётно-выборная Конференция Института информационных технологий";
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +73,7 @@ class ProfileScreen extends StatelessWidget {
                   onPressed: () {
                     context.read<ProfileCubit>().logout();
                     Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        builder: (context) => const LoginScreen()));
+                        builder: (context) => const LoginHomeScreen()));
                   },
                   child: const CustomText.titleSmall(
                     "Выйти",
