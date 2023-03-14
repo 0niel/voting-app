@@ -1,6 +1,8 @@
+import 'package:face_to_face_voting/blocs/events/events_cubit.dart';
 import 'package:face_to_face_voting/theme/app_theme.dart';
 import 'package:face_to_face_voting/theme/text_style.dart';
 import 'package:face_to_face_voting/utils/spacing.dart';
+import 'package:face_to_face_voting/views/home.dart';
 import 'package:face_to_face_voting/widgets/button.dart';
 import 'package:face_to_face_voting/widgets/container.dart';
 import 'package:face_to_face_voting/widgets/text.dart';
@@ -10,28 +12,36 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../blocs/profile/profile_cubit.dart';
 import '../../utils/validators.dart';
-import 'register_screen.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({Key? key}) : super(key: key);
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _RegisterScreenState extends State<RegisterScreen> {
   bool _showPassword = false;
+  final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _passwordRepeatController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.theme;
     return BlocConsumer<ProfileCubit, ProfileState>(
       listener: (context, state) {
         state.maybeWhen(
           error: (message) {
             showSnack(message);
+          },
+          success: (user, prefs, jwt, avatar, _) {
+            BlocProvider.of<EventsCubit>(context).started();
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) => const HomeScreen()),
+                  (route) => false);
+            });
           },
           orElse: () {},
         );
@@ -50,12 +60,13 @@ class _LoginScreenState extends State<LoginScreen> {
                         width: 99, height: 99),
                   ),
                   const Center(
-                    child: CustomText.headlineSmall("Вход", fontWeight: 700),
+                    child: CustomText.headlineSmall("Регистрация",
+                        fontWeight: 700),
                   ),
                   Container(
                     margin: const EdgeInsets.only(left: 48, right: 48, top: 20),
                     child: CustomText.bodyLarge(
-                      "Введите ваши данные от Личного Кабинета Студента МИРЭА, чтобы продолжить",
+                      "",
                       softWrap: true,
                       fontWeight: 500,
                       height: 1.2,
@@ -64,12 +75,39 @@ class _LoginScreenState extends State<LoginScreen> {
                       textAlign: TextAlign.center,
                     ),
                   ),
+                  const CustomText.bodySmall(
+                    "Введённое вами ФИО будет отображаться у модераторов доступа",
+                  ),
                   Container(
                     margin: const EdgeInsets.only(left: 24, right: 24, top: 36),
                     child: CustomContainer(
                       paddingAll: 0,
                       child: Column(
                         children: <Widget>[
+                          TextFormField(
+                            controller: _nameController,
+                            style: CustomTextStyle.bodyLarge(
+                                fontWeight: 600, letterSpacing: 0.2),
+                            decoration: InputDecoration(
+                              hintStyle: CustomTextStyle.bodyLarge(
+                                  fontWeight: 500,
+                                  letterSpacing: 0,
+                                  color: AppTheme.theme.colorScheme.onBackground
+                                      .withAlpha(180)),
+                              hintText: "ФИО",
+                              border: InputBorder.none,
+                              enabledBorder: InputBorder.none,
+                              focusedBorder: InputBorder.none,
+                              isDense: true,
+                              contentPadding: const EdgeInsets.all(16),
+                            ),
+                            autofocus: false,
+                            keyboardType: TextInputType.name,
+                          ),
+                          Divider(
+                            color: AppTheme.theme.dividerColor,
+                            height: 0.5,
+                          ),
                           TextFormField(
                             controller: _emailController,
                             style: CustomTextStyle.bodyLarge(
@@ -94,11 +132,33 @@ class _LoginScreenState extends State<LoginScreen> {
                             color: AppTheme.theme.dividerColor,
                             height: 0.5,
                           ),
+                          TextFormField(
+                            controller: _passwordController,
+                            style: CustomTextStyle.bodyLarge(
+                                fontWeight: 600, letterSpacing: 0.2),
+                            decoration: InputDecoration(
+                              hintStyle: CustomTextStyle.bodyLarge(
+                                  fontWeight: 500,
+                                  letterSpacing: 0,
+                                  color: AppTheme.theme.colorScheme.onBackground
+                                      .withAlpha(180)),
+                              hintText: "Пароль",
+                              border: InputBorder.none,
+                              enabledBorder: InputBorder.none,
+                              focusedBorder: InputBorder.none,
+                              isDense: true,
+                              contentPadding: const EdgeInsets.all(16),
+                            ),
+                            autofocus: false,
+                            textInputAction: TextInputAction.search,
+                            textCapitalization: TextCapitalization.sentences,
+                            obscureText: _showPassword,
+                          ),
                           Row(
                             children: [
                               Expanded(
                                 child: TextFormField(
-                                  controller: _passwordController,
+                                  controller: _passwordRepeatController,
                                   style: CustomTextStyle.bodyLarge(
                                       fontWeight: 600, letterSpacing: 0.2),
                                   decoration: InputDecoration(
@@ -108,7 +168,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                         color: AppTheme
                                             .theme.colorScheme.onBackground
                                             .withAlpha(180)),
-                                    hintText: "Ваш пароль",
+                                    hintText: "Повторите пароль",
                                     border: InputBorder.none,
                                     enabledBorder: InputBorder.none,
                                     focusedBorder: InputBorder.none,
@@ -149,34 +209,15 @@ class _LoginScreenState extends State<LoginScreen> {
                       padding: Spacing.y(12),
                       borderRadiusAll: 4,
                       onPressed: () {
-                        loginUser();
+                        registerUser();
                       },
                       child: Center(
                         child: CustomText.bodyMedium(
-                          "ВОЙТИ",
+                          "ЗАРЕГИСТРИРОВАТЬСЯ",
                           color: AppTheme.theme.colorScheme.onPrimary,
                           letterSpacing: 0.8,
                           fontWeight: 700,
                         ),
-                      ),
-                    ),
-                  ),
-                  Spacing.height(20),
-                  Center(
-                    child: CustomButton.text(
-                      elevation: 0,
-                      borderRadiusAll: 4,
-                      onPressed: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => const RegisterScreen(),
-                          ),
-                        );
-                      },
-                      child: CustomText.bodyMedium(
-                        "Зарегистрироваться",
-                        decoration: TextDecoration.underline,
-                        color: theme.colorScheme.primary,
                       ),
                     ),
                   ),
@@ -205,9 +246,11 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  void loginUser() {
+  void registerUser() {
+    final String name = _nameController.text;
     final String email = _emailController.text;
     final String password = _passwordController.text;
+    final String repeatPassword = _passwordRepeatController.text;
 
     if (email.isEmpty) {
       showSnack("Пожалуйста, введите email");
@@ -218,9 +261,18 @@ class _LoginScreenState extends State<LoginScreen> {
     } else if (password.isEmpty) {
       showSnack("Пожалуйста, введите пароль");
       return;
+    } else if (password.length < 8) {
+      showSnack("Пароль должен быть не менее 8 символов");
+      return;
+    } else if (password != repeatPassword) {
+      showSnack("Пароли не совпадают");
+      return;
+    } else if (name.isEmpty) {
+      showSnack("Пожалуйста, введите ваше ФИО");
+      return;
     }
 
     BlocProvider.of<ProfileCubit>(context)
-        .login(email: email, password: password);
+        .register(name: name, email: email, password: password);
   }
 }

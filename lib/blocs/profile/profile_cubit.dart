@@ -129,6 +129,23 @@ class ProfileCubit extends Cubit<ProfileState> {
     return latinLetters.join();
   }
 
+  String _mapErrorsToMessage(String? error) {
+    if (error == null) {
+      return 'Неизвестная ошибка';
+    }
+
+    if (error.contains('Value must be a valid email address')) {
+      return 'Неверный формат электронной почты';
+    } else if (error.contains('Password must be at least 8 characters')) {
+      return 'Пароль должен быть не менее 8 символов';
+    } else if (error.contains('Please check the email and password')) {
+      return 'Неверный адрес электронной почты или пароль';
+    } else if (error.contains('A user with the same email already exists')) {
+      return 'Пользователь с таким адресом электронной почты уже существует.';
+    }
+    return error;
+  }
+
   ProfileCubit({
     required this.client,
     required this.account,
@@ -143,70 +160,76 @@ class ProfileCubit extends Cubit<ProfileState> {
     final sessions = await account.listSessions();
     for (final session in sessions.sessions) {
       if (session.provider == 'mirea') {
-        final headers = {
-          'Authorization': 'Bearer ${session.providerAccessToken}',
-        };
+        try {
+          final headers = {
+            'Authorization': 'Bearer ${session.providerAccessToken}',
+          };
 
-        final response = await Dio().get(
-            'https://auth-app.mirea.ru/api/?action=getData&url=https://lk.mirea.ru/profile/',
-            options: Options(headers: headers));
+          final response = await Dio().get(
+              'https://auth-app.mirea.ru/api/?action=getData&url=https://lk.mirea.ru/profile/',
+              options: Options(headers: headers));
 
-        final data = jsonDecode(response.data);
+          final data = jsonDecode(response.data);
 
-        final students = data["STUDENTS"].values.where((element) =>
-            !element["PROPERTIES"]["PERSONAL_NUMBER"]["VALUE"].contains("Д") &&
-            !element["PROPERTIES"]["PERSONAL_NUMBER"]["VALUE"].contains("Ж"));
+          final students = data["STUDENTS"].values.where((element) =>
+              !element["PROPERTIES"]["PERSONAL_NUMBER"]["VALUE"]
+                  .contains("Д") &&
+              !element["PROPERTIES"]["PERSONAL_NUMBER"]["VALUE"].contains("Ж"));
 
-        final studentsList = students.toList();
+          final studentsList = students.toList();
 
-        final student = students.firstWhere(
-            (element) => element['status'] == 'активный',
-            orElse: () => students.first);
+          final student = students.firstWhere(
+              (element) => element['status'] == 'активный',
+              orElse: () => students.first);
 
-        await account.updatePrefs(prefs: {
-          'id': data["ID"],
-          'course': int.parse(student["PROPERTIES"]["COURSE"]["VALUE"]),
-          'personalNumber': student["PROPERTIES"]["PERSONAL_NUMBER"]["VALUE"],
-          'academicGroup': student["PROPERTIES"]["ACADEMIC_GROUP"]
-              ["VALUE_TEXT"],
-        });
-
-        final user = await account.get();
-        final jwt = await account.createJWT();
-        final prefs = await account.getPrefs();
-
-        final avatarByteList = await avatars.getInitials(
-          name: _cyryllicToLat(user.name),
-        );
-
-        final avatar = Image.memory(avatarByteList);
-
-        final events = await databases.listDocuments(
-            databaseId: databaseId, collectionId: eventsCollectionId);
-        final eventsList = events.documents;
-
-        // Получение списка команд, в которых мы состоим
-        final teamsList = await teams.list();
-
-        // Получение списка events, в которых мы состоим в команде participants_team_id
-        final eventsWithMembership = eventsList.where((element) =>
-            element.data['participants_team_id'] != null &&
-            teamsList.teams
-                .map((e) => e.$id)
-                .contains(element.data['participants_team_id']));
-
-        // Должно вызываться последним
-        subscribeRealtime();
-
-        emit(_Success(
-          user,
-          prefs,
-          jwt,
-          avatar,
-          List<String>.from(eventsWithMembership.map((e) => e.data['name'])),
-        ));
+          await account.updatePrefs(prefs: {
+            'id': data["ID"],
+            'course': int.parse(student["PROPERTIES"]["COURSE"]["VALUE"]),
+            'personalNumber': student["PROPERTIES"]["PERSONAL_NUMBER"]["VALUE"],
+            'academicGroup': student["PROPERTIES"]["ACADEMIC_GROUP"]
+                ["VALUE_TEXT"],
+          });
+        } catch (e) {
+          print(e);
+        }
+        break;
       }
     }
+
+    final user = await account.get();
+    final jwt = await account.createJWT();
+    final prefs = await account.getPrefs();
+
+    final avatarByteList = await avatars.getInitials(
+      name: _cyryllicToLat(user.name),
+    );
+
+    final avatar = Image.memory(avatarByteList);
+
+    final events = await databases.listDocuments(
+        databaseId: databaseId, collectionId: eventsCollectionId);
+    final eventsList = events.documents;
+
+    // Получение списка команд, в которых мы состоим
+    final teamsList = await teams.list();
+
+    // Получение списка events, в которых мы состоим в команде participants_team_id
+    final eventsWithMembership = eventsList.where((element) =>
+        element.data['participants_team_id'] != null &&
+        teamsList.teams
+            .map((e) => e.$id)
+            .contains(element.data['participants_team_id']));
+
+    // Должно вызываться последним
+    subscribeRealtime();
+
+    emit(_Success(
+      user,
+      prefs,
+      jwt,
+      avatar,
+      List<String>.from(eventsWithMembership.map((e) => e.data['name'])),
+    ));
   }
 
   void started() async {
@@ -231,13 +254,60 @@ class ProfileCubit extends Cubit<ProfileState> {
     }
   }
 
-  void login() async {
+  void register({
+    required String name,
+    required String email,
+    required String password,
+  }) async {
     emit(const _Loading());
 
-    await account
-        .createOAuth2Session(
-          provider: 'mirea',
-        )
-        .then((value) => _loadUserData());
+    try {
+      await account.create(
+          userId: ID.unique(), name: name, email: email, password: password);
+      await account.createEmailSession(email: email, password: password);
+      await _loadUserData();
+    } on AppwriteException catch (e) {
+      emit(_Error(_mapErrorsToMessage(e.message)));
+    }
+  }
+
+  void logout() async {
+    emit(const _Loading());
+
+    try {
+      await account.deleteSession(sessionId: 'current');
+      emit(const _LoginScreen());
+    } on AppwriteException catch (e) {
+      emit(_Error(_mapErrorsToMessage(e.message)));
+    }
+  }
+
+  void login({
+    String? email,
+    String? password,
+  }) async {
+    emit(const _Loading());
+
+    try {
+      if (email != null && password != null) {
+        await account.createEmailSession(
+          email: email,
+          password: password,
+        );
+        _loadUserData();
+      } else {
+        try {
+          await account.createOAuth2Session(
+            provider: 'mirea',
+          );
+        } catch (e) {
+          emit(const _LoginScreen());
+        }
+      }
+
+      _loadUserData();
+    } on AppwriteException catch (e) {
+      emit(_Error(_mapErrorsToMessage(e.message)));
+    }
   }
 }

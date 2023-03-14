@@ -6,9 +6,11 @@ import 'package:face_to_face_voting/widgets/text.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 import '../../blocs/profile/profile_cubit.dart';
 import '../home.dart';
+import 'login_screen.dart';
 
 class LoginHomeScreen extends StatelessWidget {
   const LoginHomeScreen({Key? key}) : super(key: key);
@@ -154,27 +156,42 @@ class _Login extends StatelessWidget {
           ),
         ),
         Spacing.height(20),
-        Container(
-          alignment: Alignment.centerRight,
-          child: CustomButton.text(
-            padding: Spacing.zero,
-            onPressed: () {},
-            child: CustomText.bodyMedium(
-              "Забыли пароль?",
-              color: AppTheme.theme.colorScheme.primary,
-            ),
-          ),
-        ),
-        Spacing.height(20),
-        Container(
-          alignment: Alignment.center,
-          child: CustomButton.text(
-            padding: Spacing.zero,
-            onPressed: () {},
-            child: CustomText.bodyMedium(
-              "Я не студент",
-              color: AppTheme.theme.colorScheme.primary,
-            ),
+        Padding(
+          padding: const EdgeInsets.only(left: 24, right: 24),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                alignment: Alignment.center,
+                child: CustomButton.text(
+                  padding: Spacing.zero,
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const LoginScreen(),
+                      ),
+                    );
+                  },
+                  child: CustomText.bodyMedium(
+                    "Я не студент",
+                    color: AppTheme.theme.colorScheme.primary,
+                  ),
+                ),
+              ),
+              Container(
+                alignment: Alignment.centerRight,
+                child: CustomButton.text(
+                  padding: Spacing.zero,
+                  onPressed: () {
+                    launchUrlString("https://lk.mirea.ru/forgot.php");
+                  },
+                  child: CustomText.bodyMedium(
+                    "Забыли пароль?",
+                    color: AppTheme.theme.colorScheme.primary,
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ],

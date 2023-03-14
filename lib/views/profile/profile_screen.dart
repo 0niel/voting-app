@@ -1,3 +1,5 @@
+import 'package:face_to_face_voting/views/login/login_screen.dart';
+import 'package:face_to_face_voting/widgets/button.dart';
 import 'package:face_to_face_voting/widgets/text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -62,7 +64,26 @@ class ProfileScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-              )
+              ),
+              const SizedBox(
+                height: 24,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 24, right: 24),
+                child: CustomButton.rounded(
+                  elevation: 0,
+                  onPressed: () {
+                    context.read<ProfileCubit>().logout();
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (context) => const LoginScreen()));
+                  },
+                  child: const CustomText.titleSmall(
+                    "Выйти",
+                    color: Colors.white,
+                    fontWeight: 700,
+                  ),
+                ),
+              ),
             ],
           ),
           orElse: () => const Center(child: CircularProgressIndicator()),

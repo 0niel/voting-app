@@ -35,12 +35,12 @@ class _HomeScreenState extends State<HomeScreen> {
   int _currentScreen = 1;
   final _screens = const [QrCodeScreen(), PollScreen(), ProfileScreen()];
 
-  late Timer _timer;
+  Timer? _timer;
 
   @override
   void dispose() {
     super.dispose();
-    _timer.cancel();
+    _timer?.cancel();
   }
 
   void _changeCurrentScreen(int page) {
@@ -75,7 +75,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final bloc = BlocProvider.of<EventsCubit>(context);
-    print("BUILDING HOME SCREEN. BLOC: $bloc");
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
