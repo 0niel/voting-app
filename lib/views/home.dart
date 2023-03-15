@@ -109,88 +109,90 @@ class _HomeScreenState extends State<HomeScreen> {
           );
         },
       ),
-      body: BlocBuilder<EventsCubit, EventsState>(
-        bloc: bloc,
-        builder: (context, state) {
-          return Column(
-            children: [
-              Expanded(
-                child: state.maybeMap(
-                  initial: (value) {
-                    return _currentScreen == 1
-                        ? const Center(
-                            child: CircularProgressIndicator(),
-                          )
-                        : _screens[_currentScreen];
-                  },
-                  eventsListLoaded: (value) {
-                    return _currentScreen == 1
-                        ? EventsScreen(events: value.events)
-                        : _screens[_currentScreen];
-                  },
-                  eventLoaded: (value) {
-                    print("EVENT LOADED!");
-                    return _screens[_currentScreen];
-                  },
-                  orElse: () => _screens[_currentScreen],
+      body: SafeArea(
+        child: BlocBuilder<EventsCubit, EventsState>(
+          bloc: bloc,
+          builder: (context, state) {
+            return Column(
+              children: [
+                Expanded(
+                  child: state.maybeMap(
+                    initial: (value) {
+                      return _currentScreen == 1
+                          ? const Center(
+                              child: CircularProgressIndicator(),
+                            )
+                          : _screens[_currentScreen];
+                    },
+                    eventsListLoaded: (value) {
+                      return _currentScreen == 1
+                          ? EventsScreen(events: value.events)
+                          : _screens[_currentScreen];
+                    },
+                    eventLoaded: (value) {
+                      print("EVENT LOADED!");
+                      return _screens[_currentScreen];
+                    },
+                    orElse: () => _screens[_currentScreen],
+                  ),
                 ),
-              ),
-              Container(
-                color: AppTheme.theme.cardColor,
-                padding: Spacing.fromLTRB(32, 16, 32, 16),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    InkWell(
-                      onTap: () => _changeCurrentScreen(0),
-                      child: Icon(
-                        MdiIcons.qrcode,
-                        color: _currentScreen == 0
-                            ? AppTheme.theme.colorScheme.primary
-                            : AppTheme.theme.colorScheme.onBackground,
-                        size: 26,
+                Container(
+                  color: AppTheme.theme.cardColor,
+                  padding: Spacing.fromLTRB(32, 16, 32, 16),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      InkWell(
+                        onTap: () => _changeCurrentScreen(0),
+                        child: Icon(
+                          MdiIcons.qrcode,
+                          color: _currentScreen == 0
+                              ? AppTheme.theme.colorScheme.primary
+                              : AppTheme.theme.colorScheme.onBackground,
+                          size: 26,
+                        ),
                       ),
-                    ),
-                    _currentScreen != 1 ||
-                            state.maybeMap(
-                                eventsListLoaded: (value) => true,
-                                orElse: () => false)
-                        ? SizedBox(
-                            width: 48,
-                            height: 48,
-                            child: InkWell(
-                              onTap: () => _changeCurrentScreen(1),
-                              child: Icon(
-                                MdiIcons.vote,
-                                color: (_currentScreen == 1 &&
-                                        state.maybeMap(
-                                            eventsListLoaded: (value) => true,
-                                            orElse: () => false))
-                                    ? AppTheme.theme.colorScheme.primary
-                                    : AppTheme.theme.colorScheme.onBackground,
-                                size: 26,
+                      _currentScreen != 1 ||
+                              state.maybeMap(
+                                  eventsListLoaded: (value) => true,
+                                  orElse: () => false)
+                          ? SizedBox(
+                              width: 48,
+                              height: 48,
+                              child: InkWell(
+                                onTap: () => _changeCurrentScreen(1),
+                                child: Icon(
+                                  MdiIcons.vote,
+                                  color: (_currentScreen == 1 &&
+                                          state.maybeMap(
+                                              eventsListLoaded: (value) => true,
+                                              orElse: () => false))
+                                      ? AppTheme.theme.colorScheme.primary
+                                      : AppTheme.theme.colorScheme.onBackground,
+                                  size: 26,
+                                ),
                               ),
+                            )
+                          : Center(
+                              child: _buildTimer(),
                             ),
-                          )
-                        : Center(
-                            child: _buildTimer(),
-                          ),
-                    InkWell(
-                      onTap: () => _changeCurrentScreen(2),
-                      child: Icon(
-                        MdiIcons.account,
-                        color: _currentScreen == 2
-                            ? AppTheme.theme.colorScheme.primary
-                            : AppTheme.theme.colorScheme.onBackground,
-                        size: 26,
-                      ),
-                    )
-                  ],
-                ),
-              )
-            ],
-          );
-        },
+                      InkWell(
+                        onTap: () => _changeCurrentScreen(2),
+                        child: Icon(
+                          MdiIcons.account,
+                          color: _currentScreen == 2
+                              ? AppTheme.theme.colorScheme.primary
+                              : AppTheme.theme.colorScheme.onBackground,
+                          size: 26,
+                        ),
+                      )
+                    ],
+                  ),
+                )
+              ],
+            );
+          },
+        ),
       ),
     );
   }
