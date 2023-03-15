@@ -18,6 +18,7 @@ class EventsScreen extends StatelessWidget {
         elevation: 0,
         title: const CustomText.titleLarge('Предстоящие мероприятия',
             fontWeight: 700),
+        automaticallyImplyLeading: false,
       ),
       body: BlocConsumer<EventsCubit, EventsState>(
         bloc: bloc,
