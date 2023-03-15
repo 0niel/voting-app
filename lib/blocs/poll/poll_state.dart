@@ -9,7 +9,7 @@ class PollState with _$PollState {
     Models.Document poll,
     Models.DocumentList votes,
     Duration timeLeft,
-    Duration timeMaximum,
+    double percentsLeft,
   ) = _Success;
   const factory PollState.error(String message) = _Error;
   const factory PollState.noPoll(String eventId) = _NoPoll;

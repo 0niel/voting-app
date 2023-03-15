@@ -79,11 +79,12 @@ class PollCubit extends Cubit<PollState> {
     return timeLeft.isNegative ? Duration.zero : timeLeft;
   }
 
-  Duration _calculateTimeMaximum(Models.Document poll) {
-    final startAt = DateTime.parse(poll.data['start_at']).toUtc();
+  double _calculatePercentsLeft(Models.Document poll) {
     final endAt = DateTime.parse(poll.data['end_at']).toUtc();
 
-    return endAt.difference(startAt);
+    final percentsLeft = (serverTime.difference(endAt).inSeconds / 60) * -100;
+
+    return percentsLeft.clamp(0.0, 100.0);
   }
 
   void loadPolls(String eventId) async {
@@ -118,7 +119,7 @@ class PollCubit extends Cubit<PollState> {
         poll,
         votes,
         _calculateTimeLeft(poll),
-        _calculateTimeMaximum(poll),
+        _calculatePercentsLeft(poll),
       ));
 
       timer?.cancel();
@@ -134,8 +135,8 @@ class PollCubit extends Cubit<PollState> {
               eventId,
               poll,
               state.votes,
-              newTimeLeft,
-              _calculateTimeMaximum(poll),
+              _calculateTimeLeft(poll),
+              _calculatePercentsLeft(poll),
             ));
           }
         },
@@ -211,7 +212,7 @@ class PollCubit extends Cubit<PollState> {
         poll,
         votes,
         timeLeft,
-        _calculateTimeMaximum(poll),
+        _calculatePercentsLeft(poll),
       ));
 
       // Обновляем таймер
@@ -228,7 +229,7 @@ class PollCubit extends Cubit<PollState> {
               poll,
               state.votes,
               newTimeLeft,
-              _calculateTimeMaximum(poll),
+              _calculatePercentsLeft(poll),
             ));
           }
         },
@@ -258,7 +259,7 @@ class PollCubit extends Cubit<PollState> {
         currentState.poll,
         votes,
         currentState.timeLeft,
-        _calculateTimeMaximum(currentState.poll),
+        _calculatePercentsLeft(currentState.poll),
       ));
     }
   }

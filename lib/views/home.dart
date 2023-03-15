@@ -197,55 +197,53 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  double _getPercentLeft(int max, int left) {
-    if (left <= 0 || max <= 0) {
-      return 0;
-    }
-
-    return left / max;
-  }
-
   Widget _buildTimer() {
-    return BlocBuilder<PollCubit, PollState>(builder: (context, state) {
-      return state.maybeMap(
-          success: (value) => SizedBox(
-                width: 48,
-                height: 48,
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: <Widget>[
-                    CircularProgressIndicator(
-                      valueColor: value.timeLeft.inSeconds > 0
-                          ? AlwaysStoppedAnimation<Color>(
-                              AppTheme.theme.colorScheme.primary,
-                            )
-                          : AlwaysStoppedAnimation<Color>(
-                              AppTheme.theme.colorScheme.error,
-                            ),
-                      value: _getPercentLeft(value.timeMaximum.inSeconds,
-                              value.timeLeft.inSeconds)
-                          .toDouble(),
-                    ),
-                    CustomText.bodyLarge(value.timeLeft.inSeconds.toString(),
-                        color: AppTheme.theme.colorScheme.onBackground,
-                        fontWeight: 600)
-                  ],
-                ),
+    return BlocBuilder<PollCubit, PollState>(
+      builder: (context, state) {
+        return state.maybeMap(
+          success: (value) {
+            print('Percent left: ${value.percentsLeft}');
+            return SizedBox(
+              width: 48,
+              height: 48,
+              child: Stack(
+                alignment: Alignment.center,
+                children: <Widget>[
+                  CircularProgressIndicator(
+                    valueColor: value.timeLeft.inSeconds > 0
+                        ? AlwaysStoppedAnimation<Color>(
+                            AppTheme.theme.colorScheme.primary,
+                          )
+                        : AlwaysStoppedAnimation<Color>(
+                            AppTheme.theme.colorScheme.error,
+                          ),
+                    value: value.percentsLeft,
+                  ),
+                  CustomText.bodyLarge(value.timeLeft.inSeconds.toString(),
+                      color: AppTheme.theme.colorScheme.onBackground,
+                      fontWeight: 600)
+                ],
               ),
+            );
+          },
           orElse: () => SizedBox(
-                width: 48,
-                height: 48,
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: <Widget>[
-                    const Text(""),
-                    CustomText.bodyLarge("0",
-                        color: AppTheme.theme.colorScheme.onBackground,
-                        fontWeight: 600)
-                  ],
-                ),
-              ));
-    });
+            width: 48,
+            height: 48,
+            child: Stack(
+              alignment: Alignment.center,
+              children: <Widget>[
+                const Text(""),
+                CustomText.bodyLarge(
+                  "0",
+                  color: AppTheme.theme.colorScheme.onBackground,
+                  fontWeight: 600,
+                )
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 }
 
