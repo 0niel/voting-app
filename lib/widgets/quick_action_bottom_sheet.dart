@@ -1,6 +1,7 @@
 import 'package:face_to_face_voting/blocs/events/events_cubit.dart';
 import 'package:face_to_face_voting/blocs/participants_cubit/participants_cubit.dart';
 import 'package:face_to_face_voting/theme/app_theme.dart';
+import 'package:face_to_face_voting/utils/formatters.dart';
 import 'package:face_to_face_voting/utils/spacing.dart';
 import 'package:face_to_face_voting/views/qr_scanner/qr_scanner_screen.dart';
 import 'package:face_to_face_voting/widgets/text.dart';
@@ -84,7 +85,8 @@ class _ParticipantsBottomSheet extends StatelessWidget {
                                           fontWeight: 700,
                                         ),
                                         subtitle: CustomText.bodySmall(
-                                          "Был приглашён: ${state.participants.memberships[index].joined}",
+                                          "Был приглашён: ${StringFormatter.formatDateTime(state.participants.memberships[index].joined)}\n"
+                                          "Роли: ${state.participants.memberships[index].roles.map((e) => e).join(", ")}",
                                           fontWeight: 500,
                                         ),
                                       );
