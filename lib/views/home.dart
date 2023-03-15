@@ -109,36 +109,36 @@ class _HomeScreenState extends State<HomeScreen> {
           );
         },
       ),
-      body: SafeArea(
-        child: BlocBuilder<EventsCubit, EventsState>(
-          bloc: bloc,
-          builder: (context, state) {
-            return Column(
-              children: [
-                Expanded(
-                  child: state.maybeMap(
-                    initial: (value) {
-                      return _currentScreen == 1
-                          ? const Center(
-                              child: CircularProgressIndicator(),
-                            )
-                          : _screens[_currentScreen];
-                    },
-                    eventsListLoaded: (value) {
-                      return _currentScreen == 1
-                          ? EventsScreen(events: value.events)
-                          : _screens[_currentScreen];
-                    },
-                    eventLoaded: (value) {
-                      print("EVENT LOADED!");
-                      return _screens[_currentScreen];
-                    },
-                    orElse: () => _screens[_currentScreen],
-                  ),
+      body: BlocBuilder<EventsCubit, EventsState>(
+        bloc: bloc,
+        builder: (context, state) {
+          return Column(
+            children: [
+              Expanded(
+                child: state.maybeMap(
+                  initial: (value) {
+                    return _currentScreen == 1
+                        ? const Center(
+                            child: CircularProgressIndicator(),
+                          )
+                        : _screens[_currentScreen];
+                  },
+                  eventsListLoaded: (value) {
+                    return _currentScreen == 1
+                        ? EventsScreen(events: value.events)
+                        : _screens[_currentScreen];
+                  },
+                  eventLoaded: (value) {
+                    print("EVENT LOADED!");
+                    return _screens[_currentScreen];
+                  },
+                  orElse: () => _screens[_currentScreen],
                 ),
-                Container(
-                  color: AppTheme.theme.cardColor,
-                  padding: Spacing.fromLTRB(32, 16, 32, 16),
+              ),
+              Container(
+                color: AppTheme.theme.cardColor,
+                padding: Spacing.fromLTRB(32, 16, 32, 16),
+                child: SafeArea(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
@@ -188,11 +188,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       )
                     ],
                   ),
-                )
-              ],
-            );
-          },
-        ),
+                ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }
