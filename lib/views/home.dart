@@ -137,7 +137,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               Container(
                 color: AppTheme.theme.cardColor,
-                padding: Spacing.fromLTRB(32, 16, 32, 16),
+                padding: Spacing.fromLTRB(32, 16, 32, 4),
                 child: SafeArea(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
