@@ -63,9 +63,20 @@ class ProfileScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       const CustomText.titleMedium(
-                          "Участник отчётно-выборочных мероприятий:",
-                          letterSpacing: 0,
-                          fontWeight: 700),
+                        "Участник отчётно-выборочных мероприятий:",
+                        letterSpacing: 0,
+                        fontWeight: 700,
+                      ),
+                      if (usrState.events.isEmpty)
+                        Container(
+                          margin: const EdgeInsets.only(top: 8),
+                          child: const CustomText.titleSmall(
+                            "—",
+                            letterSpacing: 0.1,
+                            fontWeight: 500,
+                            height: 1.3,
+                          ),
+                        ),
                       Container(
                         margin: const EdgeInsets.only(top: 8),
                         child: CustomText.titleSmall(usrState.events.join("\n"),
