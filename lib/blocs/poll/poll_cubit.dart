@@ -6,6 +6,7 @@ import 'package:dart_appwrite/dart_appwrite.dart' as dart_appwrite;
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:face_to_face_voting/constants.dart';
+import 'package:face_to_face_voting/data/remote_data.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -20,7 +21,7 @@ class PollCubit extends Cubit<PollState> {
   final Realtime realtime;
   final dart_appwrite.Health health;
 
-  final Dio clientDio = Dio();
+  final RemoteData remoteData;
 
   late DateTime serverTime;
   Timer? timer;
@@ -31,6 +32,7 @@ class PollCubit extends Cubit<PollState> {
     required this.teams,
     required this.realtime,
     required this.health,
+    required this.remoteData,
   }) : super(const PollState.initial());
 
   DateTime get now => DateTime.now().toUtc();
@@ -265,25 +267,9 @@ class PollCubit extends Cubit<PollState> {
     final jwt = await account.createJWT();
 
     try {
-      print(
-          'Sending vote: $vote, pollId: $pollId, eventId: $eventId, jwt: $jwt');
-
-      final response = await clientDio.post(
-        '$apiUrl/votes/create',
-        data: {
-          'eventId': eventId,
-          'pollId': pollId,
-          'vote': vote,
-          'jwt': jwt.jwt,
-        },
-        options: Options(
-          headers: {
-            'content-type': 'application/json',
-          },
-        ),
-      );
+      remoteData.sendVote(eventId, pollId, vote, jwt.jwt);
     } catch (error) {
-      print(error);
+      emit(PollState.error(error.toString()));
     }
   }
 }

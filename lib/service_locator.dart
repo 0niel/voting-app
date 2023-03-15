@@ -1,9 +1,11 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:dart_appwrite/dart_appwrite.dart' as dart_appwrite;
+import 'package:dio/dio.dart';
 import 'package:face_to_face_voting/blocs/events/events_cubit.dart';
 import 'package:face_to_face_voting/blocs/participants_cubit/participants_cubit.dart';
 import 'package:face_to_face_voting/blocs/poll/poll_cubit.dart';
 import 'package:face_to_face_voting/data/local_storage.dart';
+import 'package:face_to_face_voting/data/remote_data.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -38,6 +40,7 @@ Future<void> setup() async {
         teams: getIt(),
         realtime: getIt(),
         health: getIt(),
+        remoteData: getIt(),
       ));
   getIt.registerLazySingleton<ParticipantsCubit>(() => ParticipantsCubit(
         client: getIt(),
@@ -45,6 +48,8 @@ Future<void> setup() async {
         teams: getIt(),
       ));
 
+  getIt
+      .registerLazySingleton<RemoteData>(() => RemoteData(httpClient: getIt()));
   getIt.registerLazySingleton<LocalStorage>(
       () => LocalStorage(storage: getIt()));
 
@@ -70,6 +75,8 @@ Future<void> setup() async {
   getIt.registerLazySingleton<dart_appwrite.Health>(
       () => dart_appwrite.Health(dartClient));
 
+  final dio = Dio(BaseOptions(receiveTimeout: 20000));
+  getIt.registerLazySingleton(() => dio);
   final SharedPreferences sharedPreferences =
       await SharedPreferences.getInstance();
   getIt.registerLazySingleton<SharedPreferences>(() => sharedPreferences);
