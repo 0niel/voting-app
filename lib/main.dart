@@ -91,6 +91,9 @@ class App extends StatelessWidget {
         theme: AppTheme.theme,
         home: const LoginHomeScreen(),
         debugShowCheckedModeBanner: false,
+        navigatorObservers: [
+          SentryNavigatorObserver(),
+        ],
       ),
     );
   }
