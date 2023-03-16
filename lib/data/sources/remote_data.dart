@@ -9,6 +9,18 @@ class RemoteData {
 
   RemoteData({required this.httpClient});
 
+  String? _getMessageFromResponse(Response? response) {
+    if (response == null) return null;
+
+    try {
+      final data = response.data as Map<String, dynamic>;
+      final message = data['message'] as String;
+      return message;
+    } catch (e) {
+      return null;
+    }
+  }
+
   void sendVote(String eventId, String pollId, String vote, String jwt) async {
     final response = await httpClient.post(
       '$apiUrl/votes/create',
@@ -26,43 +38,61 @@ class RemoteData {
     );
 
     if (response.statusCode != 200) {
-      try {
-        final data = response.data as Map<String, dynamic>;
-        final message = data['message'] as String;
-        throw Exception(message);
-      } catch (e) {
-        throw Exception('При отправке голоса произошла ошибка');
-      }
+      throw Exception(_getMessageFromResponse(response) ??
+          'При отправке голоса произошла ошибка');
     }
   }
 
   Future<List<UserModel>> searchUsers(
       String eventID, String substring, String jwt) async {
-    final response = await httpClient.post(
-      '$apiUrl/users/search',
-      data: {
-        'eventID': eventID,
-        'substring': substring,
-        'jwt': jwt,
-      },
-    );
+    try {
+      final response = await httpClient.post(
+        '$apiUrl/users/search',
+        data: {
+          'eventID': eventID,
+          'substring': substring,
+          'jwt': jwt,
+        },
+      );
 
-    if (response.statusCode != 200) {
-      try {
-        final data = response.data as Map<String, dynamic>;
-        final message = data['message'] as String;
-        throw Exception(message);
-      } catch (e) {
-        throw Exception('При поиске пользователей произошла ошибка');
+      if (response.statusCode != 200) {
+        throw Exception(_getMessageFromResponse(response) ??
+            'При поиске пользователей произошла ошибка');
       }
+
+      final data = response.data as Map<String, dynamic>;
+      final users = (data['users'] as List<dynamic>)
+          .map((e) => UserModel.fromJson(e as Map<String, dynamic>))
+          .toList();
+
+      return users;
+    } on DioError catch (e) {
+      throw Exception(_getMessageFromResponse(e.response) ?? e.message);
     }
+  }
 
-    final data = response.data as Map<String, dynamic>;
-    final users = (data['users'] as List<dynamic>)
-        .map((e) => UserModel.fromJson(e as Map<String, dynamic>))
-        .toList();
+  Future<UserModel> getUser(String eventId, String userId, String jwt) async {
+    try {
+      final response = await httpClient.post(
+        '$apiUrl/users/get',
+        data: {
+          'userId': userId,
+          'eventId': eventId,
+          'jwt': jwt,
+        },
+      );
 
-    return users;
+      if (response.statusCode != 200) {
+        throw Exception(_getMessageFromResponse(response) ??
+            'При поиске пользователей произошла ошибка');
+      }
+
+      final user =
+          UserModel.fromJson((response.data as Map<String, dynamic>)['user']);
+      return user;
+    } on DioError catch (e) {
+      throw Exception(_getMessageFromResponse(e.response) ?? e.message);
+    }
   }
 
   Future<void> updateParticipantStatus(
@@ -71,33 +101,32 @@ class RemoteData {
     String jwt,
     UpdateType updateType,
   ) async {
-    final data = {
-      'eventID': eventID,
-      'jwt': jwt,
-      'receivedId': receivedId,
-    };
+    try {
+      final data = {
+        'eventID': eventID,
+        'jwt': jwt,
+        'receivedId': receivedId,
+      };
 
-    late final response;
-    if (updateType == UpdateType.add) {
-      response = await httpClient.post(
-        '$apiUrl/events/update-participant',
-        data: data,
-      );
-    } else {
-      response = await httpClient.delete(
-        '$apiUrl/events/update-participant',
-        data: data,
-      );
-    }
-
-    if (response.statusCode != 200) {
-      try {
-        final data = response.data as Map<String, dynamic>;
-        final message = data['message'] as String;
-        throw Exception(message);
-      } catch (e) {
-        throw Exception('При обновлении статуса участника произошла ошибка');
+      late final response;
+      if (updateType == UpdateType.add) {
+        response = await httpClient.post(
+          '$apiUrl/events/update-participant',
+          data: data,
+        );
+      } else {
+        response = await httpClient.delete(
+          '$apiUrl/events/update-participant',
+          data: data,
+        );
       }
+
+      if (response.statusCode != 200) {
+        throw Exception(_getMessageFromResponse(response) ??
+            'При обновлении статуса участника произошла ошибка');
+      }
+    } on DioError catch (e) {
+      throw Exception(_getMessageFromResponse(e.response) ?? e.message);
     }
   }
 }

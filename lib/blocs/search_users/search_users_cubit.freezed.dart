@@ -21,6 +21,8 @@ mixin _$SearchUsersState {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(List<MapEntry<UserModel, bool>> users) loaded,
+    required TResult Function(MapEntry<UserModel, bool> user, Image avatar)
+        loadedUser,
     required TResult Function(String message) error,
   }) =>
       throw _privateConstructorUsedError;
@@ -29,6 +31,7 @@ mixin _$SearchUsersState {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(List<MapEntry<UserModel, bool>> users)? loaded,
+    TResult? Function(MapEntry<UserModel, bool> user, Image avatar)? loadedUser,
     TResult? Function(String message)? error,
   }) =>
       throw _privateConstructorUsedError;
@@ -37,6 +40,7 @@ mixin _$SearchUsersState {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(List<MapEntry<UserModel, bool>> users)? loaded,
+    TResult Function(MapEntry<UserModel, bool> user, Image avatar)? loadedUser,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) =>
@@ -46,6 +50,7 @@ mixin _$SearchUsersState {
     required TResult Function(_Initial value) initial,
     required TResult Function(_Loading value) loading,
     required TResult Function(_Success value) loaded,
+    required TResult Function(_SuccessUser value) loadedUser,
     required TResult Function(_Error value) error,
   }) =>
       throw _privateConstructorUsedError;
@@ -54,6 +59,7 @@ mixin _$SearchUsersState {
     TResult? Function(_Initial value)? initial,
     TResult? Function(_Loading value)? loading,
     TResult? Function(_Success value)? loaded,
+    TResult? Function(_SuccessUser value)? loadedUser,
     TResult? Function(_Error value)? error,
   }) =>
       throw _privateConstructorUsedError;
@@ -62,6 +68,7 @@ mixin _$SearchUsersState {
     TResult Function(_Initial value)? initial,
     TResult Function(_Loading value)? loading,
     TResult Function(_Success value)? loaded,
+    TResult Function(_SuccessUser value)? loadedUser,
     TResult Function(_Error value)? error,
     required TResult orElse(),
   }) =>
@@ -126,6 +133,8 @@ class _$_Initial implements _Initial {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(List<MapEntry<UserModel, bool>> users) loaded,
+    required TResult Function(MapEntry<UserModel, bool> user, Image avatar)
+        loadedUser,
     required TResult Function(String message) error,
   }) {
     return initial();
@@ -137,6 +146,7 @@ class _$_Initial implements _Initial {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(List<MapEntry<UserModel, bool>> users)? loaded,
+    TResult? Function(MapEntry<UserModel, bool> user, Image avatar)? loadedUser,
     TResult? Function(String message)? error,
   }) {
     return initial?.call();
@@ -148,6 +158,7 @@ class _$_Initial implements _Initial {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(List<MapEntry<UserModel, bool>> users)? loaded,
+    TResult Function(MapEntry<UserModel, bool> user, Image avatar)? loadedUser,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -163,6 +174,7 @@ class _$_Initial implements _Initial {
     required TResult Function(_Initial value) initial,
     required TResult Function(_Loading value) loading,
     required TResult Function(_Success value) loaded,
+    required TResult Function(_SuccessUser value) loadedUser,
     required TResult Function(_Error value) error,
   }) {
     return initial(this);
@@ -174,6 +186,7 @@ class _$_Initial implements _Initial {
     TResult? Function(_Initial value)? initial,
     TResult? Function(_Loading value)? loading,
     TResult? Function(_Success value)? loaded,
+    TResult? Function(_SuccessUser value)? loadedUser,
     TResult? Function(_Error value)? error,
   }) {
     return initial?.call(this);
@@ -185,6 +198,7 @@ class _$_Initial implements _Initial {
     TResult Function(_Initial value)? initial,
     TResult Function(_Loading value)? loading,
     TResult Function(_Success value)? loaded,
+    TResult Function(_SuccessUser value)? loadedUser,
     TResult Function(_Error value)? error,
     required TResult orElse(),
   }) {
@@ -239,6 +253,8 @@ class _$_Loading implements _Loading {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(List<MapEntry<UserModel, bool>> users) loaded,
+    required TResult Function(MapEntry<UserModel, bool> user, Image avatar)
+        loadedUser,
     required TResult Function(String message) error,
   }) {
     return loading();
@@ -250,6 +266,7 @@ class _$_Loading implements _Loading {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(List<MapEntry<UserModel, bool>> users)? loaded,
+    TResult? Function(MapEntry<UserModel, bool> user, Image avatar)? loadedUser,
     TResult? Function(String message)? error,
   }) {
     return loading?.call();
@@ -261,6 +278,7 @@ class _$_Loading implements _Loading {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(List<MapEntry<UserModel, bool>> users)? loaded,
+    TResult Function(MapEntry<UserModel, bool> user, Image avatar)? loadedUser,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -276,6 +294,7 @@ class _$_Loading implements _Loading {
     required TResult Function(_Initial value) initial,
     required TResult Function(_Loading value) loading,
     required TResult Function(_Success value) loaded,
+    required TResult Function(_SuccessUser value) loadedUser,
     required TResult Function(_Error value) error,
   }) {
     return loading(this);
@@ -287,6 +306,7 @@ class _$_Loading implements _Loading {
     TResult? Function(_Initial value)? initial,
     TResult? Function(_Loading value)? loading,
     TResult? Function(_Success value)? loaded,
+    TResult? Function(_SuccessUser value)? loadedUser,
     TResult? Function(_Error value)? error,
   }) {
     return loading?.call(this);
@@ -298,6 +318,7 @@ class _$_Loading implements _Loading {
     TResult Function(_Initial value)? initial,
     TResult Function(_Loading value)? loading,
     TResult Function(_Success value)? loaded,
+    TResult Function(_SuccessUser value)? loadedUser,
     TResult Function(_Error value)? error,
     required TResult orElse(),
   }) {
@@ -385,6 +406,8 @@ class _$_Success implements _Success {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(List<MapEntry<UserModel, bool>> users) loaded,
+    required TResult Function(MapEntry<UserModel, bool> user, Image avatar)
+        loadedUser,
     required TResult Function(String message) error,
   }) {
     return loaded(users);
@@ -396,6 +419,7 @@ class _$_Success implements _Success {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(List<MapEntry<UserModel, bool>> users)? loaded,
+    TResult? Function(MapEntry<UserModel, bool> user, Image avatar)? loadedUser,
     TResult? Function(String message)? error,
   }) {
     return loaded?.call(users);
@@ -407,6 +431,7 @@ class _$_Success implements _Success {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(List<MapEntry<UserModel, bool>> users)? loaded,
+    TResult Function(MapEntry<UserModel, bool> user, Image avatar)? loadedUser,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -422,6 +447,7 @@ class _$_Success implements _Success {
     required TResult Function(_Initial value) initial,
     required TResult Function(_Loading value) loading,
     required TResult Function(_Success value) loaded,
+    required TResult Function(_SuccessUser value) loadedUser,
     required TResult Function(_Error value) error,
   }) {
     return loaded(this);
@@ -433,6 +459,7 @@ class _$_Success implements _Success {
     TResult? Function(_Initial value)? initial,
     TResult? Function(_Loading value)? loading,
     TResult? Function(_Success value)? loaded,
+    TResult? Function(_SuccessUser value)? loadedUser,
     TResult? Function(_Error value)? error,
   }) {
     return loaded?.call(this);
@@ -444,6 +471,7 @@ class _$_Success implements _Success {
     TResult Function(_Initial value)? initial,
     TResult Function(_Loading value)? loading,
     TResult Function(_Success value)? loaded,
+    TResult Function(_SuccessUser value)? loadedUser,
     TResult Function(_Error value)? error,
     required TResult orElse(),
   }) {
@@ -461,6 +489,169 @@ abstract class _Success implements SearchUsersState {
   List<MapEntry<UserModel, bool>> get users;
   @JsonKey(ignore: true)
   _$$_SuccessCopyWith<_$_Success> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$_SuccessUserCopyWith<$Res> {
+  factory _$$_SuccessUserCopyWith(
+          _$_SuccessUser value, $Res Function(_$_SuccessUser) then) =
+      __$$_SuccessUserCopyWithImpl<$Res>;
+  @useResult
+  $Res call({MapEntry<UserModel, bool> user, Image avatar});
+}
+
+/// @nodoc
+class __$$_SuccessUserCopyWithImpl<$Res>
+    extends _$SearchUsersStateCopyWithImpl<$Res, _$_SuccessUser>
+    implements _$$_SuccessUserCopyWith<$Res> {
+  __$$_SuccessUserCopyWithImpl(
+      _$_SuccessUser _value, $Res Function(_$_SuccessUser) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? user = null,
+    Object? avatar = null,
+  }) {
+    return _then(_$_SuccessUser(
+      null == user
+          ? _value.user
+          : user // ignore: cast_nullable_to_non_nullable
+              as MapEntry<UserModel, bool>,
+      null == avatar
+          ? _value.avatar
+          : avatar // ignore: cast_nullable_to_non_nullable
+              as Image,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$_SuccessUser implements _SuccessUser {
+  const _$_SuccessUser(this.user, this.avatar);
+
+  @override
+  final MapEntry<UserModel, bool> user;
+  @override
+  final Image avatar;
+
+  @override
+  String toString() {
+    return 'SearchUsersState.loadedUser(user: $user, avatar: $avatar)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$_SuccessUser &&
+            (identical(other.user, user) || other.user == user) &&
+            (identical(other.avatar, avatar) || other.avatar == avatar));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, user, avatar);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$_SuccessUserCopyWith<_$_SuccessUser> get copyWith =>
+      __$$_SuccessUserCopyWithImpl<_$_SuccessUser>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initial,
+    required TResult Function() loading,
+    required TResult Function(List<MapEntry<UserModel, bool>> users) loaded,
+    required TResult Function(MapEntry<UserModel, bool> user, Image avatar)
+        loadedUser,
+    required TResult Function(String message) error,
+  }) {
+    return loadedUser(user, avatar);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? initial,
+    TResult? Function()? loading,
+    TResult? Function(List<MapEntry<UserModel, bool>> users)? loaded,
+    TResult? Function(MapEntry<UserModel, bool> user, Image avatar)? loadedUser,
+    TResult? Function(String message)? error,
+  }) {
+    return loadedUser?.call(user, avatar);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initial,
+    TResult Function()? loading,
+    TResult Function(List<MapEntry<UserModel, bool>> users)? loaded,
+    TResult Function(MapEntry<UserModel, bool> user, Image avatar)? loadedUser,
+    TResult Function(String message)? error,
+    required TResult orElse(),
+  }) {
+    if (loadedUser != null) {
+      return loadedUser(user, avatar);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Initial value) initial,
+    required TResult Function(_Loading value) loading,
+    required TResult Function(_Success value) loaded,
+    required TResult Function(_SuccessUser value) loadedUser,
+    required TResult Function(_Error value) error,
+  }) {
+    return loadedUser(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Initial value)? initial,
+    TResult? Function(_Loading value)? loading,
+    TResult? Function(_Success value)? loaded,
+    TResult? Function(_SuccessUser value)? loadedUser,
+    TResult? Function(_Error value)? error,
+  }) {
+    return loadedUser?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Initial value)? initial,
+    TResult Function(_Loading value)? loading,
+    TResult Function(_Success value)? loaded,
+    TResult Function(_SuccessUser value)? loadedUser,
+    TResult Function(_Error value)? error,
+    required TResult orElse(),
+  }) {
+    if (loadedUser != null) {
+      return loadedUser(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _SuccessUser implements SearchUsersState {
+  const factory _SuccessUser(
+          final MapEntry<UserModel, bool> user, final Image avatar) =
+      _$_SuccessUser;
+
+  MapEntry<UserModel, bool> get user;
+  Image get avatar;
+  @JsonKey(ignore: true)
+  _$$_SuccessUserCopyWith<_$_SuccessUser> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -529,6 +720,8 @@ class _$_Error implements _Error {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(List<MapEntry<UserModel, bool>> users) loaded,
+    required TResult Function(MapEntry<UserModel, bool> user, Image avatar)
+        loadedUser,
     required TResult Function(String message) error,
   }) {
     return error(message);
@@ -540,6 +733,7 @@ class _$_Error implements _Error {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(List<MapEntry<UserModel, bool>> users)? loaded,
+    TResult? Function(MapEntry<UserModel, bool> user, Image avatar)? loadedUser,
     TResult? Function(String message)? error,
   }) {
     return error?.call(message);
@@ -551,6 +745,7 @@ class _$_Error implements _Error {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(List<MapEntry<UserModel, bool>> users)? loaded,
+    TResult Function(MapEntry<UserModel, bool> user, Image avatar)? loadedUser,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -566,6 +761,7 @@ class _$_Error implements _Error {
     required TResult Function(_Initial value) initial,
     required TResult Function(_Loading value) loading,
     required TResult Function(_Success value) loaded,
+    required TResult Function(_SuccessUser value) loadedUser,
     required TResult Function(_Error value) error,
   }) {
     return error(this);
@@ -577,6 +773,7 @@ class _$_Error implements _Error {
     TResult? Function(_Initial value)? initial,
     TResult? Function(_Loading value)? loading,
     TResult? Function(_Success value)? loaded,
+    TResult? Function(_SuccessUser value)? loadedUser,
     TResult? Function(_Error value)? error,
   }) {
     return error?.call(this);
@@ -588,6 +785,7 @@ class _$_Error implements _Error {
     TResult Function(_Initial value)? initial,
     TResult Function(_Loading value)? loading,
     TResult Function(_Success value)? loaded,
+    TResult Function(_SuccessUser value)? loadedUser,
     TResult Function(_Error value)? error,
     required TResult orElse(),
   }) {

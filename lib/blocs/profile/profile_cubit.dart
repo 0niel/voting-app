@@ -5,6 +5,7 @@ import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:face_to_face_voting/constants.dart';
 import 'package:face_to_face_voting/data/sources/local_storage.dart';
+import 'package:face_to_face_voting/utils/formatters.dart';
 import 'package:flutter/widgets.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -78,56 +79,6 @@ class ProfileCubit extends Cubit<ProfileState> {
       onDone: () => debugPrint('realtime_mixin:onDone'),
       cancelOnError: false,
     );
-  }
-
-  String _cyryllicToLat(String text) {
-    final Map<String, String> cyrillicToLatin = {
-      "а": "a",
-      "б": "b",
-      "в": "v",
-      "г": "g",
-      "д": "d",
-      "е": "e",
-      "ё": "yo",
-      "ж": "zh",
-      "з": "z",
-      "и": "i",
-      "й": "j",
-      "к": "k",
-      "л": "l",
-      "м": "m",
-      "н": "n",
-      "о": "o",
-      "п": "p",
-      "р": "r",
-      "с": "s",
-      "т": "t",
-      "у": "u",
-      "ф": "f",
-      "х": "h",
-      "ц": "c",
-      "ч": "ch",
-      "ш": "sh",
-      "щ": "sh'",
-      "ъ": "",
-      "ы": "y",
-      "ь": "",
-      "э": "e",
-      "ю": "yu",
-      "я": "ya",
-      " ": " ",
-    };
-
-    final List<String> letters = text.toLowerCase().split('');
-    final List<String> latinLetters = [];
-
-    for (var letter in letters) {
-      if (cyrillicToLatin.containsKey(letter)) {
-        latinLetters.add(cyrillicToLatin[letter]!);
-      }
-    }
-
-    return latinLetters.join();
   }
 
   String _mapErrorsToMessage(String? error) {
@@ -208,7 +159,7 @@ class ProfileCubit extends Cubit<ProfileState> {
     final prefs = await account.getPrefs();
 
     final avatarByteList = await avatars.getInitials(
-      name: _cyryllicToLat(user.name),
+      name: StringFormatter.cyryllicToLat(user.name),
     );
 
     final avatar = Image.memory(avatarByteList);

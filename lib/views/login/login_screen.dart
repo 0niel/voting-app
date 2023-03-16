@@ -3,6 +3,7 @@ import 'package:face_to_face_voting/theme/text_style.dart';
 import 'package:face_to_face_voting/utils/spacing.dart';
 import 'package:face_to_face_voting/widgets/button.dart';
 import 'package:face_to_face_voting/widgets/container.dart';
+import 'package:face_to_face_voting/widgets/snackbar.dart';
 import 'package:face_to_face_voting/widgets/text.dart';
 import 'package:flutter/material.dart';
 
@@ -31,7 +32,7 @@ class _LoginScreenState extends State<LoginScreen> {
       listener: (context, state) {
         state.maybeWhen(
           error: (message) {
-            showSnack(message);
+            showMessage(context, message, true);
           },
           orElse: () {},
         );
@@ -198,34 +199,18 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  void showSnack(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        elevation: 0,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(8),
-            topRight: Radius.circular(8),
-          ),
-        ),
-        content: CustomText.bodyMedium("Ошибка: $message", fontWeight: 700),
-        backgroundColor: AppTheme.theme.colorScheme.error.withOpacity(0.8),
-      ),
-    );
-  }
-
   void loginUser() {
     final String email = _emailController.text;
     final String password = _passwordController.text;
 
     if (email.isEmpty) {
-      showSnack("Пожалуйста, введите email");
+      showMessage(context, "Пожалуйста, введите email", true);
       return;
     } else if (!StringValidator.isEmail(email)) {
-      showSnack("Пожалуйста, введите корректный email");
+      showMessage(context, "Пожалуйста, введите корректный email", true);
       return;
     } else if (password.isEmpty) {
-      showSnack("Пожалуйста, введите пароль");
+      showMessage(context, "Пожалуйста, введите пароль", true);
       return;
     }
 

@@ -5,6 +5,7 @@ import 'package:face_to_face_voting/utils/spacing.dart';
 import 'package:face_to_face_voting/views/home.dart';
 import 'package:face_to_face_voting/widgets/button.dart';
 import 'package:face_to_face_voting/widgets/container.dart';
+import 'package:face_to_face_voting/widgets/snackbar.dart';
 import 'package:face_to_face_voting/widgets/text.dart';
 import 'package:flutter/material.dart';
 
@@ -34,7 +35,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       listener: (context, state) {
         state.maybeWhen(
           error: (message) {
-            showSnack(message);
+            showMessage(context, message, true);
           },
           success: (user, prefs, jwt, avatar, _) {
             BlocProvider.of<EventsCubit>(context).started();
@@ -243,22 +244,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  void showSnack(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        elevation: 0,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(8),
-            topRight: Radius.circular(8),
-          ),
-        ),
-        content: CustomText.bodyMedium("Ошибка: $message", fontWeight: 700),
-        backgroundColor: AppTheme.theme.colorScheme.error.withOpacity(0.8),
-      ),
-    );
-  }
-
   void registerUser() {
     final String name = _nameController.text;
     final String email = _emailController.text;
@@ -266,22 +251,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
     final String repeatPassword = _passwordRepeatController.text;
 
     if (email.isEmpty) {
-      showSnack("Пожалуйста, введите email");
+      showMessage(context, "Пожалуйста, введите email", true);
       return;
     } else if (!StringValidator.isEmail(email)) {
-      showSnack("Пожалуйста, введите корректный email");
+      showMessage(context, "Пожалуйста, введите корректный email", true);
       return;
     } else if (password.isEmpty) {
-      showSnack("Пожалуйста, введите пароль");
+      showMessage(context, "Пожалуйста, введите пароль", true);
       return;
     } else if (password.length < 8) {
-      showSnack("Пароль должен быть не менее 8 символов");
+      showMessage(context, "Пароль должен быть не менее 8 символов", true);
       return;
     } else if (password != repeatPassword) {
-      showSnack("Пароли не совпадают");
+      showMessage(context, "Пароли не совпадают", true);
       return;
     } else if (name.isEmpty) {
-      showSnack("Пожалуйста, введите ваше ФИО");
+      showMessage(context, "Пожалуйста, введите ваше ФИО", true);
       return;
     }
 

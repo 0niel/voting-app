@@ -4,6 +4,7 @@ import 'package:face_to_face_voting/blocs/search_users/search_users_cubit.dart';
 import 'package:face_to_face_voting/theme/text_style.dart';
 import 'package:face_to_face_voting/utils/spacing.dart';
 import 'package:face_to_face_voting/widgets/button.dart';
+import 'package:face_to_face_voting/widgets/snackbar.dart';
 import 'package:face_to_face_voting/widgets/text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,23 +15,6 @@ class SearchUsersScreen extends StatelessWidget {
   SearchUsersScreen({Key? key}) : super(key: key);
 
   final FloatingSearchBarController _controller = FloatingSearchBarController();
-
-  void _showMessage(BuildContext context, String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: CustomText.bodyMedium(message),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
-        padding: Spacing.all(16),
-        margin: Spacing.all(16),
-        behavior: SnackBarBehavior.floating,
-        backgroundColor: Theme.of(context).colorScheme.background,
-        duration: const Duration(seconds: 3),
-        showCloseIcon: true,
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +28,7 @@ class SearchUsersScreen extends StatelessWidget {
             state.maybeWhen(
               orElse: () {},
               error: (message) {
-                _showMessage(context, message);
+                showMessage(context, message, true);
               },
             );
           },
@@ -150,7 +134,7 @@ class SearchUsersScreen extends StatelessWidget {
                                       onPressed: () {
                                         eventBloc.state.maybeWhen(
                                           orElse: () {
-                                            _showMessage(
+                                            showMessage(
                                               context,
                                               'Невозможно удалить участника',
                                             );
@@ -161,7 +145,7 @@ class SearchUsersScreen extends StatelessWidget {
                                                 .removeParticipant(
                                                     event.$id, user.id);
 
-                                            _showMessage(
+                                            showMessage(
                                               context,
                                               'Участник удален',
                                             );
@@ -185,7 +169,7 @@ class SearchUsersScreen extends StatelessWidget {
                                       onPressed: () {
                                         eventBloc.state.maybeWhen(
                                           orElse: () {
-                                            _showMessage(
+                                            showMessage(
                                               context,
                                               'Невозможно добавить участника',
                                             );
@@ -196,7 +180,7 @@ class SearchUsersScreen extends StatelessWidget {
                                                 .addParticipant(
                                                     event.$id, user.id);
 
-                                            _showMessage(
+                                            showMessage(
                                               context,
                                               'Участник добавлен',
                                             );

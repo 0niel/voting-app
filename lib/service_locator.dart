@@ -51,6 +51,7 @@ Future<void> setup() async {
         teams: getIt(),
       ));
   getIt.registerLazySingleton<SearchUsersCubit>(() => SearchUsersCubit(
+        avatars: getIt(),
         teams: getIt(),
         account: getIt(),
         remoteData: getIt(),

@@ -52,7 +52,7 @@ class ParticipantsCubit extends Cubit<ParticipantsState> {
     }
   }
 
-  void addParticipant(String eventId, String userId) async {
+  Future<void> addParticipant(String eventId, String userId) async {
     emit(const ParticipantsState.loading());
 
     try {
@@ -75,7 +75,7 @@ class ParticipantsCubit extends Cubit<ParticipantsState> {
     }
   }
 
-  void removeParticipant(String eventId, String userId) async {
+  Future<void> removeParticipant(String eventId, String userId) async {
     emit(const ParticipantsState.loading());
 
     try {
