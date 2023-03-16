@@ -131,20 +131,17 @@ class QrScannerScreen extends StatelessWidget {
             return state.maybeWhen(
               eventLoaded: (event, _) {
                 return MobileScanner(
-                  // fit: BoxFit.contain,
-                  controller: MobileScannerController(
-                    facing: CameraFacing.back,
-                  ),
+                  controller: cameraController,
                   onDetect: (capture) {
                     final List<Barcode> barcodes = capture.barcodes;
                     final Uint8List? image = capture.image;
                     for (final barcode in barcodes) {
                       if (barcode.rawValue == null) return;
 
+                      cameraController.stop();
                       context
                           .read<SearchUsersCubit>()
                           .getUser(event, barcode.rawValue!);
-
                       showModalBottomSheet(
                         context: context,
                         backgroundColor: Colors.white,
@@ -158,7 +155,9 @@ class QrScannerScreen extends StatelessWidget {
                           event: event,
                           userId: barcode.rawValue!,
                         ),
-                      );
+                      ).then((value) {
+                        cameraController.start();
+                      });
                     }
                   },
                 );
