@@ -1,5 +1,4 @@
 import 'package:face_to_face_voting/views/login/login_home_screen.dart';
-import 'package:face_to_face_voting/views/login/login_screen.dart';
 import 'package:face_to_face_voting/widgets/button.dart';
 import 'package:face_to_face_voting/widgets/text.dart';
 import 'package:flutter/material.dart';

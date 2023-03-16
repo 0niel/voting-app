@@ -4,7 +4,7 @@ import 'package:appwrite/appwrite.dart';
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:face_to_face_voting/constants.dart';
-import 'package:face_to_face_voting/data/local_storage.dart';
+import 'package:face_to_face_voting/data/sources/local_storage.dart';
 import 'package:flutter/widgets.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 

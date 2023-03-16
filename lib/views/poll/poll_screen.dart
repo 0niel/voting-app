@@ -7,7 +7,6 @@ import 'package:face_to_face_voting/theme/app_theme.dart';
 import 'package:face_to_face_voting/utils/spacing.dart';
 import 'package:face_to_face_voting/widgets/text.dart';
 import 'package:face_to_face_voting/widgets/votes_banner.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

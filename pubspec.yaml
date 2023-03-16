@@ -35,6 +35,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   material_design_icons_flutter: ^6.0.7096
+  material_floating_search_bar: ^0.3.7
   google_fonts: ^4.0.3
   bloc: ^8.1.1
   flutter_bloc: ^8.1.2

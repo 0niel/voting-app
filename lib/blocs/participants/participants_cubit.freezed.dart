@@ -20,7 +20,7 @@ mixin _$ParticipantsState {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(MembershipList participants) loaded,
+    required TResult Function(Models.MembershipList participants) loaded,
     required TResult Function(String message) error,
   }) =>
       throw _privateConstructorUsedError;
@@ -28,7 +28,7 @@ mixin _$ParticipantsState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(MembershipList participants)? loaded,
+    TResult? Function(Models.MembershipList participants)? loaded,
     TResult? Function(String message)? error,
   }) =>
       throw _privateConstructorUsedError;
@@ -36,7 +36,7 @@ mixin _$ParticipantsState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(MembershipList participants)? loaded,
+    TResult Function(Models.MembershipList participants)? loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) =>
@@ -125,7 +125,7 @@ class _$_Initial implements _Initial {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(MembershipList participants) loaded,
+    required TResult Function(Models.MembershipList participants) loaded,
     required TResult Function(String message) error,
   }) {
     return initial();
@@ -136,7 +136,7 @@ class _$_Initial implements _Initial {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(MembershipList participants)? loaded,
+    TResult? Function(Models.MembershipList participants)? loaded,
     TResult? Function(String message)? error,
   }) {
     return initial?.call();
@@ -147,7 +147,7 @@ class _$_Initial implements _Initial {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(MembershipList participants)? loaded,
+    TResult Function(Models.MembershipList participants)? loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -238,7 +238,7 @@ class _$_Loading implements _Loading {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(MembershipList participants) loaded,
+    required TResult Function(Models.MembershipList participants) loaded,
     required TResult Function(String message) error,
   }) {
     return loading();
@@ -249,7 +249,7 @@ class _$_Loading implements _Loading {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(MembershipList participants)? loaded,
+    TResult? Function(Models.MembershipList participants)? loaded,
     TResult? Function(String message)? error,
   }) {
     return loading?.call();
@@ -260,7 +260,7 @@ class _$_Loading implements _Loading {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(MembershipList participants)? loaded,
+    TResult Function(Models.MembershipList participants)? loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -318,7 +318,7 @@ abstract class _$$_SuccessCopyWith<$Res> {
           _$_Success value, $Res Function(_$_Success) then) =
       __$$_SuccessCopyWithImpl<$Res>;
   @useResult
-  $Res call({MembershipList participants});
+  $Res call({Models.MembershipList participants});
 }
 
 /// @nodoc
@@ -337,7 +337,7 @@ class __$$_SuccessCopyWithImpl<$Res>
       null == participants
           ? _value.participants
           : participants // ignore: cast_nullable_to_non_nullable
-              as MembershipList,
+              as Models.MembershipList,
     ));
   }
 }
@@ -348,7 +348,7 @@ class _$_Success implements _Success {
   const _$_Success(this.participants);
 
   @override
-  final MembershipList participants;
+  final Models.MembershipList participants;
 
   @override
   String toString() {
@@ -378,7 +378,7 @@ class _$_Success implements _Success {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(MembershipList participants) loaded,
+    required TResult Function(Models.MembershipList participants) loaded,
     required TResult Function(String message) error,
   }) {
     return loaded(participants);
@@ -389,7 +389,7 @@ class _$_Success implements _Success {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(MembershipList participants)? loaded,
+    TResult? Function(Models.MembershipList participants)? loaded,
     TResult? Function(String message)? error,
   }) {
     return loaded?.call(participants);
@@ -400,7 +400,7 @@ class _$_Success implements _Success {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(MembershipList participants)? loaded,
+    TResult Function(Models.MembershipList participants)? loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -449,9 +449,9 @@ class _$_Success implements _Success {
 }
 
 abstract class _Success implements ParticipantsState {
-  const factory _Success(final MembershipList participants) = _$_Success;
+  const factory _Success(final Models.MembershipList participants) = _$_Success;
 
-  MembershipList get participants;
+  Models.MembershipList get participants;
   @JsonKey(ignore: true)
   _$$_SuccessCopyWith<_$_Success> get copyWith =>
       throw _privateConstructorUsedError;
@@ -521,7 +521,7 @@ class _$_Error implements _Error {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(MembershipList participants) loaded,
+    required TResult Function(Models.MembershipList participants) loaded,
     required TResult Function(String message) error,
   }) {
     return error(message);
@@ -532,7 +532,7 @@ class _$_Error implements _Error {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(MembershipList participants)? loaded,
+    TResult? Function(Models.MembershipList participants)? loaded,
     TResult? Function(String message)? error,
   }) {
     return error?.call(message);
@@ -543,7 +543,7 @@ class _$_Error implements _Error {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(MembershipList participants)? loaded,
+    TResult Function(Models.MembershipList participants)? loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {

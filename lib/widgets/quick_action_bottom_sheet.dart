@@ -1,9 +1,10 @@
 import 'package:face_to_face_voting/blocs/events/events_cubit.dart';
-import 'package:face_to_face_voting/blocs/participants_cubit/participants_cubit.dart';
+import 'package:face_to_face_voting/blocs/participants/participants_cubit.dart';
 import 'package:face_to_face_voting/theme/app_theme.dart';
 import 'package:face_to_face_voting/utils/formatters.dart';
 import 'package:face_to_face_voting/utils/spacing.dart';
 import 'package:face_to_face_voting/views/qr_scanner/qr_scanner_screen.dart';
+import 'package:face_to_face_voting/views/search_users/search_users_screen.dart';
 import 'package:face_to_face_voting/widgets/text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -39,17 +40,23 @@ class _ParticipantsBottomSheet extends StatelessWidget {
                   Row(
                     children: [
                       CustomButton.text(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => SearchUsersScreen(),
+                            ),
+                          );
+                        },
                         backgroundColor: AppTheme.theme.colorScheme.primary,
                         padding: Spacing.symmetric(vertical: 8, horizontal: 16),
                         child: Row(
                           children: const [
                             Icon(
-                              MdiIcons.plus,
+                              MdiIcons.accountSearch,
                             ),
                             SizedBox(width: 8),
                             CustomText.bodySmall(
-                              "Добавить",
+                              "Поиск",
                               fontWeight: 700,
                             ),
                           ],
@@ -74,7 +81,9 @@ class _ParticipantsBottomSheet extends StatelessWidget {
                             builder: (context, state) {
                               return state.maybeMap(
                                 loaded: (state) {
-                                  return ListView.builder(
+                                  return ListView.separated(
+                                    separatorBuilder: (context, index) =>
+                                        const Divider(),
                                     shrinkWrap: true,
                                     itemCount: state.participants.total,
                                     itemBuilder: (context, index) {
