@@ -22,7 +22,7 @@ mixin _$ProfileState {
     required TResult Function() loginScreen,
     required TResult Function() loading,
     required TResult Function(Models.Account user, Models.Preferences prefs,
-            Models.Jwt jwt, Image avatar, List<String> events)
+            Image avatar, List<String> events)
         success,
     required TResult Function(String message) error,
   }) =>
@@ -33,7 +33,7 @@ mixin _$ProfileState {
     TResult? Function()? loginScreen,
     TResult? Function()? loading,
     TResult? Function(Models.Account user, Models.Preferences prefs,
-            Models.Jwt jwt, Image avatar, List<String> events)?
+            Image avatar, List<String> events)?
         success,
     TResult? Function(String message)? error,
   }) =>
@@ -44,7 +44,7 @@ mixin _$ProfileState {
     TResult Function()? loginScreen,
     TResult Function()? loading,
     TResult Function(Models.Account user, Models.Preferences prefs,
-            Models.Jwt jwt, Image avatar, List<String> events)?
+            Image avatar, List<String> events)?
         success,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -139,7 +139,7 @@ class _$_Initial implements _Initial {
     required TResult Function() loginScreen,
     required TResult Function() loading,
     required TResult Function(Models.Account user, Models.Preferences prefs,
-            Models.Jwt jwt, Image avatar, List<String> events)
+            Image avatar, List<String> events)
         success,
     required TResult Function(String message) error,
   }) {
@@ -153,7 +153,7 @@ class _$_Initial implements _Initial {
     TResult? Function()? loginScreen,
     TResult? Function()? loading,
     TResult? Function(Models.Account user, Models.Preferences prefs,
-            Models.Jwt jwt, Image avatar, List<String> events)?
+            Image avatar, List<String> events)?
         success,
     TResult? Function(String message)? error,
   }) {
@@ -167,7 +167,7 @@ class _$_Initial implements _Initial {
     TResult Function()? loginScreen,
     TResult Function()? loading,
     TResult Function(Models.Account user, Models.Preferences prefs,
-            Models.Jwt jwt, Image avatar, List<String> events)?
+            Image avatar, List<String> events)?
         success,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -265,7 +265,7 @@ class _$_LoginScreen implements _LoginScreen {
     required TResult Function() loginScreen,
     required TResult Function() loading,
     required TResult Function(Models.Account user, Models.Preferences prefs,
-            Models.Jwt jwt, Image avatar, List<String> events)
+            Image avatar, List<String> events)
         success,
     required TResult Function(String message) error,
   }) {
@@ -279,7 +279,7 @@ class _$_LoginScreen implements _LoginScreen {
     TResult? Function()? loginScreen,
     TResult? Function()? loading,
     TResult? Function(Models.Account user, Models.Preferences prefs,
-            Models.Jwt jwt, Image avatar, List<String> events)?
+            Image avatar, List<String> events)?
         success,
     TResult? Function(String message)? error,
   }) {
@@ -293,7 +293,7 @@ class _$_LoginScreen implements _LoginScreen {
     TResult Function()? loginScreen,
     TResult Function()? loading,
     TResult Function(Models.Account user, Models.Preferences prefs,
-            Models.Jwt jwt, Image avatar, List<String> events)?
+            Image avatar, List<String> events)?
         success,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -390,7 +390,7 @@ class _$_Loading implements _Loading {
     required TResult Function() loginScreen,
     required TResult Function() loading,
     required TResult Function(Models.Account user, Models.Preferences prefs,
-            Models.Jwt jwt, Image avatar, List<String> events)
+            Image avatar, List<String> events)
         success,
     required TResult Function(String message) error,
   }) {
@@ -404,7 +404,7 @@ class _$_Loading implements _Loading {
     TResult? Function()? loginScreen,
     TResult? Function()? loading,
     TResult? Function(Models.Account user, Models.Preferences prefs,
-            Models.Jwt jwt, Image avatar, List<String> events)?
+            Image avatar, List<String> events)?
         success,
     TResult? Function(String message)? error,
   }) {
@@ -418,7 +418,7 @@ class _$_Loading implements _Loading {
     TResult Function()? loginScreen,
     TResult Function()? loading,
     TResult Function(Models.Account user, Models.Preferences prefs,
-            Models.Jwt jwt, Image avatar, List<String> events)?
+            Image avatar, List<String> events)?
         success,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -483,7 +483,6 @@ abstract class _$$_SuccessCopyWith<$Res> {
   $Res call(
       {Models.Account user,
       Models.Preferences prefs,
-      Models.Jwt jwt,
       Image avatar,
       List<String> events});
 }
@@ -500,7 +499,6 @@ class __$$_SuccessCopyWithImpl<$Res>
   $Res call({
     Object? user = null,
     Object? prefs = null,
-    Object? jwt = null,
     Object? avatar = null,
     Object? events = null,
   }) {
@@ -513,10 +511,6 @@ class __$$_SuccessCopyWithImpl<$Res>
           ? _value.prefs
           : prefs // ignore: cast_nullable_to_non_nullable
               as Models.Preferences,
-      null == jwt
-          ? _value.jwt
-          : jwt // ignore: cast_nullable_to_non_nullable
-              as Models.Jwt,
       null == avatar
           ? _value.avatar
           : avatar // ignore: cast_nullable_to_non_nullable
@@ -533,15 +527,13 @@ class __$$_SuccessCopyWithImpl<$Res>
 
 class _$_Success implements _Success {
   const _$_Success(
-      this.user, this.prefs, this.jwt, this.avatar, final List<String> events)
+      this.user, this.prefs, this.avatar, final List<String> events)
       : _events = events;
 
   @override
   final Models.Account user;
   @override
   final Models.Preferences prefs;
-  @override
-  final Models.Jwt jwt;
   @override
   final Image avatar;
   final List<String> _events;
@@ -554,7 +546,7 @@ class _$_Success implements _Success {
 
   @override
   String toString() {
-    return 'ProfileState.success(user: $user, prefs: $prefs, jwt: $jwt, avatar: $avatar, events: $events)';
+    return 'ProfileState.success(user: $user, prefs: $prefs, avatar: $avatar, events: $events)';
   }
 
   @override
@@ -564,13 +556,12 @@ class _$_Success implements _Success {
             other is _$_Success &&
             (identical(other.user, user) || other.user == user) &&
             (identical(other.prefs, prefs) || other.prefs == prefs) &&
-            (identical(other.jwt, jwt) || other.jwt == jwt) &&
             (identical(other.avatar, avatar) || other.avatar == avatar) &&
             const DeepCollectionEquality().equals(other._events, _events));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, user, prefs, jwt, avatar,
+  int get hashCode => Object.hash(runtimeType, user, prefs, avatar,
       const DeepCollectionEquality().hash(_events));
 
   @JsonKey(ignore: true)
@@ -586,11 +577,11 @@ class _$_Success implements _Success {
     required TResult Function() loginScreen,
     required TResult Function() loading,
     required TResult Function(Models.Account user, Models.Preferences prefs,
-            Models.Jwt jwt, Image avatar, List<String> events)
+            Image avatar, List<String> events)
         success,
     required TResult Function(String message) error,
   }) {
-    return success(user, prefs, jwt, avatar, events);
+    return success(user, prefs, avatar, events);
   }
 
   @override
@@ -600,11 +591,11 @@ class _$_Success implements _Success {
     TResult? Function()? loginScreen,
     TResult? Function()? loading,
     TResult? Function(Models.Account user, Models.Preferences prefs,
-            Models.Jwt jwt, Image avatar, List<String> events)?
+            Image avatar, List<String> events)?
         success,
     TResult? Function(String message)? error,
   }) {
-    return success?.call(user, prefs, jwt, avatar, events);
+    return success?.call(user, prefs, avatar, events);
   }
 
   @override
@@ -614,13 +605,13 @@ class _$_Success implements _Success {
     TResult Function()? loginScreen,
     TResult Function()? loading,
     TResult Function(Models.Account user, Models.Preferences prefs,
-            Models.Jwt jwt, Image avatar, List<String> events)?
+            Image avatar, List<String> events)?
         success,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
     if (success != null) {
-      return success(user, prefs, jwt, avatar, events);
+      return success(user, prefs, avatar, events);
     }
     return orElse();
   }
@@ -670,13 +661,11 @@ abstract class _Success implements ProfileState {
   const factory _Success(
       final Models.Account user,
       final Models.Preferences prefs,
-      final Models.Jwt jwt,
       final Image avatar,
       final List<String> events) = _$_Success;
 
   Models.Account get user;
   Models.Preferences get prefs;
-  Models.Jwt get jwt;
   Image get avatar;
   List<String> get events;
   @JsonKey(ignore: true)
@@ -750,7 +739,7 @@ class _$_Error implements _Error {
     required TResult Function() loginScreen,
     required TResult Function() loading,
     required TResult Function(Models.Account user, Models.Preferences prefs,
-            Models.Jwt jwt, Image avatar, List<String> events)
+            Image avatar, List<String> events)
         success,
     required TResult Function(String message) error,
   }) {
@@ -764,7 +753,7 @@ class _$_Error implements _Error {
     TResult? Function()? loginScreen,
     TResult? Function()? loading,
     TResult? Function(Models.Account user, Models.Preferences prefs,
-            Models.Jwt jwt, Image avatar, List<String> events)?
+            Image avatar, List<String> events)?
         success,
     TResult? Function(String message)? error,
   }) {
@@ -778,7 +767,7 @@ class _$_Error implements _Error {
     TResult Function()? loginScreen,
     TResult Function()? loading,
     TResult Function(Models.Account user, Models.Preferences prefs,
-            Models.Jwt jwt, Image avatar, List<String> events)?
+            Image avatar, List<String> events)?
         success,
     TResult Function(String message)? error,
     required TResult orElse(),

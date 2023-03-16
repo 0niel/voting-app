@@ -37,7 +37,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           error: (message) {
             showMessage(context, message, true);
           },
-          success: (user, prefs, jwt, avatar, _) {
+          success: (user, prefs, avatar, _) {
             BlocProvider.of<EventsCubit>(context).started();
             WidgetsBinding.instance.addPostFrameCallback((_) {
               Navigator.of(context).pushAndRemoveUntil(

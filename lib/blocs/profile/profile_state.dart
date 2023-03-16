@@ -8,7 +8,6 @@ class ProfileState with _$ProfileState {
   const factory ProfileState.success(
     Models.Account user,
     Models.Preferences prefs,
-    Models.Jwt jwt,
     Image avatar,
     List<String> events,
   ) = _Success;

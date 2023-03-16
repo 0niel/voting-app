@@ -76,7 +76,6 @@ class _ScannedBottomSheet extends StatelessWidget {
                             backgroundColor: AppTheme.theme.colorScheme.primary,
                             child: const CustomText.bodySmall(
                               "Удалить из участников",
-                              color: Colors.white,
                             ),
                           )
                         : CustomButton.text(
@@ -90,7 +89,6 @@ class _ScannedBottomSheet extends StatelessWidget {
                             },
                             child: const CustomText.bodySmall(
                               "Добавить в участники",
-                              color: Colors.white,
                             ),
                           ),
                   ],

@@ -29,6 +29,12 @@ class ProfileCubit extends Cubit<ProfileState> {
 
   RealtimeSubscription? subscription;
 
+  @override
+  Future<void> close() async {
+    subscription?.close();
+    super.close();
+  }
+
   void subscribeRealtime() async {
     if (subscription != null) {
       return;
@@ -43,6 +49,14 @@ class ProfileCubit extends Cubit<ProfileState> {
     ]);
 
     print('Subscribed to realtime events');
+
+    subscription!.stream.timeout(
+      const Duration(seconds: 8),
+      onTimeout: (sink) {
+        print('Realtime subscription timeout');
+        sink.addError('Realtime subscription timeout');
+      },
+    );
 
     subscription!.stream.listen(
       (event) {
@@ -155,7 +169,6 @@ class ProfileCubit extends Cubit<ProfileState> {
     }
 
     final user = await account.get();
-    final jwt = await account.createJWT();
     final prefs = await account.getPrefs();
 
     final avatarByteList = await avatars.getInitials(
@@ -184,7 +197,6 @@ class ProfileCubit extends Cubit<ProfileState> {
     emit(_Success(
       user,
       prefs,
-      jwt,
       avatar,
       List<String>.from(eventsWithMembership.map((e) => e.data['name'])),
     ));
