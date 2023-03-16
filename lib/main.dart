@@ -8,6 +8,7 @@ import 'package:face_to_face_voting/theme/app_theme.dart';
 import 'package:face_to_face_voting/views/login/login_home_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sentry_dio/sentry_dio.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
@@ -30,6 +31,8 @@ class GlobalBlocObserver extends BlocObserver {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 
   await service_locator.setup();
 
