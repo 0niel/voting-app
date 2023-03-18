@@ -107,7 +107,7 @@ class PollCubit extends Cubit<PollState> {
     final percentsLeft = timeNow.difference(startAt).inSeconds /
         endAt.difference(startAt).inSeconds;
 
-    final val = percentsLeft > 1 ? 1 : percentsLeft;
+    final val = percentsLeft > 1 ? 1 : (percentsLeft < 0 ? 0 : percentsLeft);
 
     return Future.value((1 - val).toDouble());
   }
