@@ -39,7 +39,7 @@ class AppTheme {
     /// Primary Color
     primaryColor: const Color(0xff34459b),
     scaffoldBackgroundColor: const Color(0xffffffff),
-    canvasColor: Colors.transparent,
+    canvasColor: const Color(0xffffffff),
 
     /// AppBar Theme
     appBarTheme: const AppBarTheme(
@@ -48,8 +48,13 @@ class AppTheme {
         actionsIconTheme: IconThemeData(color: Color(0xff495057))),
 
     /// Card Theme
-    cardTheme: const CardTheme(color: Color(0xfff0f0f0)),
-    cardColor: const Color(0xfff0f0f0),
+    cardTheme: const CardTheme(
+        color: Color(0xffffffff),
+        elevation: 2,
+        shadowColor: Color(0xff000000),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(8)))),
+    cardColor: const Color(0xffffffff),
 
     textTheme: TextTheme(
         titleLarge: GoogleFonts.aBeeZee(), bodyLarge: GoogleFonts.abel()),
@@ -140,9 +145,12 @@ class AppTheme {
     ),
 
     /// Other Colors
-    splashColor: Colors.white.withAlpha(100),
-    indicatorColor: const Color(0xffeeeeee),
-    highlightColor: const Color(0xffeeeeee), colorScheme: ColorScheme.fromSeed(
-        seedColor: const Color(0xff34459b), brightness: Brightness.light).copyWith(background: const Color(0xffffffff)).copyWith(error: const Color(0xfff0323c)),
+    splashColor: const Color(0xffeeeeee).withAlpha(100),
+    indicatorColor: const Color(0xff3d63ff),
+    highlightColor: const Color(0xffeeeeee).withAlpha(100),
+    colorScheme: ColorScheme.fromSeed(
+            seedColor: const Color(0xff34459b), brightness: Brightness.light)
+        .copyWith(background: const Color(0xffffffff))
+        .copyWith(error: const Color(0xfff0323c)),
   );
 }
