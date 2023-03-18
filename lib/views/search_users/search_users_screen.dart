@@ -45,6 +45,7 @@ class SearchUsersScreen extends StatelessWidget {
                 color: theme.colorScheme.onBackground.withOpacity(0.2),
                 width: 1,
               ),
+              borderRadius: BorderRadius.circular(8),
               scrollPadding: const EdgeInsets.only(top: 16, bottom: 56),
               transitionDuration: const Duration(milliseconds: 400),
               transitionCurve: Curves.easeInOut,
@@ -63,6 +64,12 @@ class SearchUsersScreen extends StatelessWidget {
                     );
                   },
                 );
+              },
+              onFocusChanged: (isFocused) {
+                if (!isFocused) {
+                  _controller.clear();
+                  _controller.close();
+                }
               },
               transition: CircularFloatingSearchBarTransition(),
               iconColor: theme.colorScheme.onBackground,

@@ -6,6 +6,7 @@ import 'package:face_to_face_voting/utils/spacing.dart';
 import 'package:face_to_face_voting/views/qr_scanner/qr_scanner_screen.dart';
 import 'package:face_to_face_voting/views/search_users/search_users_screen.dart';
 import 'package:face_to_face_voting/widgets/text.dart';
+import 'package:face_to_face_voting/widgets/user_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -72,10 +73,10 @@ class _ParticipantsBottomSheet extends StatelessWidget {
                   child: BlocBuilder<EventsCubit, EventsState>(
                     builder: (context, state) {
                       return state.maybeMap(
-                        eventLoaded: (state) {
+                        eventLoaded: (eventState) {
                           context
                               .read<ParticipantsCubit>()
-                              .load(state.event.$id);
+                              .load(eventState.event.$id);
                           return BlocBuilder<ParticipantsCubit,
                               ParticipantsState>(
                             builder: (context, state) {
@@ -89,6 +90,26 @@ class _ParticipantsBottomSheet extends StatelessWidget {
                                         state.participants.memberships.length,
                                     itemBuilder: (context, index) {
                                       return ListTile(
+                                        trailing: CustomButton.outlined(
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 8,
+                                            vertical: 4,
+                                          ),
+                                          onPressed: () {
+                                            ScannedBottomSheet.show(
+                                                context,
+                                                eventState.event,
+                                                state.participants
+                                                    .memberships[index].userId);
+                                          },
+                                          borderColor: AppTheme
+                                              .theme.colorScheme.primary,
+                                          child: CustomText.bodySmall(
+                                            'Открыть',
+                                            color: AppTheme
+                                                .theme.colorScheme.primary,
+                                          ),
+                                        ),
                                         title: CustomText.bodySmall(
                                           state.participants.memberships[index]
                                               .userName,
