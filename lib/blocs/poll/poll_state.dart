@@ -7,7 +7,7 @@ class PollState with _$PollState {
   const factory PollState.success(
     String eventId,
     Models.Document poll,
-    Models.DocumentList votes,
+    List<Models.Document> votes,
     Duration timeLeft,
     double percentsLeft,
   ) = _Success;

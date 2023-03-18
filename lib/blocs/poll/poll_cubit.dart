@@ -22,7 +22,12 @@ class PollCubit extends Cubit<PollState> {
 
   final RemoteData remoteData;
 
-  late DateTime serverTime;
+  DateTime? serverTime;
+
+  // Разница между серверным и локальным временем.
+  // Нужна для корректного отображения времени
+  Duration? serverTimeDifference;
+
   Timer? timer;
   PollCubit({
     required this.client,
@@ -34,15 +39,24 @@ class PollCubit extends Cubit<PollState> {
     required this.remoteData,
   }) : super(const PollState.initial());
 
-  DateTime get now => DateTime.now().toUtc();
+  DateTime get now => DateTime.now();
 
   Future<DateTime> _getServerTime() async {
     final response = await health.getTime();
     final serverTime = response.remoteTime;
 
-    print('Server time: $serverTime');
+    return DateTime.fromMillisecondsSinceEpoch(serverTime * 1000);
+  }
 
-    return DateTime.fromMillisecondsSinceEpoch(serverTime);
+  Future<Duration> _getServerTimeDifference() async {
+    if (serverTimeDifference != null) {
+      return serverTimeDifference!;
+    }
+
+    final serverTime = await _getServerTime();
+
+    serverTimeDifference = serverTime.difference(now);
+    return serverTimeDifference!;
   }
 
   Future<Models.Document?> _getActiveOrLastPoll(
@@ -69,21 +83,33 @@ class PollCubit extends Cubit<PollState> {
     return activePoll ?? polls.documents.first;
   }
 
-  Duration _calculateTimeLeft(Models.Document poll) {
+  Future<Duration> _calculateTimeLeft(Models.Document poll) async {
     final startAt = DateTime.parse(poll.data['start_at']).toUtc();
     final endAt = DateTime.parse(poll.data['end_at']).toUtc();
-    final timeLeft =
-        endAt.difference(serverTime.add(now.difference(serverTime)));
+
+    final serverTimeDifference = await _getServerTimeDifference();
+
+    // используем serverTimeDifference, чтобы скорректировать время
+    final timeNow = now.add(serverTimeDifference);
+    print('timeNow: $timeNow');
+    final timeLeft = endAt.difference(timeNow);
 
     return timeLeft.isNegative ? Duration.zero : timeLeft;
   }
 
-  double _calculatePercentsLeft(Models.Document poll) {
+  Future<double> _calculatePercentsLeft(Models.Document poll) async {
+    final startAt = DateTime.parse(poll.$updatedAt).toUtc();
     final endAt = DateTime.parse(poll.data['end_at']).toUtc();
 
-    final percentsLeft = (serverTime.difference(endAt).inSeconds / 60) * -100;
+    final serverTimeDifference = await _getServerTimeDifference();
+    final timeNow = now.add(serverTimeDifference);
 
-    return percentsLeft.clamp(0.0, 100.0);
+    final percentsLeft = timeNow.difference(startAt).inSeconds /
+        endAt.difference(startAt).inSeconds;
+
+    final val = percentsLeft > 1 ? 1 : percentsLeft;
+
+    return Future.value((1 - val).toDouble());
   }
 
   void loadPolls(String eventId) async {
@@ -98,8 +124,6 @@ class PollCubit extends Cubit<PollState> {
           Query.orderDesc('start_at'),
         ],
       );
-
-      serverTime = await _getServerTime();
 
       final poll = await _getActiveOrLastPoll(polls);
       if (poll == null) {
@@ -116,16 +140,16 @@ class PollCubit extends Cubit<PollState> {
       emit(PollState.success(
         eventId,
         poll,
-        votes,
-        _calculateTimeLeft(poll),
-        _calculatePercentsLeft(poll),
+        votes.documents,
+        await _calculateTimeLeft(poll),
+        await _calculatePercentsLeft(poll),
       ));
 
       timer?.cancel();
       // Создаем таймер для обновления timeLeft каждую секунду
       timer = Timer.periodic(
         const Duration(seconds: 1),
-        (_) {
+        (_) async {
           final newTimeLeft = _calculateTimeLeft(poll);
           final state = this.state;
 
@@ -134,8 +158,8 @@ class PollCubit extends Cubit<PollState> {
               eventId,
               poll,
               state.votes,
-              _calculateTimeLeft(poll),
-              _calculatePercentsLeft(poll),
+              await _calculateTimeLeft(poll),
+              await _calculatePercentsLeft(poll),
             ));
           }
         },
@@ -145,17 +169,41 @@ class PollCubit extends Cubit<PollState> {
     }
   }
 
+  List<Models.Document> _getVotes(
+    List<Models.Document> votes,
+    Models.Document newVote,
+    String action, // 'create', 'delete' или 'update'
+  ) {
+    if (action == 'create') {
+      if (votes.any((vote) => vote.$id == newVote.$id)) {
+        return votes;
+      }
+      return [...votes, newVote];
+    } else if (action == 'delete') {
+      return votes.where((vote) => vote.$id != newVote.$id).toList();
+    } else if (action == 'update') {
+      return votes.map((vote) {
+        if (vote.$id == newVote.$id) {
+          return newVote;
+        }
+
+        return vote;
+      }).toList();
+    }
+
+    return votes;
+  }
+
   void processRealtimeEvent(RealtimeMessage message) async {
     if (state is! _Success && state is! _NoPoll) {
       return;
     }
 
     final payload = message.payload;
+    final action = message.events.first.split('.').last;
     final doc = Models.Document.fromMap(payload);
 
     if (doc.$collectionId == pollsCollectionId) {
-      serverTime = await _getServerTime();
-
       late final String eventId;
       if (state is _Success) {
         eventId = (state as _Success).eventId;
@@ -184,18 +232,19 @@ class PollCubit extends Cubit<PollState> {
         return;
       }
 
-      late final Models.DocumentList votes;
+      late final List<Models.Document> votes;
       if (state is _NoPoll) {
-        votes = await databases.listDocuments(
-            databaseId: databaseId,
-            collectionId: votesCollectionId,
-            queries: [Query.equal('poll_id', doc.$id), Query.limit(300)]);
+        votes = (await databases.listDocuments(
+                databaseId: databaseId,
+                collectionId: votesCollectionId,
+                queries: [Query.equal('poll_id', doc.$id), Query.limit(300)]))
+            .documents;
       } else {
         // Не обновляем голоса при изменении голосования, иначе будет мерцание
         votes = (state as _Success).votes;
       }
 
-      final timeLeft = _calculateTimeLeft(poll);
+      final timeLeft = await _calculateTimeLeft(poll);
       final currentState = state;
 
       if (currentState is! _Success) {
@@ -211,15 +260,15 @@ class PollCubit extends Cubit<PollState> {
         poll,
         votes,
         timeLeft,
-        _calculatePercentsLeft(poll),
+        await _calculatePercentsLeft(poll),
       ));
 
       // Обновляем таймер
       timer?.cancel();
       timer = Timer.periodic(
         const Duration(seconds: 1),
-        (_) {
-          final newTimeLeft = _calculateTimeLeft(poll);
+        (_) async {
+          final newTimeLeft = await _calculateTimeLeft(poll);
           final state = this.state;
 
           if (state is _Success && state.timeLeft != newTimeLeft) {
@@ -228,7 +277,7 @@ class PollCubit extends Cubit<PollState> {
               poll,
               state.votes,
               newTimeLeft,
-              _calculatePercentsLeft(poll),
+              await _calculatePercentsLeft(poll),
             ));
           }
         },
@@ -247,18 +296,14 @@ class PollCubit extends Cubit<PollState> {
 
       print('Vote changed');
 
-      final votes = await databases.listDocuments(
-        databaseId: databaseId,
-        collectionId: votesCollectionId,
-        queries: [Query.equal('poll_id', pollId), Query.limit(300)],
-      );
+      final votes = _getVotes(currentState.votes, doc, action);
 
       emit(PollState.success(
         currentState.eventId,
         currentState.poll,
         votes,
         currentState.timeLeft,
-        _calculatePercentsLeft(currentState.poll),
+        await _calculatePercentsLeft(currentState.poll),
       ));
     }
   }

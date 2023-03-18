@@ -27,14 +27,14 @@ class _PollScreenState extends State<PollScreen> {
 
   final ValueNotifier<int?> _selectedOption = ValueNotifier<int?>(-1);
 
-  void _setMyVote(String meId, DocumentList votes, List<String> options) {
+  void _setMyVote(String meId, List<Document> votes, List<String> options) {
     if (!_isFirstBuild) {
       return;
     }
 
     final String? myVote;
     final myVoteDoc =
-        votes.documents.firstWhereOrNull((doc) => doc.data['voter_id'] == meId);
+        votes.firstWhereOrNull((doc) => doc.data['voter_id'] == meId);
     if (myVoteDoc != null) {
       myVote = myVoteDoc.data['vote'] as String;
     } else {
@@ -49,8 +49,8 @@ class _PollScreenState extends State<PollScreen> {
     _isFirstBuild = false;
   }
 
-  Map<String, int> _getVotes(DocumentList votes) {
-    final votesMap = votes.documents.fold<Map<String, int>>({}, (map, doc) {
+  Map<String, int> _getVotes(List<Document> votes) {
+    final votesMap = votes.fold<Map<String, int>>({}, (map, doc) {
       final vote = doc.data['vote'] as String;
       return map..update(vote, (count) => count + 1, ifAbsent: () => 1);
     });

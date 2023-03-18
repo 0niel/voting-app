@@ -21,7 +21,7 @@ mixin _$PollState {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(String eventId, Models.Document poll,
-            Models.DocumentList votes, Duration timeLeft, double percentsLeft)
+            List<Models.Document> votes, Duration timeLeft, double percentsLeft)
         success,
     required TResult Function(String message) error,
     required TResult Function(String eventId) noPoll,
@@ -31,8 +31,12 @@ mixin _$PollState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(String eventId, Models.Document poll,
-            Models.DocumentList votes, Duration timeLeft, double percentsLeft)?
+    TResult? Function(
+            String eventId,
+            Models.Document poll,
+            List<Models.Document> votes,
+            Duration timeLeft,
+            double percentsLeft)?
         success,
     TResult? Function(String message)? error,
     TResult? Function(String eventId)? noPoll,
@@ -42,8 +46,12 @@ mixin _$PollState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(String eventId, Models.Document poll,
-            Models.DocumentList votes, Duration timeLeft, double percentsLeft)?
+    TResult Function(
+            String eventId,
+            Models.Document poll,
+            List<Models.Document> votes,
+            Duration timeLeft,
+            double percentsLeft)?
         success,
     TResult Function(String message)? error,
     TResult Function(String eventId)? noPoll,
@@ -137,7 +145,7 @@ class _$_Initial implements _Initial {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(String eventId, Models.Document poll,
-            Models.DocumentList votes, Duration timeLeft, double percentsLeft)
+            List<Models.Document> votes, Duration timeLeft, double percentsLeft)
         success,
     required TResult Function(String message) error,
     required TResult Function(String eventId) noPoll,
@@ -150,8 +158,12 @@ class _$_Initial implements _Initial {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(String eventId, Models.Document poll,
-            Models.DocumentList votes, Duration timeLeft, double percentsLeft)?
+    TResult? Function(
+            String eventId,
+            Models.Document poll,
+            List<Models.Document> votes,
+            Duration timeLeft,
+            double percentsLeft)?
         success,
     TResult? Function(String message)? error,
     TResult? Function(String eventId)? noPoll,
@@ -164,8 +176,12 @@ class _$_Initial implements _Initial {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(String eventId, Models.Document poll,
-            Models.DocumentList votes, Duration timeLeft, double percentsLeft)?
+    TResult Function(
+            String eventId,
+            Models.Document poll,
+            List<Models.Document> votes,
+            Duration timeLeft,
+            double percentsLeft)?
         success,
     TResult Function(String message)? error,
     TResult Function(String eventId)? noPoll,
@@ -262,7 +278,7 @@ class _$_Loading implements _Loading {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(String eventId, Models.Document poll,
-            Models.DocumentList votes, Duration timeLeft, double percentsLeft)
+            List<Models.Document> votes, Duration timeLeft, double percentsLeft)
         success,
     required TResult Function(String message) error,
     required TResult Function(String eventId) noPoll,
@@ -275,8 +291,12 @@ class _$_Loading implements _Loading {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(String eventId, Models.Document poll,
-            Models.DocumentList votes, Duration timeLeft, double percentsLeft)?
+    TResult? Function(
+            String eventId,
+            Models.Document poll,
+            List<Models.Document> votes,
+            Duration timeLeft,
+            double percentsLeft)?
         success,
     TResult? Function(String message)? error,
     TResult? Function(String eventId)? noPoll,
@@ -289,8 +309,12 @@ class _$_Loading implements _Loading {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(String eventId, Models.Document poll,
-            Models.DocumentList votes, Duration timeLeft, double percentsLeft)?
+    TResult Function(
+            String eventId,
+            Models.Document poll,
+            List<Models.Document> votes,
+            Duration timeLeft,
+            double percentsLeft)?
         success,
     TResult Function(String message)? error,
     TResult Function(String eventId)? noPoll,
@@ -356,7 +380,7 @@ abstract class _$$_SuccessCopyWith<$Res> {
   $Res call(
       {String eventId,
       Models.Document poll,
-      Models.DocumentList votes,
+      List<Models.Document> votes,
       Duration timeLeft,
       double percentsLeft});
 }
@@ -387,9 +411,9 @@ class __$$_SuccessCopyWithImpl<$Res>
           : poll // ignore: cast_nullable_to_non_nullable
               as Models.Document,
       null == votes
-          ? _value.votes
+          ? _value._votes
           : votes // ignore: cast_nullable_to_non_nullable
-              as Models.DocumentList,
+              as List<Models.Document>,
       null == timeLeft
           ? _value.timeLeft
           : timeLeft // ignore: cast_nullable_to_non_nullable
@@ -405,15 +429,22 @@ class __$$_SuccessCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_Success implements _Success {
-  const _$_Success(
-      this.eventId, this.poll, this.votes, this.timeLeft, this.percentsLeft);
+  const _$_Success(this.eventId, this.poll, final List<Models.Document> votes,
+      this.timeLeft, this.percentsLeft)
+      : _votes = votes;
 
   @override
   final String eventId;
   @override
   final Models.Document poll;
+  final List<Models.Document> _votes;
   @override
-  final Models.DocumentList votes;
+  List<Models.Document> get votes {
+    if (_votes is EqualUnmodifiableListView) return _votes;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_votes);
+  }
+
   @override
   final Duration timeLeft;
   @override
@@ -431,7 +462,7 @@ class _$_Success implements _Success {
             other is _$_Success &&
             (identical(other.eventId, eventId) || other.eventId == eventId) &&
             (identical(other.poll, poll) || other.poll == poll) &&
-            (identical(other.votes, votes) || other.votes == votes) &&
+            const DeepCollectionEquality().equals(other._votes, _votes) &&
             (identical(other.timeLeft, timeLeft) ||
                 other.timeLeft == timeLeft) &&
             (identical(other.percentsLeft, percentsLeft) ||
@@ -439,8 +470,8 @@ class _$_Success implements _Success {
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, eventId, poll, votes, timeLeft, percentsLeft);
+  int get hashCode => Object.hash(runtimeType, eventId, poll,
+      const DeepCollectionEquality().hash(_votes), timeLeft, percentsLeft);
 
   @JsonKey(ignore: true)
   @override
@@ -454,7 +485,7 @@ class _$_Success implements _Success {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(String eventId, Models.Document poll,
-            Models.DocumentList votes, Duration timeLeft, double percentsLeft)
+            List<Models.Document> votes, Duration timeLeft, double percentsLeft)
         success,
     required TResult Function(String message) error,
     required TResult Function(String eventId) noPoll,
@@ -467,8 +498,12 @@ class _$_Success implements _Success {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(String eventId, Models.Document poll,
-            Models.DocumentList votes, Duration timeLeft, double percentsLeft)?
+    TResult? Function(
+            String eventId,
+            Models.Document poll,
+            List<Models.Document> votes,
+            Duration timeLeft,
+            double percentsLeft)?
         success,
     TResult? Function(String message)? error,
     TResult? Function(String eventId)? noPoll,
@@ -481,8 +516,12 @@ class _$_Success implements _Success {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(String eventId, Models.Document poll,
-            Models.DocumentList votes, Duration timeLeft, double percentsLeft)?
+    TResult Function(
+            String eventId,
+            Models.Document poll,
+            List<Models.Document> votes,
+            Duration timeLeft,
+            double percentsLeft)?
         success,
     TResult Function(String message)? error,
     TResult Function(String eventId)? noPoll,
@@ -539,13 +578,13 @@ abstract class _Success implements PollState {
   const factory _Success(
       final String eventId,
       final Models.Document poll,
-      final Models.DocumentList votes,
+      final List<Models.Document> votes,
       final Duration timeLeft,
       final double percentsLeft) = _$_Success;
 
   String get eventId;
   Models.Document get poll;
-  Models.DocumentList get votes;
+  List<Models.Document> get votes;
   Duration get timeLeft;
   double get percentsLeft;
   @JsonKey(ignore: true)
@@ -618,7 +657,7 @@ class _$_Error implements _Error {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(String eventId, Models.Document poll,
-            Models.DocumentList votes, Duration timeLeft, double percentsLeft)
+            List<Models.Document> votes, Duration timeLeft, double percentsLeft)
         success,
     required TResult Function(String message) error,
     required TResult Function(String eventId) noPoll,
@@ -631,8 +670,12 @@ class _$_Error implements _Error {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(String eventId, Models.Document poll,
-            Models.DocumentList votes, Duration timeLeft, double percentsLeft)?
+    TResult? Function(
+            String eventId,
+            Models.Document poll,
+            List<Models.Document> votes,
+            Duration timeLeft,
+            double percentsLeft)?
         success,
     TResult? Function(String message)? error,
     TResult? Function(String eventId)? noPoll,
@@ -645,8 +688,12 @@ class _$_Error implements _Error {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(String eventId, Models.Document poll,
-            Models.DocumentList votes, Duration timeLeft, double percentsLeft)?
+    TResult Function(
+            String eventId,
+            Models.Document poll,
+            List<Models.Document> votes,
+            Duration timeLeft,
+            double percentsLeft)?
         success,
     TResult Function(String message)? error,
     TResult Function(String eventId)? noPoll,
@@ -773,7 +820,7 @@ class _$_NoPoll implements _NoPoll {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(String eventId, Models.Document poll,
-            Models.DocumentList votes, Duration timeLeft, double percentsLeft)
+            List<Models.Document> votes, Duration timeLeft, double percentsLeft)
         success,
     required TResult Function(String message) error,
     required TResult Function(String eventId) noPoll,
@@ -786,8 +833,12 @@ class _$_NoPoll implements _NoPoll {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(String eventId, Models.Document poll,
-            Models.DocumentList votes, Duration timeLeft, double percentsLeft)?
+    TResult? Function(
+            String eventId,
+            Models.Document poll,
+            List<Models.Document> votes,
+            Duration timeLeft,
+            double percentsLeft)?
         success,
     TResult? Function(String message)? error,
     TResult? Function(String eventId)? noPoll,
@@ -800,8 +851,12 @@ class _$_NoPoll implements _NoPoll {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(String eventId, Models.Document poll,
-            Models.DocumentList votes, Duration timeLeft, double percentsLeft)?
+    TResult Function(
+            String eventId,
+            Models.Document poll,
+            List<Models.Document> votes,
+            Duration timeLeft,
+            double percentsLeft)?
         success,
     TResult Function(String message)? error,
     TResult Function(String eventId)? noPoll,
