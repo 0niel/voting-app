@@ -312,14 +312,25 @@ class _Drawer extends StatelessWidget {
               ),
               Spacing.height(32),
               BlocBuilder<EventsCubit, EventsState>(builder: (context, state) {
-                BlocProvider.of<ResourcesCubit>(context).loadResources();
+                final resourcesBloc = BlocProvider.of<ResourcesCubit>(context);
                 final eventId = state.maybeMap(
                   eventLoaded: (event) {
                     return event.event.$id;
                   },
                   orElse: () => null,
                 );
+
+                resourcesBloc.state.maybeMap(
+                  loaded: (value) {
+                    if (value.resources.isEmpty) {
+                      resourcesBloc.loadResources();
+                    }
+                  },
+                  orElse: () => resourcesBloc.loadResources(),
+                );
+
                 return BlocBuilder<ResourcesCubit, ResourcesState>(
+                  bloc: resourcesBloc,
                   builder: (context, resourcesState) {
                     return resourcesState.maybeMap(
                       loaded: (value) {
