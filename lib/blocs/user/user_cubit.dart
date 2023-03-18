@@ -27,7 +27,7 @@ class UserCubit extends Cubit<UserState> {
   final LocalStorage localStorage;
   final Realtime realtime;
 
-  late final Models.Account me;
+  Models.Account? me;
 
   RealtimeSubscription? subscription;
 
@@ -85,7 +85,7 @@ class UserCubit extends Cubit<UserState> {
 
         if (eventTarget == 'teams' || eventTarget == 'memberships') {
           try {
-            if (event.payload['userId'] == me.$id) {
+            if (event.payload['userId'] == me!.$id) {
               // Возможно, что пользователя удалили или добавили в список участников
               // Поэтому нужно обновить список событий
               getIt<EventsCubit>().loadEventsList();
@@ -253,6 +253,12 @@ class UserCubit extends Cubit<UserState> {
 
       emit(const _LoginScreen());
     }
+  }
+
+  void loadUser() async {
+    emit(const _Loading());
+
+    await _loadUserData();
   }
 
   void register({
