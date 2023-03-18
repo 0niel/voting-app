@@ -36,18 +36,22 @@ class EventsCubit extends Cubit<EventsState> {
   }
 
   void loadEvent(String id) async {
-    emit(const EventsState.loading());
+    try {
+      emit(const EventsState.loading());
 
-    final documentResponse = await databases.getDocument(
-      databaseId: databaseId,
-      collectionId: eventsCollectionId,
-      documentId: id,
-    );
+      final documentResponse = await databases.getDocument(
+        databaseId: databaseId,
+        collectionId: eventsCollectionId,
+        documentId: id,
+      );
 
-    emit(EventsState.eventLoaded(
-      documentResponse,
-      await _isEventAcessModerator(documentResponse),
-    ));
+      emit(EventsState.eventLoaded(
+        documentResponse,
+        await _isEventAcessModerator(documentResponse),
+      ));
+    } catch (e) {
+      emit(EventsState.error(e.toString()));
+    }
   }
 
   void started() async {
@@ -64,36 +68,40 @@ class EventsCubit extends Cubit<EventsState> {
   }
 
   Future<void> loadEventsList() async {
-    emit(const EventsState.loading());
+    try {
+      emit(const EventsState.loading());
 
-    // получаем список событий из коллекции events сортирую по дате
-    final documentsResponse = await databases.listDocuments(
-      databaseId: databaseId,
-      collectionId: eventsCollectionId,
-      queries: [Query.orderDesc('start_at')],
-    );
+      // получаем список событий из коллекции events сортирую по дате
+      final documentsResponse = await databases.listDocuments(
+        databaseId: databaseId,
+        collectionId: eventsCollectionId,
+        queries: [Query.orderDesc('start_at')],
+      );
 
-    // если есть события с атрибутом is_active = true, в которых мы являемся
-    // участникам (находимся в team с id = participants_team_id в events)
-    // то мы мы переключаем состояние на eventLoaded  иначе на eventsListLoaded
-    if (documentsResponse.total > 0) {
-      for (final event in documentsResponse.documents) {
-        if (event.data['is_active'] == true) {
-          try {
-            await teams.get(teamId: event.data['participants_team_id']);
-            emit(EventsState.eventLoaded(
-              event,
-              await _isEventAcessModerator(event),
-            ));
-            return;
-          } catch (e) {
-            continue;
+      // если есть события с атрибутом is_active = true, в которых мы являемся
+      // участникам (находимся в team с id = participants_team_id в events)
+      // то мы мы переключаем состояние на eventLoaded  иначе на eventsListLoaded
+      if (documentsResponse.total > 0) {
+        for (final event in documentsResponse.documents) {
+          if (event.data['is_active'] == true) {
+            try {
+              await teams.get(teamId: event.data['participants_team_id']);
+              emit(EventsState.eventLoaded(
+                event,
+                await _isEventAcessModerator(event),
+              ));
+              return;
+            } catch (e) {
+              continue;
+            }
           }
         }
       }
-    }
 
-    print('Events list loaded: ${documentsResponse.documents}');
-    emit(EventsState.eventsListLoaded(documentsResponse));
+      print('Events list loaded: ${documentsResponse.documents}');
+      emit(EventsState.eventsListLoaded(documentsResponse));
+    } catch (e) {
+      emit(EventsState.error(e.toString()));
+    }
   }
 }

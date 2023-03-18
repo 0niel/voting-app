@@ -1,6 +1,7 @@
 import 'package:appwrite/models.dart';
 import 'package:face_to_face_voting/blocs/events/events_cubit.dart';
 import 'package:face_to_face_voting/utils/formatters.dart';
+import 'package:face_to_face_voting/widgets/failure.dart';
 import 'package:face_to_face_voting/widgets/text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -32,6 +33,13 @@ class EventsScreen extends StatelessWidget {
               eventsListLoaded: (eventsListLoadedState) =>
                   _Success(events: eventsListLoadedState.events),
               eventLoaded: (eventLoadedState) => Container(),
+              error: (value) => Failure(
+                showImage: false,
+                message: value.message,
+                onRetry: () {
+                  bloc.started();
+                },
+              ),
             );
           },
         ),

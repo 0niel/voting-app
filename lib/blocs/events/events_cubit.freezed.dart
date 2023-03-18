@@ -23,6 +23,7 @@ mixin _$EventsState {
     required TResult Function(Models.DocumentList events) eventsListLoaded,
     required TResult Function(Models.Document event, bool isAcessModerator)
         eventLoaded,
+    required TResult Function(String message) error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -32,6 +33,7 @@ mixin _$EventsState {
     TResult? Function(Models.DocumentList events)? eventsListLoaded,
     TResult? Function(Models.Document event, bool isAcessModerator)?
         eventLoaded,
+    TResult? Function(String message)? error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -40,6 +42,7 @@ mixin _$EventsState {
     TResult Function()? loading,
     TResult Function(Models.DocumentList events)? eventsListLoaded,
     TResult Function(Models.Document event, bool isAcessModerator)? eventLoaded,
+    TResult Function(String message)? error,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -49,6 +52,7 @@ mixin _$EventsState {
     required TResult Function(_Loading value) loading,
     required TResult Function(_EventsListLoaded value) eventsListLoaded,
     required TResult Function(_EventLoaded value) eventLoaded,
+    required TResult Function(_Error value) error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -57,6 +61,7 @@ mixin _$EventsState {
     TResult? Function(_Loading value)? loading,
     TResult? Function(_EventsListLoaded value)? eventsListLoaded,
     TResult? Function(_EventLoaded value)? eventLoaded,
+    TResult? Function(_Error value)? error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -65,6 +70,7 @@ mixin _$EventsState {
     TResult Function(_Loading value)? loading,
     TResult Function(_EventsListLoaded value)? eventsListLoaded,
     TResult Function(_EventLoaded value)? eventLoaded,
+    TResult Function(_Error value)? error,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -130,6 +136,7 @@ class _$_Initial implements _Initial {
     required TResult Function(Models.DocumentList events) eventsListLoaded,
     required TResult Function(Models.Document event, bool isAcessModerator)
         eventLoaded,
+    required TResult Function(String message) error,
   }) {
     return initial();
   }
@@ -142,6 +149,7 @@ class _$_Initial implements _Initial {
     TResult? Function(Models.DocumentList events)? eventsListLoaded,
     TResult? Function(Models.Document event, bool isAcessModerator)?
         eventLoaded,
+    TResult? Function(String message)? error,
   }) {
     return initial?.call();
   }
@@ -153,6 +161,7 @@ class _$_Initial implements _Initial {
     TResult Function()? loading,
     TResult Function(Models.DocumentList events)? eventsListLoaded,
     TResult Function(Models.Document event, bool isAcessModerator)? eventLoaded,
+    TResult Function(String message)? error,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -168,6 +177,7 @@ class _$_Initial implements _Initial {
     required TResult Function(_Loading value) loading,
     required TResult Function(_EventsListLoaded value) eventsListLoaded,
     required TResult Function(_EventLoaded value) eventLoaded,
+    required TResult Function(_Error value) error,
   }) {
     return initial(this);
   }
@@ -179,6 +189,7 @@ class _$_Initial implements _Initial {
     TResult? Function(_Loading value)? loading,
     TResult? Function(_EventsListLoaded value)? eventsListLoaded,
     TResult? Function(_EventLoaded value)? eventLoaded,
+    TResult? Function(_Error value)? error,
   }) {
     return initial?.call(this);
   }
@@ -190,6 +201,7 @@ class _$_Initial implements _Initial {
     TResult Function(_Loading value)? loading,
     TResult Function(_EventsListLoaded value)? eventsListLoaded,
     TResult Function(_EventLoaded value)? eventLoaded,
+    TResult Function(_Error value)? error,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -245,6 +257,7 @@ class _$_Loading implements _Loading {
     required TResult Function(Models.DocumentList events) eventsListLoaded,
     required TResult Function(Models.Document event, bool isAcessModerator)
         eventLoaded,
+    required TResult Function(String message) error,
   }) {
     return loading();
   }
@@ -257,6 +270,7 @@ class _$_Loading implements _Loading {
     TResult? Function(Models.DocumentList events)? eventsListLoaded,
     TResult? Function(Models.Document event, bool isAcessModerator)?
         eventLoaded,
+    TResult? Function(String message)? error,
   }) {
     return loading?.call();
   }
@@ -268,6 +282,7 @@ class _$_Loading implements _Loading {
     TResult Function()? loading,
     TResult Function(Models.DocumentList events)? eventsListLoaded,
     TResult Function(Models.Document event, bool isAcessModerator)? eventLoaded,
+    TResult Function(String message)? error,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -283,6 +298,7 @@ class _$_Loading implements _Loading {
     required TResult Function(_Loading value) loading,
     required TResult Function(_EventsListLoaded value) eventsListLoaded,
     required TResult Function(_EventLoaded value) eventLoaded,
+    required TResult Function(_Error value) error,
   }) {
     return loading(this);
   }
@@ -294,6 +310,7 @@ class _$_Loading implements _Loading {
     TResult? Function(_Loading value)? loading,
     TResult? Function(_EventsListLoaded value)? eventsListLoaded,
     TResult? Function(_EventLoaded value)? eventLoaded,
+    TResult? Function(_Error value)? error,
   }) {
     return loading?.call(this);
   }
@@ -305,6 +322,7 @@ class _$_Loading implements _Loading {
     TResult Function(_Loading value)? loading,
     TResult Function(_EventsListLoaded value)? eventsListLoaded,
     TResult Function(_EventLoaded value)? eventLoaded,
+    TResult Function(_Error value)? error,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -387,6 +405,7 @@ class _$_EventsListLoaded implements _EventsListLoaded {
     required TResult Function(Models.DocumentList events) eventsListLoaded,
     required TResult Function(Models.Document event, bool isAcessModerator)
         eventLoaded,
+    required TResult Function(String message) error,
   }) {
     return eventsListLoaded(events);
   }
@@ -399,6 +418,7 @@ class _$_EventsListLoaded implements _EventsListLoaded {
     TResult? Function(Models.DocumentList events)? eventsListLoaded,
     TResult? Function(Models.Document event, bool isAcessModerator)?
         eventLoaded,
+    TResult? Function(String message)? error,
   }) {
     return eventsListLoaded?.call(events);
   }
@@ -410,6 +430,7 @@ class _$_EventsListLoaded implements _EventsListLoaded {
     TResult Function()? loading,
     TResult Function(Models.DocumentList events)? eventsListLoaded,
     TResult Function(Models.Document event, bool isAcessModerator)? eventLoaded,
+    TResult Function(String message)? error,
     required TResult orElse(),
   }) {
     if (eventsListLoaded != null) {
@@ -425,6 +446,7 @@ class _$_EventsListLoaded implements _EventsListLoaded {
     required TResult Function(_Loading value) loading,
     required TResult Function(_EventsListLoaded value) eventsListLoaded,
     required TResult Function(_EventLoaded value) eventLoaded,
+    required TResult Function(_Error value) error,
   }) {
     return eventsListLoaded(this);
   }
@@ -436,6 +458,7 @@ class _$_EventsListLoaded implements _EventsListLoaded {
     TResult? Function(_Loading value)? loading,
     TResult? Function(_EventsListLoaded value)? eventsListLoaded,
     TResult? Function(_EventLoaded value)? eventLoaded,
+    TResult? Function(_Error value)? error,
   }) {
     return eventsListLoaded?.call(this);
   }
@@ -447,6 +470,7 @@ class _$_EventsListLoaded implements _EventsListLoaded {
     TResult Function(_Loading value)? loading,
     TResult Function(_EventsListLoaded value)? eventsListLoaded,
     TResult Function(_EventLoaded value)? eventLoaded,
+    TResult Function(_Error value)? error,
     required TResult orElse(),
   }) {
     if (eventsListLoaded != null) {
@@ -544,6 +568,7 @@ class _$_EventLoaded implements _EventLoaded {
     required TResult Function(Models.DocumentList events) eventsListLoaded,
     required TResult Function(Models.Document event, bool isAcessModerator)
         eventLoaded,
+    required TResult Function(String message) error,
   }) {
     return eventLoaded(event, isAcessModerator);
   }
@@ -556,6 +581,7 @@ class _$_EventLoaded implements _EventLoaded {
     TResult? Function(Models.DocumentList events)? eventsListLoaded,
     TResult? Function(Models.Document event, bool isAcessModerator)?
         eventLoaded,
+    TResult? Function(String message)? error,
   }) {
     return eventLoaded?.call(event, isAcessModerator);
   }
@@ -567,6 +593,7 @@ class _$_EventLoaded implements _EventLoaded {
     TResult Function()? loading,
     TResult Function(Models.DocumentList events)? eventsListLoaded,
     TResult Function(Models.Document event, bool isAcessModerator)? eventLoaded,
+    TResult Function(String message)? error,
     required TResult orElse(),
   }) {
     if (eventLoaded != null) {
@@ -582,6 +609,7 @@ class _$_EventLoaded implements _EventLoaded {
     required TResult Function(_Loading value) loading,
     required TResult Function(_EventsListLoaded value) eventsListLoaded,
     required TResult Function(_EventLoaded value) eventLoaded,
+    required TResult Function(_Error value) error,
   }) {
     return eventLoaded(this);
   }
@@ -593,6 +621,7 @@ class _$_EventLoaded implements _EventLoaded {
     TResult? Function(_Loading value)? loading,
     TResult? Function(_EventsListLoaded value)? eventsListLoaded,
     TResult? Function(_EventLoaded value)? eventLoaded,
+    TResult? Function(_Error value)? error,
   }) {
     return eventLoaded?.call(this);
   }
@@ -604,6 +633,7 @@ class _$_EventLoaded implements _EventLoaded {
     TResult Function(_Loading value)? loading,
     TResult Function(_EventsListLoaded value)? eventsListLoaded,
     TResult Function(_EventLoaded value)? eventLoaded,
+    TResult Function(_Error value)? error,
     required TResult orElse(),
   }) {
     if (eventLoaded != null) {
@@ -622,5 +652,156 @@ abstract class _EventLoaded implements EventsState {
   bool get isAcessModerator;
   @JsonKey(ignore: true)
   _$$_EventLoadedCopyWith<_$_EventLoaded> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$_ErrorCopyWith<$Res> {
+  factory _$$_ErrorCopyWith(_$_Error value, $Res Function(_$_Error) then) =
+      __$$_ErrorCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String message});
+}
+
+/// @nodoc
+class __$$_ErrorCopyWithImpl<$Res>
+    extends _$EventsStateCopyWithImpl<$Res, _$_Error>
+    implements _$$_ErrorCopyWith<$Res> {
+  __$$_ErrorCopyWithImpl(_$_Error _value, $Res Function(_$_Error) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? message = null,
+  }) {
+    return _then(_$_Error(
+      null == message
+          ? _value.message
+          : message // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$_Error implements _Error {
+  const _$_Error(this.message);
+
+  @override
+  final String message;
+
+  @override
+  String toString() {
+    return 'EventsState.error(message: $message)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$_Error &&
+            (identical(other.message, message) || other.message == message));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, message);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$_ErrorCopyWith<_$_Error> get copyWith =>
+      __$$_ErrorCopyWithImpl<_$_Error>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initial,
+    required TResult Function() loading,
+    required TResult Function(Models.DocumentList events) eventsListLoaded,
+    required TResult Function(Models.Document event, bool isAcessModerator)
+        eventLoaded,
+    required TResult Function(String message) error,
+  }) {
+    return error(message);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? initial,
+    TResult? Function()? loading,
+    TResult? Function(Models.DocumentList events)? eventsListLoaded,
+    TResult? Function(Models.Document event, bool isAcessModerator)?
+        eventLoaded,
+    TResult? Function(String message)? error,
+  }) {
+    return error?.call(message);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initial,
+    TResult Function()? loading,
+    TResult Function(Models.DocumentList events)? eventsListLoaded,
+    TResult Function(Models.Document event, bool isAcessModerator)? eventLoaded,
+    TResult Function(String message)? error,
+    required TResult orElse(),
+  }) {
+    if (error != null) {
+      return error(message);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Initial value) initial,
+    required TResult Function(_Loading value) loading,
+    required TResult Function(_EventsListLoaded value) eventsListLoaded,
+    required TResult Function(_EventLoaded value) eventLoaded,
+    required TResult Function(_Error value) error,
+  }) {
+    return error(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Initial value)? initial,
+    TResult? Function(_Loading value)? loading,
+    TResult? Function(_EventsListLoaded value)? eventsListLoaded,
+    TResult? Function(_EventLoaded value)? eventLoaded,
+    TResult? Function(_Error value)? error,
+  }) {
+    return error?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Initial value)? initial,
+    TResult Function(_Loading value)? loading,
+    TResult Function(_EventsListLoaded value)? eventsListLoaded,
+    TResult Function(_EventLoaded value)? eventLoaded,
+    TResult Function(_Error value)? error,
+    required TResult orElse(),
+  }) {
+    if (error != null) {
+      return error(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _Error implements EventsState {
+  const factory _Error(final String message) = _$_Error;
+
+  String get message;
+  @JsonKey(ignore: true)
+  _$$_ErrorCopyWith<_$_Error> get copyWith =>
       throw _privateConstructorUsedError;
 }

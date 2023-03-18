@@ -5,6 +5,7 @@ import 'package:face_to_face_voting/blocs/poll/poll_cubit.dart';
 import 'package:face_to_face_voting/blocs/user/user_cubit.dart';
 import 'package:face_to_face_voting/theme/app_theme.dart';
 import 'package:face_to_face_voting/utils/spacing.dart';
+import 'package:face_to_face_voting/widgets/failure.dart';
 import 'package:face_to_face_voting/widgets/text.dart';
 import 'package:face_to_face_voting/widgets/votes_banner.dart';
 import 'package:flutter/material.dart';
@@ -65,6 +66,14 @@ class _PollScreenState extends State<PollScreen> {
         builder: (context, UserState) {
           return UserState.maybeMap(
             orElse: () => Container(),
+            error: (value) {
+              return Failure(
+                message: value.message,
+                onRetry: () {
+                  BlocProvider.of<UserCubit>(context).login();
+                },
+              );
+            },
             success: (user) {
               final me = user.user;
 
@@ -114,11 +123,28 @@ class _PollScreenState extends State<PollScreen> {
                             },
                             noPoll: (eventId) =>
                                 _NoPollScreen(eventName: eventName),
+                            error: (message) {
+                              return Failure(
+                                showImage: false,
+                                message: message,
+                                onRetry: () {
+                                  BlocProvider.of<PollCubit>(context).loadPolls(
+                                      eventLoadedStateValue.event.$id);
+                                },
+                              );
+                            },
                             orElse: () {
                               return Container();
                             },
                           ),
                         );
+                      },
+                    ),
+                    error: (value) => Failure(
+                      showImage: false,
+                      message: value.message,
+                      onRetry: () {
+                        BlocProvider.of<EventsCubit>(context).loadEventsList();
                       },
                     ),
                     orElse: () => Container(),

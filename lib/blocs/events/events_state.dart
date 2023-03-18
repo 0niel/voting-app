@@ -10,4 +10,5 @@ class EventsState with _$EventsState {
     Models.Document event,
     bool isAcessModerator,
   ) = _EventLoaded;
+  const factory EventsState.error(String message) = _Error;
 }
