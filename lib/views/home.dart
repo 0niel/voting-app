@@ -260,13 +260,11 @@ class _Drawer extends StatelessWidget {
     final colors = [
       [const Color(0xff639fdc).withAlpha(20), const Color(0xff639fdc)],
       [const Color(0xffb38220).withAlpha(20), const Color(0xffb38220)],
-      [const Color(0xff8bc34a).withAlpha(20), const Color(0xff8bc34a)],
       [const Color(0xffe91e63).withAlpha(20), const Color(0xffe91e63)],
       [const Color(0xff9c27b0).withAlpha(20), const Color(0xff9c27b0)],
       [const Color(0xff795548).withAlpha(20), const Color(0xff795548)],
       [const Color(0xff00bcd4).withAlpha(20), const Color(0xff00bcd4)],
       [const Color(0xff607d8b).withAlpha(20), const Color(0xff607d8b)],
-      [const Color(0xffcddc39).withAlpha(20), const Color(0xffcddc39)],
       [const Color(0xff009688).withAlpha(20), const Color(0xff009688)],
     ];
 
