@@ -8,6 +8,7 @@ const String timersCollectionId = '6403486e078581b4a04e';
 const String eventsCollectionId = '63fdfe6b9d7f2bedfcde';
 const String pollsCollectionId = '63f751383945d22cf031';
 const String votesCollectionId = '63f74ddbdcc5c832a40f';
+const String resourcesCollectionId = '640f5fba811ffa978fc2';
 
 const String appwriteClientHealthApiKey = String.fromEnvironment(
     'APPWRITE_CLIENT_HEALTH_API_KEY',

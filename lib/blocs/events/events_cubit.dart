@@ -30,7 +30,7 @@ class EventsCubit extends Cubit<EventsState> {
     final payload = message.payload;
     final doc = Models.Document.fromMap(payload);
 
-    if (doc.$collectionId == eventsCollectionId) {
+    if (doc.$collectionId == resourcesCollectionId) {
       loadEventsList();
     }
   }

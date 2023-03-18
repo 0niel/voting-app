@@ -217,14 +217,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.5"
-  cupertino_list_tile:
-    dependency: transitive
-    description:
-      name: cupertino_list_tile
-      sha256: "081745577503a526b46feba753a53d7b0ba51196192c30097685f3f30297052f"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.2.1+1"
   dart_appwrite:
     dependency: "direct main"
     description:
@@ -334,14 +326,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.2.17"
-  flutter_platform_widgets:
-    dependency: transitive
-    description:
-      name: flutter_platform_widgets
-      sha256: "04a373ebf654162791bfce4b7c157f48ec35ea8b0abe2a68de837ceda8bd39ff"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.2.6"
   flutter_secure_storage:
     dependency: "direct main"
     description:
@@ -391,13 +375,13 @@ packages:
     source: hosted
     version: "2.0.0"
   flutter_svg:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: flutter_svg
-      sha256: "6ff9fa12892ae074092de2fa6a9938fb21dbabfdaa2ff57dc697ff912fc8d4b2"
+      sha256: "12006889e2987c549c4c1ec1a5ba4ec4b24d34d2469ee5f9476c926dcecff266"
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.6"
+    version: "2.0.4"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -672,14 +656,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.8.2"
-  path_drawing:
-    dependency: transitive
-    description:
-      name: path_drawing
-      sha256: bbb1934c0cbb03091af082a6389ca2080345291ef07a5fa6d6e078ba8682f977
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.1"
   path_parsing:
     dependency: transitive
     description:
@@ -824,15 +800,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.0"
-  rtu_app_core:
-    dependency: "direct main"
-    description:
-      path: "."
-      ref: main
-      resolved-ref: "7388114ee2b611537ca2fe41092211f7a258f716"
-      url: "https://github.com/mirea-ninja/rtu-app-core.git"
-    source: git
-    version: "0.0.3"
   screen_brightness:
     dependency: "direct main"
     description:
@@ -985,14 +952,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.3"
-  simple_gesture_detector:
-    dependency: transitive
-    description:
-      name: simple_gesture_detector
-      sha256: "86d08f85f1f58583b7b4b941d989f48ea6ce08c1724a1d10954a277c2ec36592"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.2.0"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -1054,14 +1013,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.0"
-  table_calendar:
-    dependency: transitive
-    description:
-      name: table_calendar
-      sha256: "7f1270313c0cdb245b583ed8518982c01d4a7e95869b3c30abcbae3b642c45d0"
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.0.8"
   term_glyph:
     dependency: transitive
     description:
@@ -1094,14 +1045,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.3.1"
-  unicons:
-    dependency: transitive
-    description:
-      name: unicons
-      sha256: "3c64f07e7f99c105298340da86cc2a245f602aacc70b90caa4af1a7fd3d49b98"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.1.0"
   universal_html:
     dependency: transitive
     description:
@@ -1190,6 +1133,30 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.7"
+  vector_graphics:
+    dependency: transitive
+    description:
+      name: vector_graphics
+      sha256: "4cf8e60dbe4d3a693d37dff11255a172594c0793da542183cbfe7fe978ae4aaa"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.4"
+  vector_graphics_codec:
+    dependency: transitive
+    description:
+      name: vector_graphics_codec
+      sha256: "278ad5f816f58b1967396d1f78ced470e3e58c9fe4b27010102c0a595c764468"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.4"
+  vector_graphics_compiler:
+    dependency: transitive
+    description:
+      name: vector_graphics_compiler
+      sha256: "0bf61ad56e6fd6688a2865d3ceaea396bc6a0a90ea0d7ad5049b1b76c09d6163"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.4"
   vector_math:
     dependency: transitive
     description:
@@ -1248,4 +1215,4 @@ packages:
     version: "3.1.1"
 sdks:
   dart: ">=2.19.0 <3.0.0"
-  flutter: ">=3.3.0"
+  flutter: ">=3.7.0-0"

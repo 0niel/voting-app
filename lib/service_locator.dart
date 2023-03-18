@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:face_to_face_voting/blocs/events/events_cubit.dart';
 import 'package:face_to_face_voting/blocs/participants/participants_cubit.dart';
 import 'package:face_to_face_voting/blocs/poll/poll_cubit.dart';
+import 'package:face_to_face_voting/blocs/resources/resources_cubit.dart';
 import 'package:face_to_face_voting/blocs/search_users/search_users_cubit.dart';
 import 'package:face_to_face_voting/data/sources/local_storage.dart';
 import 'package:face_to_face_voting/data/sources/remote_data.dart';
@@ -56,6 +57,8 @@ Future<void> setup() async {
         account: getIt(),
         remoteData: getIt(),
       ));
+  getIt.registerLazySingleton<ResourcesCubit>(
+      () => ResourcesCubit(databases: getIt()));
 
   getIt
       .registerLazySingleton<RemoteData>(() => RemoteData(httpClient: getIt()));

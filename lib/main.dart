@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:face_to_face_voting/blocs/events/events_cubit.dart';
 import 'package:face_to_face_voting/blocs/participants/participants_cubit.dart';
 import 'package:face_to_face_voting/blocs/poll/poll_cubit.dart';
+import 'package:face_to_face_voting/blocs/resources/resources_cubit.dart';
 import 'package:face_to_face_voting/blocs/search_users/search_users_cubit.dart';
 import 'package:face_to_face_voting/service_locator.dart';
 import 'package:face_to_face_voting/theme/app_theme.dart';
@@ -91,6 +92,8 @@ class App extends StatelessWidget {
             create: (context) => service_locator.getIt<ParticipantsCubit>()),
         BlocProvider<SearchUsersCubit>(
             create: (context) => service_locator.getIt<SearchUsersCubit>()),
+        BlocProvider<ResourcesCubit>(
+            create: (context) => service_locator.getIt<ResourcesCubit>()),
       ],
       child: MaterialApp(
         title: 'Система очного голосования',

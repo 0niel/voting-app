@@ -44,6 +44,7 @@ class UserCubit extends Cubit<UserState> {
       'databases.$databaseId.collections.$eventsCollectionId.documents',
       'databases.$databaseId.collections.$pollsCollectionId.documents',
       'databases.$databaseId.collections.$votesCollectionId.documents',
+      'databases.$databaseId.collections.$resourcesCollectionId.documents',
       'memberships',
       'teams',
     ]);
@@ -92,6 +93,8 @@ class UserCubit extends Cubit<UserState> {
           } else if (doc.$collectionId == pollsCollectionId ||
               doc.$collectionId == votesCollectionId) {
             getIt<PollCubit>().processRealtimeEvent(event);
+          } else if (doc.$collectionId == resourcesCollectionId) {
+            getIt<EventsCubit>().processRealtimeEvent(event);
           }
         }
       },

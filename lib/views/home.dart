@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:face_to_face_voting/blocs/events/events_cubit.dart';
 import 'package:face_to_face_voting/blocs/poll/poll_cubit.dart';
+import 'package:face_to_face_voting/blocs/resources/resources_cubit.dart';
 import 'package:face_to_face_voting/theme/app_theme.dart';
 import 'package:face_to_face_voting/utils/spacing.dart';
 import 'package:face_to_face_voting/views/events/events_screen.dart';
@@ -16,7 +17,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:screen_brightness/screen_brightness.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -249,21 +251,26 @@ class _HomeScreenState extends State<HomeScreen> {
 class _Drawer extends StatelessWidget {
   const _Drawer({Key? key}) : super(key: key);
 
-  void launchParticipantsInfo() async {
-    String url = "https://vk.com/album-78724646_285061932";
-    await launch(url);
+  void _launchResource(e) async {
+    String url = e['url'];
+    await launchUrlString(url);
   }
 
-  void launchDocumentation() async {
-    String url =
-        "https://drive.google.com/file/d/1Ogqm3ZipeM7ott4nldm1JAoUQ8Iacm1m/view";
-    await launch(url);
-  }
+  List<Color> _getResourceColorByName(String name) {
+    final colors = [
+      [const Color(0xff639fdc).withAlpha(20), const Color(0xff639fdc)],
+      [const Color(0xffb38220).withAlpha(20), const Color(0xffb38220)],
+      [const Color(0xff8bc34a).withAlpha(20), const Color(0xff8bc34a)],
+      [const Color(0xffe91e63).withAlpha(20), const Color(0xffe91e63)],
+      [const Color(0xff9c27b0).withAlpha(20), const Color(0xff9c27b0)],
+      [const Color(0xff795548).withAlpha(20), const Color(0xff795548)],
+      [const Color(0xff00bcd4).withAlpha(20), const Color(0xff00bcd4)],
+      [const Color(0xff607d8b).withAlpha(20), const Color(0xff607d8b)],
+      [const Color(0xffcddc39).withAlpha(20), const Color(0xffcddc39)],
+      [const Color(0xff009688).withAlpha(20), const Color(0xff009688)],
+    ];
 
-  void launchRezolutions() async {
-    String url =
-        "https://drive.google.com/file/d/160Qi7KdUvGspaz-8A889ivym2qOH0MDS/view";
-    await launch(url);
+    return colors[name.hashCode % colors.length];
   }
 
   @override
@@ -279,7 +286,7 @@ class _Drawer extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
+            children: [
               Container(
                 padding: Spacing.only(left: 20, bottom: 24, top: 24, right: 20),
                 child: Column(
@@ -304,101 +311,78 @@ class _Drawer extends StatelessWidget {
                 ),
               ),
               Spacing.height(32),
-              Container(
-                  margin: Spacing.x(20),
-                  child: Column(
-                    children: [
-                      InkWell(
-                        onTap: () => launchParticipantsInfo(),
-                        highlightColor: Colors.transparent,
-                        splashColor: Colors.transparent,
-                        child: Row(
-                          children: [
-                            CustomContainer(
-                              paddingAll: 12,
-                              borderRadiusAll: 4,
-                              color: const Color(0xff639fdc).withAlpha(20),
-                              child: const Icon(
-                                FeatherIcons.user,
-                                size: 20,
-                                color: Color(0xff639fdc),
-                              ),
-                            ),
-                            Spacing.width(16),
-                            const Expanded(
-                              child: CustomText.bodyLarge("Анкеты кандидатов"),
-                            ),
-                            Spacing.width(16),
-                            Icon(
-                              FeatherIcons.chevronRight,
-                              size: 18,
-                              color: AppTheme.theme.colorScheme.onBackground,
-                            ),
-                          ],
-                        ),
-                      ),
-                      Spacing.height(20),
-                      InkWell(
-                        onTap: () => launchDocumentation(),
-                        highlightColor: Colors.transparent,
-                        splashColor: Colors.transparent,
-                        child: Row(
-                          children: [
-                            CustomContainer(
-                              paddingAll: 12,
-                              borderRadiusAll: 4,
-                              color: const Color(0xffb38220).withAlpha(20),
-                              child: const Icon(
-                                FeatherIcons.user,
-                                size: 20,
-                                color: Color(0xffb38220),
-                              ),
-                            ),
-                            Spacing.width(16),
-                            const Expanded(
-                              child: CustomText.bodyLarge("Регламент"),
-                            ),
-                            Spacing.width(16),
-                            Icon(
-                              FeatherIcons.chevronRight,
-                              size: 18,
-                              color: AppTheme.theme.colorScheme.onBackground,
-                            ),
-                          ],
-                        ),
-                      ),
-                      Spacing.height(20),
-                      InkWell(
-                        onTap: () => launchRezolutions(),
-                        highlightColor: Colors.transparent,
-                        splashColor: Colors.transparent,
-                        child: Row(
-                          children: [
-                            CustomContainer(
-                              paddingAll: 12,
-                              borderRadiusAll: 4,
-                              color: const Color(0xffb38220).withAlpha(20),
-                              child: const Icon(
-                                FeatherIcons.file,
-                                size: 20,
-                                color: Color(0xffb38220),
-                              ),
-                            ),
-                            Spacing.width(16),
-                            const Expanded(
-                              child: CustomText.bodyLarge("Резолюция"),
-                            ),
-                            Spacing.width(16),
-                            Icon(
-                              FeatherIcons.chevronRight,
-                              size: 18,
-                              color: AppTheme.theme.colorScheme.onBackground,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  )),
+              BlocBuilder<EventsCubit, EventsState>(builder: (context, state) {
+                BlocProvider.of<ResourcesCubit>(context).loadResources();
+                final eventId = state.maybeMap(
+                  eventLoaded: (event) {
+                    return event.event.$id;
+                  },
+                  orElse: () => null,
+                );
+                return BlocBuilder<ResourcesCubit, ResourcesState>(
+                  builder: (context, resourcesState) {
+                    return resourcesState.maybeMap(
+                      loaded: (value) {
+                        return Container(
+                          margin: Spacing.x(20),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              ...value.resources
+                                  .where((element) =>
+                                      (element.data['event_id'] == eventId) ||
+                                      (element.data['event_id'] == null))
+                                  .map(
+                                    (e) => Padding(
+                                      padding: Spacing.y(8),
+                                      child: InkWell(
+                                        onTap: () => _launchResource(e),
+                                        highlightColor: Colors.transparent,
+                                        splashColor: Colors.transparent,
+                                        child: Row(
+                                          children: [
+                                            CustomContainer(
+                                              paddingAll: 12,
+                                              borderRadiusAll: 4,
+                                              color: _getResourceColorByName(
+                                                  e.data['name'])[0],
+                                              child: SvgPicture.string(
+                                                e.data['svg_icon'],
+                                                width: 20,
+                                                height: 20,
+                                                color: _getResourceColorByName(
+                                                    e.data['name'])[1],
+                                              ),
+                                            ),
+                                            Spacing.width(16),
+                                            Expanded(
+                                              child: CustomText.bodyLarge(
+                                                  e.data['name']),
+                                            ),
+                                            Spacing.width(16),
+                                            Icon(
+                                              MdiIcons.chevronRight,
+                                              size: 18,
+                                              color: AppTheme.theme.colorScheme
+                                                  .onBackground
+                                                  .withAlpha(200),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                  .toList(),
+                            ],
+                          ),
+                        );
+                      },
+                      orElse: () => const SizedBox(),
+                    );
+                  },
+                );
+              }),
             ],
           ),
         ),
