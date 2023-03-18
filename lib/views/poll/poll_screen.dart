@@ -244,6 +244,30 @@ class _Poll extends StatelessWidget {
 
   final ValueNotifier<int?> selectedOptionNotifier;
 
+  // Сортировки нужны, так как в БД не гарантируется порядок опций. Поэтому
+  // сортируем их во время отображения, чтобы у всех пользователей был одинаковый
+  // порядок опций.
+  List<String> _getSortedOptions() {
+    final sortedOptions = options.toList();
+    sortedOptions.sort((a, b) {
+      if (a.length == b.length) {
+        return a.compareTo(b);
+      } else {
+        return a.length.compareTo(b.length);
+      }
+    });
+    return sortedOptions;
+  }
+
+  Map<String, int> _getSortedVotes() {
+    final sortedVotes = <String, int>{};
+    final sortedOptions = _getSortedOptions();
+    for (final option in sortedOptions) {
+      sortedVotes[option] = votes[option] ?? 0;
+    }
+    return sortedVotes;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -280,7 +304,7 @@ class _Poll extends StatelessWidget {
                 if (isActive)
                   Column(
                     mainAxisSize: MainAxisSize.min,
-                    children: options
+                    children: _getSortedOptions()
                         .asMap()
                         .entries
                         .map(
@@ -302,7 +326,7 @@ class _Poll extends StatelessWidget {
             ),
           ),
         ),
-        VotesBanner(votes: votes),
+        VotesBanner(votes: _getSortedVotes()),
         const SizedBox(height: 25),
         Container(
           padding: Spacing.fromLTRB(48, 0, 48, 0),
