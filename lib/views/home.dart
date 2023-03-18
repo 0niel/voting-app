@@ -252,7 +252,7 @@ class _Drawer extends StatelessWidget {
   const _Drawer({Key? key}) : super(key: key);
 
   void _launchResource(e) async {
-    String url = e['url'];
+    String url = e.data['url'];
     await launchUrlString(url);
   }
 
