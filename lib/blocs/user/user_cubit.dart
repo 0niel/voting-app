@@ -52,9 +52,16 @@ class UserCubit extends Cubit<UserState> {
 
     subscription!.stream.timeout(
       const Duration(seconds: 5),
-      onTimeout: (sink) {
-        print('Realtime subscription timeout');
+      onTimeout: (sink) async {
         sink.addError('Realtime subscription timeout');
+
+        try {
+          subscription?.close();
+        } catch (e) {
+          debugPrint('realtime_mixin:onTimeout: ${e.toString()}');
+        }
+        subscription = null;
+        await subscribeRealtime();
       },
     );
 
@@ -90,16 +97,16 @@ class UserCubit extends Cubit<UserState> {
       },
       onError: (err, st) =>
           debugPrint('realtime_mixin:onError: ${err.toString()}'),
-      onDone: () {
+      onDone: () async {
         debugPrint('realtime_mixin:onDone');
         // Переподписываемся на события
         try {
           subscription?.close();
-          subscription = null;
         } catch (e) {
-          print(e);
+          debugPrint('realtime_mixin:onDone: ${e.toString()}');
         }
-        subscribeRealtime();
+        subscription = null;
+        await subscribeRealtime();
         debugPrint('realtime_mixin:onDone: re-subscribed');
       },
       cancelOnError: false,
