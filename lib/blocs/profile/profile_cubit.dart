@@ -35,7 +35,7 @@ class ProfileCubit extends Cubit<ProfileState> {
     super.close();
   }
 
-  void subscribeRealtime() async {
+  Future<void> subscribeRealtime() async {
     if (subscription != null) {
       return;
     }
@@ -192,7 +192,7 @@ class ProfileCubit extends Cubit<ProfileState> {
             .contains(element.data['participants_team_id']));
 
     // Должно вызываться последним
-    subscribeRealtime();
+    await subscribeRealtime();
 
     emit(_Success(
       user,
