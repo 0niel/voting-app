@@ -40,7 +40,6 @@ class ProfileScreen extends StatelessWidget {
                           usrState.user.name,
                           fontWeight: 700,
                           letterSpacing: 0,
-                          height: 0.8,
                           color: Theme.of(context).primaryColor,
                           textAlign: TextAlign.center,
                         ),
