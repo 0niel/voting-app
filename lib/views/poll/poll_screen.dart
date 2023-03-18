@@ -71,11 +71,11 @@ class _PollScreenState extends State<PollScreen> {
               return BlocConsumer<EventsCubit, EventsState>(
                 listener: (context, state) {
                   state.maybeWhen(
-                      orElse: () {},
-                      eventLoaded: (events, isAcessModerator) {
-                        BlocProvider.of<PollCubit>(context)
-                            .loadPolls(events.$id);
-                      });
+                    orElse: () {},
+                    eventLoaded: (events, isAcessModerator) {
+                      BlocProvider.of<PollCubit>(context).loadPolls(events.$id);
+                    },
+                  );
                 },
                 builder: (context, state) {
                   return state.maybeMap(
@@ -84,34 +84,40 @@ class _PollScreenState extends State<PollScreen> {
                       builder: (context, pollState) {
                         final eventName =
                             eventLoadedStateValue.event.data['name'];
-                        return pollState.maybeWhen(
-                          success:
-                              (eventId, poll, votes, timeLeft, timeMaximum) {
-                            final question = poll.data['question'] as String;
-                            final options =
-                                List<String>.from(poll.data['poll_options']);
-
-                            _setMyVote(me.$id, votes, options);
-
-                            return _Poll(
-                              eventName: eventName,
-                              question: question,
-                              options: options,
-                              votes: _getVotes(votes),
-                              isActive: (timeLeft.isNegative ||
-                                      timeLeft.inSeconds == 0)
-                                  ? false
-                                  : true,
-                              eventId: eventId,
-                              pollId: poll.$id,
-                              selectedOptionNotifier: _selectedOption,
-                            );
+                        return RefreshIndicator(
+                          onRefresh: () async {
+                            BlocProvider.of<PollCubit>(context)
+                                .loadPolls(eventLoadedStateValue.event.$id);
                           },
-                          noPoll: (eventId) =>
-                              _NoPollScreen(eventName: eventName),
-                          orElse: () {
-                            return Container();
-                          },
+                          child: pollState.maybeWhen(
+                            success:
+                                (eventId, poll, votes, timeLeft, timeMaximum) {
+                              final question = poll.data['question'] as String;
+                              final options =
+                                  List<String>.from(poll.data['poll_options']);
+
+                              _setMyVote(me.$id, votes, options);
+
+                              return _Poll(
+                                eventName: eventName,
+                                question: question,
+                                options: options,
+                                votes: _getVotes(votes),
+                                isActive: (timeLeft.isNegative ||
+                                        timeLeft.inSeconds == 0)
+                                    ? false
+                                    : true,
+                                eventId: eventId,
+                                pollId: poll.$id,
+                                selectedOptionNotifier: _selectedOption,
+                              );
+                            },
+                            noPoll: (eventId) =>
+                                _NoPollScreen(eventName: eventName),
+                            orElse: () {
+                              return Container();
+                            },
+                          ),
                         );
                       },
                     ),

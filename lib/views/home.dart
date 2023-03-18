@@ -129,7 +129,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         : _screens[_currentScreen];
                   },
                   eventLoaded: (value) {
-                    print("EVENT LOADED!");
                     return _screens[_currentScreen];
                   },
                   orElse: () => _screens[_currentScreen],

@@ -24,7 +24,7 @@ class LoginHomeScreen extends StatelessWidget {
         child: Center(child: BlocBuilder<ProfileCubit, ProfileState>(
           builder: (context, state) {
             state.whenOrNull(
-              success: (user, prefs, jwt, avatar, _) {
+              success: (user, prefs, avatar, _) {
                 BlocProvider.of<EventsCubit>(context).started();
                 WidgetsBinding.instance.addPostFrameCallback(
                   (_) => Navigator.of(context).pushReplacement(

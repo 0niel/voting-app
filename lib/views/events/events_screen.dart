@@ -13,28 +13,30 @@ class EventsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bloc = BlocProvider.of<EventsCubit>(context);
-    print("BUILDING EVENTS SCREEN. BLOC: $bloc");
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        title: const CustomText.titleLarge('Предстоящие мероприятия',
-            fontWeight: 700),
+        title: const CustomText.titleLarge(
+          'Предстоящие мероприятия',
+          fontWeight: 700,
+        ),
         automaticallyImplyLeading: false,
       ),
-      body: BlocConsumer<EventsCubit, EventsState>(
-        bloc: bloc,
-        listener: (context, state) {
-          print("LISTENING EVENTS SCREEN. STATE: $state");
-        },
-        builder: (context, state) {
-          print("BUILDING EVENTS SCREEN. STATE: $state");
-          return state.map(
-            initial: (initialState) => const _Loading(),
-            loading: (loadingState) => const _Loading(),
-            eventsListLoaded: (eventsListLoadedState) =>
-                _Success(events: eventsListLoadedState.events),
-            eventLoaded: (eventLoadedState) => Container(),
-          );
+      body: RefreshIndicator(
+        child: BlocBuilder<EventsCubit, EventsState>(
+          bloc: bloc,
+          builder: (context, state) {
+            return state.map(
+              initial: (initialState) => const _Loading(),
+              loading: (loadingState) => const _Loading(),
+              eventsListLoaded: (eventsListLoadedState) =>
+                  _Success(events: eventsListLoadedState.events),
+              eventLoaded: (eventLoadedState) => Container(),
+            );
+          },
+        ),
+        onRefresh: () async {
+          bloc.started();
         },
       ),
     );
