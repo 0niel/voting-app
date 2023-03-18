@@ -27,6 +27,8 @@ class UserCubit extends Cubit<UserState> {
   final LocalStorage localStorage;
   final Realtime realtime;
 
+  late final Models.Account me;
+
   RealtimeSubscription? subscription;
 
   @override
@@ -82,9 +84,15 @@ class UserCubit extends Cubit<UserState> {
         print('Event action: $eventAction');
 
         if (eventTarget == 'teams' || eventTarget == 'memberships') {
-          // Возможно, что пользователя удалили или добавили в список участников
-          // Поэтому нужно обновить список событий
-          getIt<EventsCubit>().loadEventsList();
+          try {
+            if (event.payload['userId'] == me.$id) {
+              // Возможно, что пользователя удалили или добавили в список участников
+              // Поэтому нужно обновить список событий
+              getIt<EventsCubit>().loadEventsList();
+            }
+          } catch (e) {
+            debugPrint('realtime_mixin:onError: ${e.toString()}');
+          }
         } else {
           final doc = Models.Document.fromMap(event.payload);
 
@@ -191,6 +199,8 @@ class UserCubit extends Cubit<UserState> {
 
     final user = await account.get();
     final prefs = await account.getPrefs();
+
+    me = user;
 
     final avatarByteList = await avatars.getInitials(
       name: StringFormatter.cyryllicToLat(user.name),
