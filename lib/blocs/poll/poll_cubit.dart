@@ -66,21 +66,26 @@ class PollCubit extends Cubit<PollState> {
       return null;
     }
 
-    polls.documents.sort((a, b) {
+    final pollsWithDates = polls.documents.where((poll) {
+      return poll.data['start_at'] != null && poll.data['end_at'] != null;
+    }).toList();
+
+    pollsWithDates.sort((a, b) {
       final aStartAt = DateTime.parse(a.data['start_at']);
       final bStartAt = DateTime.parse(b.data['start_at']);
 
       return bStartAt.compareTo(aStartAt);
     });
 
-    final activePoll = polls.documents.firstWhereOrNull((poll) {
+    final activePoll = pollsWithDates.firstWhereOrNull((poll) {
       final startAt = DateTime.parse(poll.data['start_at']);
       final endAt = DateTime.parse(poll.data['end_at']);
 
       return now.isAfter(startAt) && now.isBefore(endAt);
     });
 
-    return activePoll ?? polls.documents.first;
+    return activePoll ??
+        (pollsWithDates.isNotEmpty ? pollsWithDates.first : null);
   }
 
   Future<Duration> _calculateTimeLeft(Models.Document poll) async {
@@ -121,7 +126,6 @@ class PollCubit extends Cubit<PollState> {
         collectionId: pollsCollectionId,
         queries: [
           Query.equal('event_id', eventId),
-          Query.orderDesc('start_at'),
         ],
       );
 
@@ -221,7 +225,6 @@ class PollCubit extends Cubit<PollState> {
         collectionId: pollsCollectionId,
         queries: [
           Query.equal('event_id', eventId),
-          Query.orderDesc('start_at'),
         ],
       );
 
