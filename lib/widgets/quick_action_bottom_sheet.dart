@@ -85,7 +85,8 @@ class _ParticipantsBottomSheet extends StatelessWidget {
                                     separatorBuilder: (context, index) =>
                                         const Divider(),
                                     shrinkWrap: true,
-                                    itemCount: state.participants.total,
+                                    itemCount:
+                                        state.participants.memberships.length,
                                     itemBuilder: (context, index) {
                                       return ListTile(
                                         title: CustomText.bodySmall(
