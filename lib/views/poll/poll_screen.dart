@@ -2,7 +2,7 @@ import 'package:appwrite/models.dart';
 import 'package:collection/collection.dart';
 import 'package:face_to_face_voting/blocs/events/events_cubit.dart';
 import 'package:face_to_face_voting/blocs/poll/poll_cubit.dart';
-import 'package:face_to_face_voting/blocs/profile/profile_cubit.dart';
+import 'package:face_to_face_voting/blocs/user/user_cubit.dart';
 import 'package:face_to_face_voting/theme/app_theme.dart';
 import 'package:face_to_face_voting/utils/spacing.dart';
 import 'package:face_to_face_voting/widgets/text.dart';
@@ -61,9 +61,9 @@ class _PollScreenState extends State<PollScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocBuilder<ProfileCubit, ProfileState>(
-        builder: (context, profileState) {
-          return profileState.maybeMap(
+      body: BlocBuilder<UserCubit, UserState>(
+        builder: (context, UserState) {
+          return UserState.maybeMap(
             orElse: () => Container(),
             success: (user) {
               final me = user.user;

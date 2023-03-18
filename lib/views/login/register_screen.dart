@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../blocs/profile/profile_cubit.dart';
+import '../../blocs/user/user_cubit.dart';
 import '../../utils/validators.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -31,7 +31,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return BlocConsumer<ProfileCubit, ProfileState>(
+    return BlocConsumer<UserCubit, UserState>(
       listener: (context, state) {
         state.maybeWhen(
           error: (message) {
@@ -270,7 +270,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       return;
     }
 
-    BlocProvider.of<ProfileCubit>(context)
+    BlocProvider.of<UserCubit>(context)
         .register(name: name, email: email, password: password);
   }
 }

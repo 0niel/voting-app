@@ -15,10 +15,10 @@ import '../../service_locator.dart';
 import '../events/events_cubit.dart';
 import '../poll/poll_cubit.dart';
 
-part 'profile_state.dart';
-part 'profile_cubit.freezed.dart';
+part 'user_state.dart';
+part 'user_cubit.freezed.dart';
 
-class ProfileCubit extends Cubit<ProfileState> {
+class UserCubit extends Cubit<UserState> {
   final Client client;
   final Databases databases;
   final Account account;
@@ -51,7 +51,7 @@ class ProfileCubit extends Cubit<ProfileState> {
     print('Subscribed to realtime events');
 
     subscription!.stream.timeout(
-      const Duration(seconds: 8),
+      const Duration(seconds: 5),
       onTimeout: (sink) {
         print('Realtime subscription timeout');
         sink.addError('Realtime subscription timeout');
@@ -90,7 +90,18 @@ class ProfileCubit extends Cubit<ProfileState> {
       },
       onError: (err, st) =>
           debugPrint('realtime_mixin:onError: ${err.toString()}'),
-      onDone: () => debugPrint('realtime_mixin:onDone'),
+      onDone: () {
+        debugPrint('realtime_mixin:onDone');
+        // Переподписываемся на события
+        try {
+          subscription?.close();
+          subscription = null;
+        } catch (e) {
+          print(e);
+        }
+        subscribeRealtime();
+        debugPrint('realtime_mixin:onDone: re-subscribed');
+      },
       cancelOnError: false,
     );
   }
@@ -112,7 +123,7 @@ class ProfileCubit extends Cubit<ProfileState> {
     return error;
   }
 
-  ProfileCubit({
+  UserCubit({
     required this.client,
     required this.account,
     required this.avatars,
@@ -246,6 +257,7 @@ class ProfileCubit extends Cubit<ProfileState> {
 
     try {
       await account.deleteSession(sessionId: 'current');
+      subscription?.close();
       emit(const _LoginScreen());
     } on AppwriteException catch (e) {
       emit(_Error(_mapErrorsToMessage(e.message)));
@@ -264,7 +276,7 @@ class ProfileCubit extends Cubit<ProfileState> {
           email: email,
           password: password,
         );
-        _loadUserData();
+        await _loadUserData();
       } else {
         try {
           await account.createOAuth2Session(
@@ -275,7 +287,7 @@ class ProfileCubit extends Cubit<ProfileState> {
         }
       }
 
-      _loadUserData();
+      await _loadUserData();
     } on AppwriteException catch (e) {
       emit(_Error(_mapErrorsToMessage(e.message)));
     }

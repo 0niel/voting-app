@@ -1,4 +1,4 @@
-import 'package:face_to_face_voting/blocs/profile/profile_cubit.dart';
+import 'package:face_to_face_voting/blocs/user/user_cubit.dart';
 import 'package:face_to_face_voting/theme/app_theme.dart';
 import 'package:face_to_face_voting/widgets/text.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +32,7 @@ class QrCodeScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 10),
-              BlocBuilder<ProfileCubit, ProfileState>(
+              BlocBuilder<UserCubit, UserState>(
                 builder: (context, state) {
                   return state.maybeMap(
                     success: (state) {

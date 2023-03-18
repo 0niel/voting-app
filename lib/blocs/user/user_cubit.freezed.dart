@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'profile_cubit.dart';
+part of 'user_cubit.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -15,7 +15,7 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
-mixin _$ProfileState {
+mixin _$UserState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
@@ -81,16 +81,15 @@ mixin _$ProfileState {
 }
 
 /// @nodoc
-abstract class $ProfileStateCopyWith<$Res> {
-  factory $ProfileStateCopyWith(
-          ProfileState value, $Res Function(ProfileState) then) =
-      _$ProfileStateCopyWithImpl<$Res, ProfileState>;
+abstract class $UserStateCopyWith<$Res> {
+  factory $UserStateCopyWith(UserState value, $Res Function(UserState) then) =
+      _$UserStateCopyWithImpl<$Res, UserState>;
 }
 
 /// @nodoc
-class _$ProfileStateCopyWithImpl<$Res, $Val extends ProfileState>
-    implements $ProfileStateCopyWith<$Res> {
-  _$ProfileStateCopyWithImpl(this._value, this._then);
+class _$UserStateCopyWithImpl<$Res, $Val extends UserState>
+    implements $UserStateCopyWith<$Res> {
+  _$UserStateCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -107,7 +106,7 @@ abstract class _$$_InitialCopyWith<$Res> {
 
 /// @nodoc
 class __$$_InitialCopyWithImpl<$Res>
-    extends _$ProfileStateCopyWithImpl<$Res, _$_Initial>
+    extends _$UserStateCopyWithImpl<$Res, _$_Initial>
     implements _$$_InitialCopyWith<$Res> {
   __$$_InitialCopyWithImpl(_$_Initial _value, $Res Function(_$_Initial) _then)
       : super(_value, _then);
@@ -120,7 +119,7 @@ class _$_Initial implements _Initial {
 
   @override
   String toString() {
-    return 'ProfileState.initial()';
+    return 'UserState.initial()';
   }
 
   @override
@@ -219,7 +218,7 @@ class _$_Initial implements _Initial {
   }
 }
 
-abstract class _Initial implements ProfileState {
+abstract class _Initial implements UserState {
   const factory _Initial() = _$_Initial;
 }
 
@@ -232,7 +231,7 @@ abstract class _$$_LoginScreenCopyWith<$Res> {
 
 /// @nodoc
 class __$$_LoginScreenCopyWithImpl<$Res>
-    extends _$ProfileStateCopyWithImpl<$Res, _$_LoginScreen>
+    extends _$UserStateCopyWithImpl<$Res, _$_LoginScreen>
     implements _$$_LoginScreenCopyWith<$Res> {
   __$$_LoginScreenCopyWithImpl(
       _$_LoginScreen _value, $Res Function(_$_LoginScreen) _then)
@@ -246,7 +245,7 @@ class _$_LoginScreen implements _LoginScreen {
 
   @override
   String toString() {
-    return 'ProfileState.loginScreen()';
+    return 'UserState.loginScreen()';
   }
 
   @override
@@ -345,7 +344,7 @@ class _$_LoginScreen implements _LoginScreen {
   }
 }
 
-abstract class _LoginScreen implements ProfileState {
+abstract class _LoginScreen implements UserState {
   const factory _LoginScreen() = _$_LoginScreen;
 }
 
@@ -358,7 +357,7 @@ abstract class _$$_LoadingCopyWith<$Res> {
 
 /// @nodoc
 class __$$_LoadingCopyWithImpl<$Res>
-    extends _$ProfileStateCopyWithImpl<$Res, _$_Loading>
+    extends _$UserStateCopyWithImpl<$Res, _$_Loading>
     implements _$$_LoadingCopyWith<$Res> {
   __$$_LoadingCopyWithImpl(_$_Loading _value, $Res Function(_$_Loading) _then)
       : super(_value, _then);
@@ -371,7 +370,7 @@ class _$_Loading implements _Loading {
 
   @override
   String toString() {
-    return 'ProfileState.loading()';
+    return 'UserState.loading()';
   }
 
   @override
@@ -470,7 +469,7 @@ class _$_Loading implements _Loading {
   }
 }
 
-abstract class _Loading implements ProfileState {
+abstract class _Loading implements UserState {
   const factory _Loading() = _$_Loading;
 }
 
@@ -489,7 +488,7 @@ abstract class _$$_SuccessCopyWith<$Res> {
 
 /// @nodoc
 class __$$_SuccessCopyWithImpl<$Res>
-    extends _$ProfileStateCopyWithImpl<$Res, _$_Success>
+    extends _$UserStateCopyWithImpl<$Res, _$_Success>
     implements _$$_SuccessCopyWith<$Res> {
   __$$_SuccessCopyWithImpl(_$_Success _value, $Res Function(_$_Success) _then)
       : super(_value, _then);
@@ -546,7 +545,7 @@ class _$_Success implements _Success {
 
   @override
   String toString() {
-    return 'ProfileState.success(user: $user, prefs: $prefs, avatar: $avatar, events: $events)';
+    return 'UserState.success(user: $user, prefs: $prefs, avatar: $avatar, events: $events)';
   }
 
   @override
@@ -657,7 +656,7 @@ class _$_Success implements _Success {
   }
 }
 
-abstract class _Success implements ProfileState {
+abstract class _Success implements UserState {
   const factory _Success(
       final Models.Account user,
       final Models.Preferences prefs,
@@ -683,7 +682,7 @@ abstract class _$$_ErrorCopyWith<$Res> {
 
 /// @nodoc
 class __$$_ErrorCopyWithImpl<$Res>
-    extends _$ProfileStateCopyWithImpl<$Res, _$_Error>
+    extends _$UserStateCopyWithImpl<$Res, _$_Error>
     implements _$$_ErrorCopyWith<$Res> {
   __$$_ErrorCopyWithImpl(_$_Error _value, $Res Function(_$_Error) _then)
       : super(_value, _then);
@@ -712,7 +711,7 @@ class _$_Error implements _Error {
 
   @override
   String toString() {
-    return 'ProfileState.error(message: $message)';
+    return 'UserState.error(message: $message)';
   }
 
   @override
@@ -819,7 +818,7 @@ class _$_Error implements _Error {
   }
 }
 
-abstract class _Error implements ProfileState {
+abstract class _Error implements UserState {
   const factory _Error(final String message) = _$_Error;
 
   String get message;

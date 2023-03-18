@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
-import '../../blocs/profile/profile_cubit.dart';
+import '../../blocs/user/user_cubit.dart';
 import '../home.dart';
 import 'login_screen.dart';
 
@@ -21,7 +21,7 @@ class LoginHomeScreen extends StatelessWidget {
       body: Container(
         padding: EdgeInsets.only(
             left: 20, right: 20, top: Spacing.safeAreaTop(context) + 48),
-        child: Center(child: BlocBuilder<ProfileCubit, ProfileState>(
+        child: Center(child: BlocBuilder<UserCubit, UserState>(
           builder: (context, state) {
             state.whenOrNull(
               success: (user, prefs, avatar, _) {
@@ -94,7 +94,7 @@ class _Failure extends StatelessWidget {
             padding: Spacing.y(12),
             borderRadiusAll: 4,
             onPressed: () {
-              BlocProvider.of<ProfileCubit>(context).login();
+              BlocProvider.of<UserCubit>(context).login();
             },
             child: Center(
               child: CustomText.bodyMedium(
@@ -143,7 +143,7 @@ class _Login extends StatelessWidget {
             padding: Spacing.y(12),
             borderRadiusAll: 4,
             onPressed: () {
-              BlocProvider.of<ProfileCubit>(context).login();
+              BlocProvider.of<UserCubit>(context).login();
             },
             child: Center(
               child: CustomText.bodyMedium(

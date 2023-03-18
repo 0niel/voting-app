@@ -4,7 +4,7 @@ import 'package:face_to_face_voting/widgets/text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../blocs/profile/profile_cubit.dart';
+import '../../blocs/user/user_cubit.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -13,8 +13,7 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child:
-            BlocBuilder<ProfileCubit, ProfileState>(builder: (context, state) {
+        child: BlocBuilder<UserCubit, UserState>(builder: (context, state) {
           return state.maybeMap(
             success: (usrState) => Padding(
               padding: const EdgeInsets.only(left: 24, right: 24),
@@ -88,7 +87,7 @@ class ProfileScreen extends StatelessWidget {
                   CustomButton.rounded(
                     elevation: 0,
                     onPressed: () {
-                      context.read<ProfileCubit>().logout();
+                      context.read<UserCubit>().logout();
                       Navigator.of(context).pushReplacement(MaterialPageRoute(
                           builder: (context) => const LoginHomeScreen()));
                     },

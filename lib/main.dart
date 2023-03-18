@@ -13,7 +13,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sentry_dio/sentry_dio.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:sentry_logging/sentry_logging.dart';
-import 'blocs/profile/profile_cubit.dart';
+import 'blocs/user/user_cubit.dart';
 import 'service_locator.dart' as service_locator;
 
 class GlobalBlocObserver extends BlocObserver {
@@ -32,7 +32,8 @@ class GlobalBlocObserver extends BlocObserver {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 
   await service_locator.setup();
 
@@ -79,10 +80,9 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<ProfileCubit>(
+        BlocProvider<UserCubit>(
             lazy: false,
-            create: (context) =>
-                service_locator.getIt<ProfileCubit>()..started()),
+            create: (context) => service_locator.getIt<UserCubit>()..started()),
         BlocProvider<EventsCubit>(
             create: (context) => service_locator.getIt<EventsCubit>()),
         BlocProvider<PollCubit>(

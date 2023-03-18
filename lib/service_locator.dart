@@ -11,13 +11,13 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'blocs/profile/profile_cubit.dart';
+import 'blocs/user/user_cubit.dart';
 import 'constants.dart';
 
 final getIt = GetIt.instance;
 
 Future<void> setup() async {
-  getIt.registerLazySingleton<ProfileCubit>(() => ProfileCubit(
+  getIt.registerLazySingleton<UserCubit>(() => UserCubit(
         client: getIt(),
         account: getIt(),
         avatars: getIt(),
