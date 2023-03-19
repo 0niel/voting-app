@@ -60,6 +60,7 @@ dependencies:
   logging: ^1.0.2
 
 dev_dependencies:
+  flutter_launcher_icons: ^0.12.0
   json_serializable:
   build_runner:
   freezed:
@@ -72,6 +73,20 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.1
+
+flutter_icons:
+  image_path_android: "assets/logo-retina.png"
+  image_path_ios: "assets/icon-1024x1024.png"
+  android: true
+  ios: true
+  adaptive_icon_foreground: "assets/icon-foreground-432x432.png"
+  min_sdk_android: 21
+  remove_alpha_ios: true
+  web:
+    generate: true
+    image_path: "assets/icon-1024x1024.png"
+    background_color: "#FFFFFF"
+    theme_color: "#FFFFFF"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
