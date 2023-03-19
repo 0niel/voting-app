@@ -198,7 +198,7 @@ class PollCubit extends Cubit<PollState> {
     return votes;
   }
 
-  void processRealtimeEvent(RealtimeMessage message) async {
+  Future<void> processRealtimeEvent(RealtimeMessage message) async {
     if (state is! _Success && state is! _NoPoll) {
       return;
     }

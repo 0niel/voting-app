@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/services.dart';
 
 import 'package:appwrite/appwrite.dart';
 import 'package:bloc/bloc.dart';
@@ -30,18 +31,25 @@ class UserCubit extends Cubit<UserState> {
   Models.Account? me;
 
   RealtimeSubscription? subscription;
+  bool isStreamSubscribed = false;
 
   @override
   Future<void> close() async {
-    subscription?.close();
+    await subscription?.close();
     super.close();
   }
 
-  Future<void> subscribeRealtime() async {
-    if (subscription != null) {
-      return;
-    }
+  void _setLyfecycleHandler() {
+    SystemChannels.lifecycle.setMessageHandler((msg) async {
+      debugPrint('SystemChannels.lifecycle: $msg');
+      if (msg == AppLifecycleState.resumed.toString()) {
+        await subscribeRealtime();
+      }
+      return null;
+    });
+  }
 
+  Future<void> subscribeRealtime() async {
     subscription = realtime.subscribe([
       'databases.$databaseId.collections.$eventsCollectionId.documents',
       'databases.$databaseId.collections.$pollsCollectionId.documents',
@@ -51,25 +59,21 @@ class UserCubit extends Cubit<UserState> {
       'teams',
     ]);
 
-    print('Subscribed to realtime events');
+    debugPrint('realtime_mixin:subscribeRealtime:subscribed');
+
+    if (isStreamSubscribed) return;
 
     subscription!.stream.timeout(
       const Duration(seconds: 5),
       onTimeout: (sink) async {
         sink.addError('Realtime subscription timeout');
 
-        try {
-          subscription?.close();
-        } catch (e) {
-          debugPrint('realtime_mixin:onTimeout: ${e.toString()}');
-        }
-        subscription = null;
         await subscribeRealtime();
       },
     );
 
     subscription!.stream.listen(
-      (event) {
+      (event) async {
         print("New event: $event recieved");
 
         final eventAction = event.events.first.split('.').last;
@@ -97,31 +101,21 @@ class UserCubit extends Cubit<UserState> {
           final doc = Models.Document.fromMap(event.payload);
 
           if (doc.$collectionId == eventsCollectionId) {
-            getIt<EventsCubit>().processRealtimeEvent(event);
+            await getIt<EventsCubit>().processRealtimeEvent(event);
           } else if (doc.$collectionId == pollsCollectionId ||
               doc.$collectionId == votesCollectionId) {
-            getIt<PollCubit>().processRealtimeEvent(event);
+            await getIt<PollCubit>().processRealtimeEvent(event);
           } else if (doc.$collectionId == resourcesCollectionId) {
-            getIt<EventsCubit>().processRealtimeEvent(event);
+            await getIt<EventsCubit>().processRealtimeEvent(event);
           }
         }
       },
+      onDone: () => debugPrint('realtime_mixin:onDone'),
       onError: (err, st) =>
           debugPrint('realtime_mixin:onError: ${err.toString()}'),
-      onDone: () async {
-        debugPrint('realtime_mixin:onDone');
-        // Переподписываемся на события
-        try {
-          subscription?.close();
-        } catch (e) {
-          debugPrint('realtime_mixin:onDone: ${e.toString()}');
-        }
-        subscription = null;
-        await subscribeRealtime();
-        debugPrint('realtime_mixin:onDone: re-subscribed');
-      },
-      cancelOnError: false,
     );
+
+    isStreamSubscribed = true;
   }
 
   String _mapErrorsToMessage(String? error) {
@@ -224,6 +218,7 @@ class UserCubit extends Cubit<UserState> {
 
     // Должно вызываться последним
     await subscribeRealtime();
+    _setLyfecycleHandler();
 
     emit(_Success(
       user,
