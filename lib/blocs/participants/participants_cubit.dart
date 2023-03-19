@@ -35,6 +35,7 @@ class ParticipantsCubit extends Cubit<ParticipantsState> {
 
     final participantsResponse = await teams.listMemberships(
       teamId: participants,
+      queries: [Query.limit(300)]
     );
 
     return participantsResponse;
