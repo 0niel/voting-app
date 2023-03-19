@@ -156,7 +156,7 @@ class UserCubit extends Cubit<UserState> {
             };
 
             final response = await Dio().get(
-                'https://lks.mirea.ninja/api/?action=getData&url=https://lk.mirea.ru/profile/',
+                'https://auth-app.mirea.ru/api/?action=getData&url=https://lk.mirea.ru/profile/',
                 options: Options(headers: headers));
 
             final data = jsonDecode(response.data);
