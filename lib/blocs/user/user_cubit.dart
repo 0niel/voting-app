@@ -110,7 +110,11 @@ class UserCubit extends Cubit<UserState> {
           }
         }
       },
-      onDone: () => debugPrint('realtime_mixin:onDone'),
+      onDone: () async {
+        debugPrint('realtime_mixin:onDone');
+
+        await subscribeRealtime();
+      },
       onError: (err, st) =>
           debugPrint('realtime_mixin:onError: ${err.toString()}'),
     );
