@@ -201,7 +201,10 @@ class _PollAnswerOption extends StatelessWidget {
               ),
             ),
             CustomButton.text(
-              onPressed: onPressed,
+              onPressed: () {
+                onPressed();
+                Navigator.of(context).pop();
+              },
               child: CustomText.bodyMedium(
                 'Подтвердить',
                 color: AppTheme.theme.colorScheme.primary,
