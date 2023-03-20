@@ -5,11 +5,13 @@ import 'package:face_to_face_voting/blocs/poll/poll_cubit.dart';
 import 'package:face_to_face_voting/blocs/user/user_cubit.dart';
 import 'package:face_to_face_voting/theme/app_theme.dart';
 import 'package:face_to_face_voting/utils/spacing.dart';
+import 'package:face_to_face_voting/widgets/button.dart';
 import 'package:face_to_face_voting/widgets/failure.dart';
 import 'package:face_to_face_voting/widgets/text.dart';
 import 'package:face_to_face_voting/widgets/votes_banner.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 
 class PollScreen extends StatefulWidget {
   const PollScreen({Key? key}) : super(key: key);
@@ -177,13 +179,52 @@ class _PollAnswerOption extends StatelessWidget {
 
   final ValueNotifier<int?> selectedOptionNotifier;
 
+  void _showConfirmDialog(BuildContext context, VoidCallback onPressed) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          icon: const Icon(
+            FeatherIcons.alertTriangle,
+            color: Colors.red,
+            size: 40,
+          ),
+          title: const CustomText.titleMedium('Подтверждение'),
+          content: const CustomText.bodyMedium(
+            'Вы уверены, что хотите выбрать этот вариант ответа? Вы не сможете изменить свой голос.',
+          ),
+          actions: [
+            CustomButton.text(
+              onPressed: Navigator.of(context).pop,
+              child: const CustomText.bodyMedium(
+                'Отмена',
+              ),
+            ),
+            CustomButton.text(
+              onPressed: onPressed,
+              child: CustomText.bodyMedium(
+                'Подтвердить',
+                color: AppTheme.theme.colorScheme.primary,
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
         if (index != selectedOptionNotifier.value) {
-          onTap();
-          selectedOptionNotifier.value = index;
+          if (selectedOptionNotifier.value == null ||
+              selectedOptionNotifier.value == -1) {
+            _showConfirmDialog(context, () {
+              onTap();
+              selectedOptionNotifier.value = index;
+            });
+          }
         }
       },
       child: ValueListenableBuilder(

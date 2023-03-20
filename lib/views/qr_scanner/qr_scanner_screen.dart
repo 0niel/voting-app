@@ -1,12 +1,7 @@
 import 'dart:typed_data';
 
-import 'package:appwrite/models.dart';
 import 'package:face_to_face_voting/blocs/events/events_cubit.dart';
-import 'package:face_to_face_voting/blocs/participants/participants_cubit.dart';
 import 'package:face_to_face_voting/blocs/search_users/search_users_cubit.dart';
-import 'package:face_to_face_voting/theme/app_theme.dart';
-import 'package:face_to_face_voting/utils/spacing.dart';
-import 'package:face_to_face_voting/widgets/button.dart';
 import 'package:face_to_face_voting/widgets/snackbar.dart';
 import 'package:face_to_face_voting/widgets/text.dart';
 import 'package:face_to_face_voting/widgets/user_bottom_sheet.dart';

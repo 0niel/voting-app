@@ -14,7 +14,6 @@ import 'package:face_to_face_voting/widgets/quick_action_bottom_sheet.dart';
 import 'package:face_to_face_voting/widgets/text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:screen_brightness/screen_brightness.dart';
 import 'package:flutter_svg/flutter_svg.dart';

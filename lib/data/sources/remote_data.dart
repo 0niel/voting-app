@@ -108,7 +108,7 @@ class RemoteData {
         'receivedId': receivedId,
       };
 
-      late final response;
+      late final Response response;
       if (updateType == UpdateType.add) {
         response = await httpClient.post(
           '$apiUrl/events/update-participant',

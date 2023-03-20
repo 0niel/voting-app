@@ -1,7 +1,6 @@
 import 'package:face_to_face_voting/blocs/events/events_cubit.dart';
 import 'package:face_to_face_voting/blocs/participants/participants_cubit.dart';
 import 'package:face_to_face_voting/blocs/search_users/search_users_cubit.dart';
-import 'package:face_to_face_voting/theme/text_style.dart';
 import 'package:face_to_face_voting/utils/spacing.dart';
 import 'package:face_to_face_voting/widgets/button.dart';
 import 'package:face_to_face_voting/widgets/snackbar.dart';
