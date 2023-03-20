@@ -1,4 +1,3 @@
-
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart' as Models;
 import 'package:bloc/bloc.dart';
@@ -33,7 +32,8 @@ class SearchUsersCubit extends Cubit<SearchUsersState> {
       final users = await remoteData.searchUsers(event.$id, query, jwt.jwt);
 
       final teamId = event.data['participants_team_id'];
-      final teamMemberships = await teams.listMemberships(teamId: teamId);
+      final teamMemberships = await teams
+          .listMemberships(teamId: teamId, queries: [Query.limit(1000)]);
 
       final usersWithStatus = users.map((user) {
         final isParticipant = teamMemberships.memberships
@@ -55,7 +55,8 @@ class SearchUsersCubit extends Cubit<SearchUsersState> {
       final jwt = await account.createJWT();
 
       final teamId = event.data['participants_team_id'];
-      final teamMemberships = await teams.listMemberships(teamId: teamId);
+      final teamMemberships = await teams
+          .listMemberships(teamId: teamId, queries: [Query.limit(1000)]);
 
       final isParticipant = teamMemberships.memberships
           .any((membership) => membership.userId == userId);
