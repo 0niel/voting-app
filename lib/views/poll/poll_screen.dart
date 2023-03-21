@@ -190,8 +190,9 @@ class _PollAnswerOption extends StatelessWidget {
             size: 40,
           ),
           title: const CustomText.titleMedium('Подтверждение'),
-          content: const CustomText.bodyMedium(
-            'Вы уверены, что хотите выбрать этот вариант ответа? Вы не сможете изменить свой голос.',
+          content: CustomText.bodyMedium(
+            'Вы уверены, что хотите выбрать этот вариант ответа? Вы не сможете изменить свой голос.\n\n'
+            'Вы выбрали вариант ответа: $option',
           ),
           actions: [
             CustomButton.text(
@@ -225,6 +226,7 @@ class _PollAnswerOption extends StatelessWidget {
               selectedOptionNotifier.value == -1) {
             _showConfirmDialog(context, () {
               onTap();
+
               selectedOptionNotifier.value = index;
             });
           }
