@@ -114,7 +114,8 @@ class PollCubit extends Cubit<PollState> {
 
     final val = percentsLeft > 1 ? 1 : (percentsLeft < 0 ? 0 : percentsLeft);
 
-    return Future.value((1 - val).toDouble());
+    final res = (1 - val).toDouble();
+    return res.isNaN || res.isInfinite ? 0 : res;
   }
 
   void loadPolls(String eventId) async {
