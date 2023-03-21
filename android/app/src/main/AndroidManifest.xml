@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="ninja.mirea.face_to_face_voting">
    <application
-        android:label="face_to_face_voting"
+        android:label="ОВК МИРЭА"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
