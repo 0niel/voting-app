@@ -26,9 +26,10 @@ class _PollScreenState extends State<PollScreen> {
   @override
   void initState() {
     super.initState();
+    _selectedOption = ValueNotifier<int?>(-1);
   }
 
-  final ValueNotifier<int?> _selectedOption = ValueNotifier<int?>(-1);
+  late final ValueNotifier<int?> _selectedOption;
 
   void _setMyVote(String meId, List<Document> votes, List<String> options) {
     if (!_isFirstBuild) {
