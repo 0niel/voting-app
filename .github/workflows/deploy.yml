@@ -21,12 +21,14 @@ jobs:
         uses: yc-actions/yc-cr-login@v1
         with:
           yc-sa-json-credentials: ${{ secrets.YC_SA_JSON_CREDENTIALS }}
-      - name: Build Flutter Web App
+      - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
-      - run: flutter pub get
-      - run: flutter build web --release --dart-define=SENTRY_DSN=${{ env.SENTRY_DSN }}
+      - name: Get Dependencies
+        run: flutter pub get
+      - name: Build Web Application
+        run: flutter build web --release --dart-define=SENTRY_DSN=${{ env.SENTRY_DSN }}
       - name: Build and Push Image
         run: |
           docker build \
