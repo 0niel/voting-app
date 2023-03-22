@@ -20,11 +20,12 @@ packages:
   appwrite:
     dependency: "direct main"
     description:
-      name: appwrite
-      sha256: dc89ba893deb5a50170d9dcc6974b7c62f702831d066624e0b77e623d4d3a549
-      url: "https://pub.dev"
-    source: hosted
-    version: "8.2.2"
+      path: "."
+      ref: master
+      resolved-ref: "8bc3a06c7f6eb75a86fdee96fb7e246d579a1552"
+      url: "https://github.com/mirea-ninja/sdk-for-flutter.git"
+    source: git
+    version: "8.3.0"
   archive:
     dependency: transitive
     description:
@@ -684,10 +685,10 @@ packages:
     dependency: transitive
     description:
       name: path_provider
-      sha256: dcea5feb97d8abf90cab9e9030b497fb7c3cbf26b7a1fe9e3ef7dcb0a1ddec95
+      sha256: c7edf82217d4b2952b2129a61d3ad60f1075b9299e629e149a8d2e39c2e6aad4
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.12"
+    version: "2.0.14"
   path_provider_android:
     dependency: transitive
     description:
@@ -1065,18 +1066,18 @@ packages:
     dependency: transitive
     description:
       name: universal_html
-      sha256: "5ff50b7c14d201421cf5230ec389a0591c4deb5c817c9d7ccca3b26fe5f31e34"
+      sha256: ed4f24120c9b1b4721d44e439f7a47d09d9f1b7b868bc84c9d6d373a4a8732af
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.8"
+    version: "2.2.1"
   universal_io:
     dependency: transitive
     description:
       name: universal_io
-      sha256: "79f78ddad839ee3aae3ec7c01eb4575faf0d5c860f8e5223bc9f9c17f7f03cef"
+      sha256: "06866290206d196064fd61df4c7aea1ffe9a4e7c4ccaa8fcded42dd41948005d"
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.4"
+    version: "2.2.0"
   url_launcher:
     dependency: "direct main"
     description:

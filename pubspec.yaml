@@ -48,11 +48,17 @@ dependencies:
   dio: ^4.0.0
   freezed_annotation:
   url_launcher: ^6.0.20
-  appwrite: ^8.2.2
   get_it: ^7.2.0
   shared_preferences: ^2.0.17
   dart_appwrite: ^7.2.0
   mobile_scanner: ^3.0.0
+
+  appwrite:
+    git:
+      url: https://github.com/mirea-ninja/sdk-for-flutter.git
+      ref: master
+    
+  
 
   sentry_flutter: ^6.20.1
   sentry_logging: ^6.20.1
