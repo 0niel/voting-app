@@ -415,7 +415,7 @@ class _Poll extends StatelessWidget {
     return Column(
       children: [
         Container(
-          padding: Spacing.fromLTRB(16, 42, 16, 0),
+          padding: Spacing.fromLTRB(16, 16, 8, 0),
           child: Column(
             children: [
               CustomText.titleMedium(eventName, //value.event.data['name'],
@@ -431,9 +431,10 @@ class _Poll extends StatelessWidget {
         ),
         Expanded(
           child: Container(
-            padding: Spacing.fromLTRB(48, 0, 48, 0),
+            padding: Spacing.fromLTRB(24, 0, 24, 0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisSize: MainAxisSize.min,
               children: [
                 CustomText.titleLarge(
                   question,
@@ -469,20 +470,20 @@ class _Poll extends StatelessWidget {
           ),
         ),
         VotesBanner(votes: _getSortedVotes()),
-        const SizedBox(height: 25),
-        Container(
-          padding: Spacing.fromLTRB(48, 0, 48, 0),
-          child: CustomText.bodySmall(
-            options.indexWhere(
-                        (element) => element.toLowerCase() == 'воздержусь') ==
-                    -1
-                ? ""
-                : " Если вы не успеете завершить голосование, ваш голос автоматически отправится как \"воздержусь\".",
-            color: AppTheme.theme.colorScheme.onBackground,
-            muted: true,
-            textAlign: TextAlign.justify,
+        if (options.indexWhere(
+                (element) => element.toLowerCase() == 'воздержусь') !=
+            -1) ...[
+          const SizedBox(height: 25),
+          Container(
+            padding: Spacing.fromLTRB(48, 0, 48, 0),
+            child: CustomText.bodySmall(
+              "Если вы не успеете завершить голосование, ваш голос автоматически отправится как \"воздержусь\".",
+              color: AppTheme.theme.colorScheme.onBackground,
+              muted: true,
+              textAlign: TextAlign.justify,
+            ),
           ),
-        ),
+        ],
         const SizedBox(height: 25),
       ],
     );
