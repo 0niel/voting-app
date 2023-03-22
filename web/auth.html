@@ -1,0 +1,9 @@
+<!DOCTYPE html>
+<title>Авторизация</title>
+<p>Вы успешно авторизовались. Если этого не произошло, пожалуйста, закройте окно.</p>
+<script>
+  window.opener.postMessage({
+    'flutter-web-auth-2': window.location.href
+  }, window.location.origin);
+  window.close();
+</script>
