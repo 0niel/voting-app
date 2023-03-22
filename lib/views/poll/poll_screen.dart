@@ -174,7 +174,6 @@ class _PollScreenState extends State<PollScreen> {
                               (eventId, poll, votes, timeLeft, timeMaximum) {
                             final options =
                                 List<String>.from(poll.data['poll_options']);
-                            print(votes);
 
                             _setMyVote(me.$id, votes, options, true);
                           },
@@ -188,44 +187,53 @@ class _PollScreenState extends State<PollScreen> {
                             BlocProvider.of<PollCubit>(context)
                                 .loadPolls(eventLoadedStateValue.event.$id);
                           },
-                          child: pollState.maybeWhen(
-                            success:
-                                (eventId, poll, votes, timeLeft, timeMaximum) {
-                              final question = poll.data['question'] as String;
-                              final options =
-                                  List<String>.from(poll.data['poll_options']);
+                          child: CustomScrollView(
+                            slivers: [
+                              SliverFillRemaining(
+                                hasScrollBody: false,
+                                child: pollState.maybeWhen(
+                                  success: (eventId, poll, votes, timeLeft,
+                                      timeMaximum) {
+                                    final question =
+                                        poll.data['question'] as String;
+                                    final options = List<String>.from(
+                                        poll.data['poll_options']);
 
-                              _setMyVote(me.$id, votes, options);
+                                    _setMyVote(me.$id, votes, options);
 
-                              return _Poll(
-                                eventName: eventName,
-                                question: question,
-                                options: options,
-                                votes: _getVotes(votes),
-                                isActive: (timeLeft.isNegative ||
-                                        timeLeft.inSeconds == 0)
-                                    ? false
-                                    : true,
-                                eventId: eventId,
-                                pollId: poll.$id,
-                                selectedOptionNotifier: _selectedOption,
-                              );
-                            },
-                            noPoll: (eventId) =>
-                                _NoPollScreen(eventName: eventName),
-                            error: (message) {
-                              return Failure(
-                                showImage: false,
-                                message: message,
-                                onRetry: () {
-                                  BlocProvider.of<PollCubit>(context).loadPolls(
-                                      eventLoadedStateValue.event.$id);
-                                },
-                              );
-                            },
-                            orElse: () {
-                              return Container();
-                            },
+                                    return _Poll(
+                                      eventName: eventName,
+                                      question: question,
+                                      options: options,
+                                      votes: _getVotes(votes),
+                                      isActive: (timeLeft.isNegative ||
+                                              timeLeft.inSeconds == 0)
+                                          ? false
+                                          : true,
+                                      eventId: eventId,
+                                      pollId: poll.$id,
+                                      selectedOptionNotifier: _selectedOption,
+                                    );
+                                  },
+                                  noPoll: (eventId) =>
+                                      _NoPollScreen(eventName: eventName),
+                                  error: (message) {
+                                    return Failure(
+                                      showImage: false,
+                                      message: message,
+                                      onRetry: () {
+                                        BlocProvider.of<PollCubit>(context)
+                                            .loadPolls(eventLoadedStateValue
+                                                .event.$id);
+                                      },
+                                    );
+                                  },
+                                  orElse: () {
+                                    return Container();
+                                  },
+                                ),
+                              ),
+                            ],
                           ),
                         );
                       },
