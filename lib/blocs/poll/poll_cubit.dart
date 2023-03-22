@@ -237,15 +237,12 @@ class PollCubit extends Cubit<PollState> {
       }
 
       late final List<Models.Document> votes;
-      if (state is _NoPoll || action != 'update') {
+      if (doc.$id == poll.$id) {
         votes = (await databases.listDocuments(
                 databaseId: databaseId,
                 collectionId: votesCollectionId,
                 queries: [Query.equal('poll_id', poll.$id), Query.limit(300)]))
             .documents;
-      } else {
-        // Не обновляем голоса при изменении голосования, иначе будет мерцание
-        votes = (state as _Success).votes;
       }
 
       final timeLeft = await _calculateTimeLeft(poll);

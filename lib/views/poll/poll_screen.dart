@@ -29,10 +29,17 @@ class _PollScreenState extends State<PollScreen> {
     _selectedOption = ValueNotifier<int?>(-1);
   }
 
+  @override
+  void dispose() {
+    _selectedOption.dispose();
+    super.dispose();
+  }
+
   late final ValueNotifier<int?> _selectedOption;
 
-  void _setMyVote(String meId, List<Document> votes, List<String> options) {
-    if (!_isFirstBuild) {
+  void _setMyVote(String meId, List<Document> votes, List<String> options,
+      [bool onUpdate = false]) {
+    if (!_isFirstBuild && !onUpdate) {
       return;
     }
 
@@ -46,7 +53,7 @@ class _PollScreenState extends State<PollScreen> {
     }
 
     final index = options.indexWhere((element) => element == myVote);
-    if (index != -1 && index != _selectedOption.value) {
+    if (index != _selectedOption.value || index == -1) {
       _selectedOption.value = index;
     }
 
@@ -92,7 +99,87 @@ class _PollScreenState extends State<PollScreen> {
                 builder: (context, state) {
                   return state.maybeMap(
                     eventLoaded: (eventLoadedStateValue) =>
-                        BlocBuilder<PollCubit, PollState>(
+                        BlocConsumer<PollCubit, PollState>(
+                      listenWhen: (previous, current) {
+                        if (previous.maybeWhen(
+                              orElse: () => false,
+                              noPoll: (_) => true,
+                              error: (_) => true,
+                              loading: () => true,
+                            ) &&
+                            current.maybeWhen(
+                              orElse: () => false,
+                              success: (eventId, poll, votes, timeLeft,
+                                      timeMaximum) =>
+                                  true,
+                            )) {
+                          return true;
+                        }
+
+                        final prevSuccess = previous.maybeWhen(
+                          orElse: () => false,
+                          success:
+                              (eventId, poll, votes, timeLeft, timeMaximum) =>
+                                  true,
+                        );
+
+                        final currentSuccess = current.maybeWhen(
+                          orElse: () => false,
+                          success:
+                              (eventId, poll, votes, timeLeft, timeMaximum) =>
+                                  true,
+                        );
+
+                        if (prevSuccess && currentSuccess) {
+                          final prevPoll = previous.maybeWhen(
+                            orElse: () => null,
+                            success:
+                                (eventId, poll, votes, timeLeft, timeMaximum) =>
+                                    poll,
+                          );
+
+                          final currentPoll = current.maybeWhen(
+                            orElse: () => null,
+                            success:
+                                (eventId, poll, votes, timeLeft, timeMaximum) =>
+                                    poll,
+                          );
+
+                          final prevTimeStart = prevPoll?.data['start_at'];
+                          final currentTimeStart =
+                              currentPoll?.data['start_at'];
+
+                          final prevTimeEnd = prevPoll?.data['end_at'];
+                          final currentTimeEnd = currentPoll?.data['end_at'];
+
+                          final prevOptions = List<String>.from(
+                              prevPoll?.data['poll_options'] ?? []);
+                          final currentOptions = List<String>.from(
+                              currentPoll?.data['poll_options'] ?? []);
+
+                          if (prevTimeStart != currentTimeStart ||
+                              !const ListEquality()
+                                  .equals(prevOptions, currentOptions) ||
+                              prevTimeEnd != currentTimeEnd) {
+                            return true;
+                          }
+                        }
+
+                        return false;
+                      },
+                      listener: (context, state) {
+                        state.maybeWhen(
+                          orElse: () {},
+                          success:
+                              (eventId, poll, votes, timeLeft, timeMaximum) {
+                            final options =
+                                List<String>.from(poll.data['poll_options']);
+                            print(votes);
+
+                            _setMyVote(me.$id, votes, options, true);
+                          },
+                        );
+                      },
                       builder: (context, pollState) {
                         final eventName =
                             eventLoadedStateValue.event.data['name'];
