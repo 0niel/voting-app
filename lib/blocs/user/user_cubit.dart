@@ -31,7 +31,6 @@ class UserCubit extends Cubit<UserState> {
   Models.Account? me;
 
   RealtimeSubscription? subscription;
-  bool isStreamSubscribed = false;
 
   @override
   Future<void> close() async {
@@ -39,29 +38,26 @@ class UserCubit extends Cubit<UserState> {
     super.close();
   }
 
-  void _setLyfecycleHandler() {
-    SystemChannels.lifecycle.setMessageHandler((msg) async {
-      debugPrint('SystemChannels.lifecycle: $msg');
-      if (msg == AppLifecycleState.resumed.toString()) {
-        await subscribeRealtime();
-      }
-      return null;
-    });
-  }
-
   Future<void> subscribeRealtime() async {
-    subscription = realtime.subscribe([
-      'databases.$databaseId.collections.$eventsCollectionId.documents',
-      'databases.$databaseId.collections.$pollsCollectionId.documents',
-      'databases.$databaseId.collections.$votesCollectionId.documents',
-      'databases.$databaseId.collections.$resourcesCollectionId.documents',
-      'memberships',
-      'teams',
-    ]);
+    try {
+      subscription = await realtime.subscribe([
+        'databases.$databaseId.collections.$eventsCollectionId.documents',
+        'databases.$databaseId.collections.$pollsCollectionId.documents',
+        'databases.$databaseId.collections.$votesCollectionId.documents',
+        'databases.$databaseId.collections.$resourcesCollectionId.documents',
+        'memberships',
+        'teams',
+      ]);
+    } catch (e) {
+      debugPrint('realtime_mixin:subscribeRealtime: ${e.toString()}');
+      await Future.delayed(
+        const Duration(seconds: 5),
+        () => subscribeRealtime(),
+      );
+      return;
+    }
 
     debugPrint('realtime_mixin:subscribeRealtime:subscribed');
-
-    if (isStreamSubscribed) return;
 
     subscription!.stream.timeout(
       const Duration(seconds: 5),
@@ -118,8 +114,6 @@ class UserCubit extends Cubit<UserState> {
       onError: (err, st) =>
           debugPrint('realtime_mixin:onError: ${err.toString()}'),
     );
-
-    isStreamSubscribed = true;
   }
 
   String _mapErrorsToMessage(String? error) {
@@ -222,7 +216,6 @@ class UserCubit extends Cubit<UserState> {
 
     // Должно вызываться последним
     await subscribeRealtime();
-    _setLyfecycleHandler();
 
     emit(_Success(
       user,
