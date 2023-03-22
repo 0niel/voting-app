@@ -8,13 +8,25 @@ class VotesBanner extends StatelessWidget {
 
   final Map<String, int> votes;
 
+  double _computeMaxCardOnScreenWidth(BuildContext context, int votesCount) {
+    final constraints = BoxConstraints(
+      maxWidth: MediaQuery.of(context).size.width,
+    );
+    // Аналог Expanded в Row
+    return constraints.maxWidth / 3 - 24;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: votes.entries
-          .map(
-            (e) => Expanded(
-              child: CustomContainer.bordered(
+    return SizedBox(
+      height: 80,
+      child: ListView(
+        shrinkWrap: true,
+        scrollDirection: Axis.horizontal,
+        children: votes.entries
+            .map(
+              (e) => CustomContainer.bordered(
+                width: _computeMaxCardOnScreenWidth(context, votes.length),
                 color: Colors.transparent,
                 borderRadiusAll: 4,
                 margin: const EdgeInsets.only(left: 12, right: 12),
@@ -32,9 +44,9 @@ class VotesBanner extends StatelessWidget {
                   ],
                 ),
               ),
-            ),
-          )
-          .toList(),
+            )
+            .toList(),
+      ),
     );
   }
 }
