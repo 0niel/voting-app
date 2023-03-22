@@ -473,8 +473,11 @@ class _Poll extends StatelessWidget {
         Container(
           padding: Spacing.fromLTRB(48, 0, 48, 0),
           child: CustomText.bodySmall(
-            "Голосование завершится автоматически, когда все участники проголосуют."
-            "${options.indexWhere((element) => element.toLowerCase() == 'воздержусь') == -1 ? "" : " Если вы не успеете завершить голосование, ваш голос автоматически отправится как \"воздержусь\"."}",
+            options.indexWhere(
+                        (element) => element.toLowerCase() == 'воздержусь') ==
+                    -1
+                ? ""
+                : " Если вы не успеете завершить голосование, ваш голос автоматически отправится как \"воздержусь\".",
             color: AppTheme.theme.colorScheme.onBackground,
             muted: true,
             textAlign: TextAlign.justify,
