@@ -1,0 +1,56 @@
+version: '3.9'
+
+services:
+  traefik:
+    image: traefik:latest
+    command:
+      - --accesslog=true
+      - --log.level=INFO
+      - --providers.docker=true
+      - --providers.docker.exposedByDefault=false
+      - --providers.docker.constraints=Label(`traefik.constraint-label-stack`,`voting-app-client`)
+      - --entrypoints.votin_app_client_web.address=:80
+      - --entrypoints.votin_app_client_websecure.address=:443
+      # LetsEncrypt Staging Server
+      # - --certificatesResolvers.letsencrypt.acme.caServer=https://acme-staging-v02.api.letsencrypt.org/directory
+      - --certificatesresolvers.letsencrypt.acme.httpchallenge=true
+      - --certificatesresolvers.letsencrypt.acme.httpchallenge.entrypoint=votin_app_client_web
+      - --certificatesresolvers.letsencrypt.acme.email=${EMAIL}
+      - --certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json
+    restart: unless-stopped
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./data/letsencrypt:/letsencrypt
+    depends_on:
+      - frontend
+    networks:
+      - gateway
+      - application
+
+  frontend:
+    image: ${IMAGE_FRONTEND}
+    restart: unless-stopped
+    networks:
+      - application
+    labels:
+      - traefik.enable=true
+      - traefik.constraint-label-stack=voting-app-client
+      - traefik.docker.network=application
+      - traefik.http.services.voting_app_client.loadbalancer.server.port=80
+      #http
+      - traefik.http.routers.voting_app_client_http.entrypoints=votin_app_client_web
+      - traefik.http.routers.voting_app_client_http.rule=Host(`${DOMAIN}`)
+      - traefik.http.routers.voting_app_client_http.service=voting_app_client
+      # https
+      - traefik.http.routers.voting_app_client_https.entrypoints=votin_app_client_websecure
+      - traefik.http.routers.voting_app_client_https.rule=Host(`${DOMAIN}`)
+      - traefik.http.routers.voting_app_client_https.service=voting_app_client
+      - traefik.http.routers.voting_app_client_https.tls=true
+      - traefik.http.routers.voting_app_client_https.tls.certresolver=${CERT_RESOLVER}
+
+networks:
+  gateway:
+  application:
