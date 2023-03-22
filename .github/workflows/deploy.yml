@@ -25,9 +25,8 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
-        run: |
-          flutter pub get
-          flutter build web --release --dart-define=SENTRY_DSN=${{ env.SENTRY_DSN }}
+      - run: flutter pub get
+      - run: flutter build web --release --dart-define=SENTRY_DSN=${{ env.SENTRY_DSN }}
       - name: Build and Push Image
         run: |
           docker build \
