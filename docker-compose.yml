@@ -18,12 +18,6 @@ services:
       - --certificatesresolvers.letsencrypt.acme.email=${EMAIL}
       - --certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json
     restart: unless-stopped
-    labels:
-      - traefik.http.routers.to-https.rule=HostRegexp(`{host:.+}`)
-      - traefik.http.routers.to-https.entrypoints=votin_app_client_web
-      - traefik.http.routers.to-https.middlewares=to-https
-      - traefik.http.middlewares.to-https.redirectscheme.scheme=https
-      - traefik.http.middlewares.to-https.redirectscheme.permanent=true
     ports:
       - 80:80
       - 443:443
@@ -46,15 +40,13 @@ services:
       - traefik.constraint-label-stack=voting-app-client
       - traefik.docker.network=application
       - traefik.http.services.voting_app_client.loadbalancer.server.port=80
-#      #http
-#      - traefik.http.routers.voting_app_client_http.entrypoints=votin_app_client_web
-#      - traefik.http.routers.voting_app_client_http.rule=Host(`${DOMAIN}`)
-#      - traefik.http.routers.voting_app_client_http.service=voting_app_client
+      #http
+      - traefik.http.routers.voting_app_client_http.entrypoints=votin_app_client_web
+      - traefik.http.routers.voting_app_client_http.rule=Host(`${DOMAIN}`)
+      - traefik.http.routers.voting_app_client_http.service=voting_app_client
       # https
-      - traefik.http.routers.voting_app_client_https.rule=HostRegexp(`{host:.+}`)
-      - traefik.http.routers.voting_app_client_https.middlewares=voting_app_client_https
-      - traefik.http.middlewares.voting_app_client_https.redirectscheme.scheme=https
-      - traefik.http.middlewares.voting_app_client_https.redirectscheme.permanent=true
+      - traefik.http.routers.voting_app_client_http-web.middlewares=voting_app_client_redirect_https
+      - traefik.http.middlewares.voting_app_client_redirect_https.redirectscheme.scheme=https
       - traefik.http.routers.voting_app_client_https.entrypoints=votin_app_client_websecure
       - traefik.http.routers.voting_app_client_https.rule=Host(`${DOMAIN}`)
       - traefik.http.routers.voting_app_client_https.service=voting_app_client
