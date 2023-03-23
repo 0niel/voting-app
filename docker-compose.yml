@@ -23,6 +23,7 @@ services:
       - traefik.http.routers.to-https.entrypoints=votin_app_client_web
       - traefik.http.routers.to-https.middlewares=to-https
       - traefik.http.middlewares.to-https.redirectscheme.scheme=https
+      - traefik.http.middlewares.to-https.redirectscheme.permanent=true
     ports:
       - 80:80
       - 443:443
@@ -50,6 +51,10 @@ services:
 #      - traefik.http.routers.voting_app_client_http.rule=Host(`${DOMAIN}`)
 #      - traefik.http.routers.voting_app_client_http.service=voting_app_client
       # https
+      - traefik.http.routers.voting_app_client_https.rule=HostRegexp(`{host:.+}`)
+      - traefik.http.routers.voting_app_client_https.middlewares=voting_app_client_https
+      - traefik.http.middlewares.voting_app_client_https.redirectscheme.scheme=https
+      - traefik.http.middlewares.voting_app_client_https.redirectscheme.permanent=true
       - traefik.http.routers.voting_app_client_https.entrypoints=votin_app_client_websecure
       - traefik.http.routers.voting_app_client_https.rule=Host(`${DOMAIN}`)
       - traefik.http.routers.voting_app_client_https.service=voting_app_client
