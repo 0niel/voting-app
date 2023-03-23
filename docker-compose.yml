@@ -44,9 +44,10 @@ services:
       - traefik.http.routers.voting_app_client_http.entrypoints=votin_app_client_web
       - traefik.http.routers.voting_app_client_http.rule=Host(`${DOMAIN}`)
       - traefik.http.routers.voting_app_client_http.service=voting_app_client
+      - traefik.http.routers.voting_app_client_http.middlewares=voting_app_client_redirect_https
       # https
-      - traefik.http.routers.voting_app_client_http-web.middlewares=voting_app_client_redirect_https
       - traefik.http.middlewares.voting_app_client_redirect_https.redirectscheme.scheme=https
+      - traefik.http.middlewares.voting_app_client_redirect_https.redirectscheme.permanent=truegit
       - traefik.http.routers.voting_app_client_https.entrypoints=votin_app_client_websecure
       - traefik.http.routers.voting_app_client_https.rule=Host(`${DOMAIN}`)
       - traefik.http.routers.voting_app_client_https.service=voting_app_client
