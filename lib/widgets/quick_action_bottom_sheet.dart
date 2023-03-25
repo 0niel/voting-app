@@ -36,7 +36,20 @@ class _ParticipantsBottomSheet extends StatelessWidget {
               Padding(
                 padding: Spacing.horizontal(16),
                 child: Row(children: [
-                  const CustomText.titleMedium("Участники", fontWeight: 700),
+                  BlocBuilder<ParticipantsCubit, ParticipantsState>(
+                    builder: (context, state) {
+                      return state.maybeMap(
+                        loaded: (state) => CustomText.titleMedium(
+                          "Участники (${state.participants.length})",
+                          fontWeight: 700,
+                        ),
+                        orElse: () => const CustomText.titleMedium(
+                          "Участники",
+                          fontWeight: 700,
+                        ),
+                      );
+                    },
+                  ),
                   const Spacer(),
                   Row(
                     children: [
@@ -86,8 +99,7 @@ class _ParticipantsBottomSheet extends StatelessWidget {
                                     separatorBuilder: (context, index) =>
                                         const Divider(),
                                     shrinkWrap: true,
-                                    itemCount:
-                                        state.participants.memberships.length,
+                                    itemCount: state.participants.length,
                                     itemBuilder: (context, index) {
                                       return ListTile(
                                         trailing: CustomButton.outlined(
@@ -99,8 +111,8 @@ class _ParticipantsBottomSheet extends StatelessWidget {
                                             ScannedBottomSheet.show(
                                                 context,
                                                 eventState.event,
-                                                state.participants
-                                                    .memberships[index].userId);
+                                                state.participants[index]
+                                                    .userId);
                                           },
                                           borderColor: AppTheme
                                               .theme.colorScheme.primary,
@@ -111,13 +123,12 @@ class _ParticipantsBottomSheet extends StatelessWidget {
                                           ),
                                         ),
                                         title: CustomText.bodySmall(
-                                          state.participants.memberships[index]
-                                              .userName,
+                                          state.participants[index].userName,
                                           fontWeight: 700,
                                         ),
                                         subtitle: CustomText.bodySmall(
-                                          "Был приглашён: ${StringFormatter.formatDateTime(state.participants.memberships[index].joined)}\n"
-                                          "Роли: ${state.participants.memberships[index].roles.map((e) => e).join(", ")}",
+                                          "Был приглашён: ${StringFormatter.formatDateTime(state.participants[index].joined)}\n"
+                                          "Роли: ${state.participants[index].roles.map((e) => e).join(", ")}",
                                           fontWeight: 500,
                                         ),
                                       );

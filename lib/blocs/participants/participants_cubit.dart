@@ -23,7 +23,7 @@ class ParticipantsCubit extends Cubit<ParticipantsState> {
   final Teams teams;
   final RemoteData remoteData;
 
-  Future<Models.MembershipList> _loadParticipants(
+  Future<List<Models.Membership>> _loadParticipants(
       String eventId, String teamId) async {
     final documentsResponse = await databases.getDocument(
       databaseId: databaseId,
@@ -33,12 +33,17 @@ class ParticipantsCubit extends Cubit<ParticipantsState> {
 
     final participants = documentsResponse.data['participants_team_id'];
 
-    final participantsResponse = await teams.listMemberships(
-      teamId: participants,
-      queries: [Query.limit(300)]
-    );
+    final participantsResponse = await teams
+        .listMemberships(teamId: participants, queries: [Query.limit(300)]);
 
-    return participantsResponse;
+    final memberships = participantsResponse.memberships
+        .where((el) =>
+            !el.roles.contains('owner') ||
+            el.roles.contains('presidency') ||
+            el.roles.contains('moderatorvoter'))
+        .toList();
+
+    return memberships;
   }
 
   void load(String eventId) async {
