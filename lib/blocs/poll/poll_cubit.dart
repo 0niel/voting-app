@@ -212,7 +212,7 @@ class PollCubit extends Cubit<PollState> {
       late final String eventId;
       if (state is _Success) {
         eventId = (state as _Success).eventId;
-      } else {
+      } else if (state is _NoPoll) {
         eventId = (state as _NoPoll).eventId;
       }
 
@@ -220,7 +220,6 @@ class PollCubit extends Cubit<PollState> {
         return;
       }
 
-      print('Poll changed!');
       final polls = await databases.listDocuments(
         databaseId: databaseId,
         collectionId: pollsCollectionId,
@@ -230,31 +229,25 @@ class PollCubit extends Cubit<PollState> {
       );
 
       final poll = await _getActiveOrLastPoll(polls);
+
       // Мероприяте активно, но нет голосования
       if (poll == null) {
         emit(PollState.noPoll(eventId));
         return;
       }
 
-      late final List<Models.Document> votes;
-      if (doc.$id == poll.$id) {
-        votes = (await databases.listDocuments(
-                databaseId: databaseId,
-                collectionId: votesCollectionId,
-                queries: [Query.equal('poll_id', poll.$id), Query.limit(300)]))
-            .documents;
+      // Во время активного голосование изменяется другое голосование
+      if (doc.$id != poll.$id) {
+        return;
       }
 
       final timeLeft = await _calculateTimeLeft(poll);
-      final currentState = state;
 
-      if (currentState is! _Success) {
-        return;
-      }
-
-      if (currentState.timeLeft == timeLeft) {
-        return;
-      }
+      final votes = (await databases.listDocuments(
+              databaseId: databaseId,
+              collectionId: votesCollectionId,
+              queries: [Query.equal('poll_id', poll.$id), Query.limit(300)]))
+          .documents;
 
       emit(PollState.success(
         eventId,
