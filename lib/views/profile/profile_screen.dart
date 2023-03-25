@@ -89,7 +89,7 @@ class ProfileScreen extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(
-                      height: 24,
+                      height: 48,
                     ),
                     CustomButton.rounded(
                       elevation: 0,

@@ -9,6 +9,7 @@ import 'package:face_to_face_voting/theme/app_theme.dart';
 import 'package:face_to_face_voting/views/login/login_home_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sentry_dio/sentry_dio.dart';
@@ -74,8 +75,42 @@ void main() async {
   });
 }
 
-class App extends StatelessWidget {
-  const App({Key? key}) : super(key: key);
+extension AppContextExtension on BuildContext {
+  void changeThemeMode(ThemeMode themeMode) {
+    final appState = findAncestorStateOfType<_AppState>();
+    if (appState != null) {
+      appState.setThemeMode(themeMode);
+    }
+  }
+}
+
+class App extends StatefulWidget {
+  const App({super.key});
+
+  @override
+  State<App> createState() => _AppState();
+}
+
+class _AppState extends State<App> {
+  ThemeMode themeMode = ThemeMode.system;
+
+  bool get useLightMode {
+    switch (themeMode) {
+      case ThemeMode.system:
+        return SchedulerBinding.instance.window.platformBrightness ==
+            Brightness.light;
+      case ThemeMode.light:
+        return true;
+      case ThemeMode.dark:
+        return false;
+    }
+  }
+
+  void setThemeMode(ThemeMode mode) {
+    setState(() {
+      themeMode = mode;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -97,12 +132,13 @@ class App extends StatelessWidget {
       ],
       child: MaterialApp(
         title: 'Система очного голосования',
-        theme: AppTheme.theme,
-        home: const LoginHomeScreen(),
         debugShowCheckedModeBanner: false,
         navigatorObservers: [
           SentryNavigatorObserver(),
         ],
+        themeMode: themeMode,
+        theme: AppTheme.lightTheme,
+        home: const LoginHomeScreen(),
       ),
     );
   }

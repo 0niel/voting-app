@@ -33,6 +33,8 @@ class AppTheme {
   }
 
   static final ThemeData lightTheme = ThemeData(
+    useMaterial3: true,
+
     /// Brightness
     brightness: Brightness.light,
 
