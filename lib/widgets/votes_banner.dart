@@ -1,4 +1,5 @@
-import 'package:face_to_face_voting/theme/text_style.dart';
+import 'dart:ui' as ui;
+
 import 'package:flutter/material.dart';
 import 'package:face_to_face_voting/widgets/text.dart';
 import 'package:face_to_face_voting/theme/app_theme.dart';
@@ -17,47 +18,43 @@ class VotesBanner extends StatelessWidget {
     return constraints.maxWidth / 3 - 24;
   }
 
-  double _computeMaxCardHeightByText(double width, String text) {
-    final constraints = BoxConstraints(
-      maxWidth: width,
-    );
+  double _computeMaxCardHeightByText(double width, List<String> text) {
+    double maxTextHeight = 0.0;
 
-    final textPainter = TextPainter(
-      text: TextSpan(
-        text: text,
-        style: AppTheme.theme.textTheme.labelSmall?.copyWith(
-          fontWeight: FontWeight.w600,
-          letterSpacing: 0.2,
-        ),
-      ),
-      textDirection: TextDirection.ltr,
-    );
+    // Создаем ParagraphBuilder для каждой строки текста и определяем ее размер
+    for (String t in text) {
+      double textHeight = 0.0;
 
-    final numberTextPainter = TextPainter(
-      text: TextSpan(
-        text: '123',
-        style: AppTheme.theme.textTheme.titleMedium?.copyWith(
-          color: AppTheme.theme.colorScheme.primary,
-          fontWeight: FontWeight.w700,
-        ),
-      ),
-      textDirection: TextDirection.ltr,
-    );
+      ui.ParagraphBuilder paragraphBuilder = ui.ParagraphBuilder(
+        ui.ParagraphStyle(textAlign: TextAlign.center, fontSize: 12),
+      )
+        ..pushStyle(ui.TextStyle(fontSize: 12))
+        ..addText(t);
 
-    textPainter.layout(maxWidth: constraints.maxWidth);
-    numberTextPainter.layout(maxWidth: constraints.maxWidth);
+      ui.ParagraphConstraints paragraphConstraints =
+          ui.ParagraphConstraints(width: width - 32);
 
-    return numberTextPainter.height + textPainter.height + 48;
+      ui.Paragraph paragraph = paragraphBuilder.build()
+        ..layout(paragraphConstraints);
+
+      textHeight = paragraph.height;
+
+      if (textHeight > maxTextHeight) {
+        maxTextHeight = textHeight;
+      }
+    }
+
+    return maxTextHeight + 56;
   }
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: _computeMaxCardHeightByText(
-          _computeMaxCardOnScreenWidth(context, votes.length),
-          // Поиск варианта ответа с с максимальной длиной текста
-          votes.keys.reduce((value, element) =>
-              value.length > element.length ? value : element)),
+            _computeMaxCardOnScreenWidth(context, votes.length),
+            votes.keys.toList(),
+          ) +
+          10,
       child: ListView(
         shrinkWrap: true,
         scrollDirection: Axis.horizontal,
