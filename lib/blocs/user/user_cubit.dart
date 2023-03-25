@@ -51,8 +51,8 @@ class UserCubit extends Cubit<UserState> {
     } catch (e) {
       debugPrint('realtime_mixin:subscribeRealtime: ${e.toString()}');
       await Future.delayed(
-        const Duration(seconds: 5),
-        () => subscribeRealtime(),
+        const Duration(seconds: 1),
+        () async => await subscribeRealtime(),
       );
       return;
     }
@@ -145,10 +145,13 @@ class UserCubit extends Cubit<UserState> {
 
   Future<void> _loadUserData() async {
     try {
+      final prefs = await account.getPrefs();
       final sessions = await account.listSessions();
       for (final session in sessions.sessions) {
         if (session.provider == 'mirea') {
           try {
+            if (prefs.data.containsKey('academicGroup')) break;
+
             final headers = {
               'Authorization': 'Bearer ${session.providerAccessToken}',
             };
