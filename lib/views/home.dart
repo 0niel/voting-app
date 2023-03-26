@@ -18,6 +18,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:screen_brightness/screen_brightness.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:url_launcher/url_launcher_string.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -299,10 +300,22 @@ class _Drawer extends StatelessWidget {
                       padding: Spacing.fromLTRB(12, 4, 12, 4),
                       borderRadiusAll: 4,
                       color: AppTheme.theme.colorScheme.primary.withAlpha(40),
-                      child: CustomText.bodyMedium("Powered by Mirea Ninja",
-                          color: AppTheme.theme.colorScheme.primary,
-                          fontWeight: 600,
-                          letterSpacing: 0.2),
+                      child: FutureBuilder(
+                        future: PackageInfo.fromPlatform(),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            final packageInfo = snapshot.data as PackageInfo;
+                            return CustomText.bodyMedium(
+                              "v${packageInfo.version}",
+                              color: AppTheme.theme.colorScheme.primary,
+                              fontWeight: 600,
+                              letterSpacing: 0.2,
+                            );
+                          } else {
+                            return const SizedBox();
+                          }
+                        },
+                      ),
                     ),
                   ],
                 ),
