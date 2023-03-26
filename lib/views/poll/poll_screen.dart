@@ -213,6 +213,11 @@ class _PollScreenState extends State<PollScreen> {
                                       eventId: eventId,
                                       pollId: poll.$id,
                                       selectedOptionNotifier: _selectedOption,
+                                      showOnlyVotersCount:
+                                          poll.data['show_only_voters_count'] ??
+                                              false,
+                                      isFinished:
+                                          poll.data['is_finished'] ?? false,
                                     );
                                   },
                                   noPoll: (eventId) =>
@@ -374,6 +379,8 @@ class _Poll extends StatelessWidget {
     required this.eventId,
     required this.pollId,
     required this.selectedOptionNotifier,
+    required this.showOnlyVotersCount,
+    required this.isFinished,
   }) : super(key: key);
 
   final String eventName;
@@ -383,6 +390,9 @@ class _Poll extends StatelessWidget {
   final bool isActive;
   final String eventId;
   final String pollId;
+
+  final bool showOnlyVotersCount;
+  final bool isFinished;
 
   final ValueNotifier<int?> selectedOptionNotifier;
 
@@ -469,7 +479,10 @@ class _Poll extends StatelessWidget {
             ),
           ),
         ),
-        VotesBanner(votes: _getSortedVotes()),
+        VotesBanner(
+            votes: _getSortedVotes(),
+            showOnlyVotersCount: showOnlyVotersCount,
+            isFinished: isFinished),
         if (options.indexWhere(
                 (element) => element.toLowerCase() == 'воздержусь') !=
             -1) ...[

@@ -6,9 +6,16 @@ import 'package:face_to_face_voting/theme/app_theme.dart';
 import 'container.dart';
 
 class VotesBanner extends StatelessWidget {
-  const VotesBanner({Key? key, required this.votes}) : super(key: key);
+  const VotesBanner({
+    Key? key,
+    required this.votes,
+    required this.showOnlyVotersCount,
+    required this.isFinished,
+  }) : super(key: key);
 
   final Map<String, int> votes;
+  final bool showOnlyVotersCount;
+  final bool isFinished;
 
   double _computeMaxCardOnScreenWidth(BuildContext context, int votesCount) {
     final constraints = BoxConstraints(
@@ -49,44 +56,73 @@ class VotesBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: _computeMaxCardHeightByText(
-            _computeMaxCardOnScreenWidth(context, votes.length),
-            votes.keys.toList(),
-          ) +
-          10,
-      child: ListView(
-        shrinkWrap: true,
-        scrollDirection: Axis.horizontal,
-        children: votes.entries
-            .map(
-              (e) => CustomContainer.bordered(
-                width: _computeMaxCardOnScreenWidth(context, votes.length),
-                borderRadiusAll: 4,
-                margin: const EdgeInsets.only(left: 12, right: 12),
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  children: [
-                    CustomText.titleMedium(
-                      e.value.toString(),
-                      color: AppTheme.theme.colorScheme.primary,
-                      fontWeight: 700,
-                    ),
-                    Container(
-                      margin: const EdgeInsets.only(top: 4),
-                      child: CustomText.labelSmall(
-                        e.key,
-                        fontWeight: 600,
-                        letterSpacing: 0.2,
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                  ],
-                ),
+    if (!isFinished && showOnlyVotersCount) {
+      return CustomContainer.bordered(
+        width: _computeMaxCardOnScreenWidth(context, votes.length),
+        borderRadiusAll: 4,
+        margin: const EdgeInsets.only(left: 12, right: 12),
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+            CustomText.titleMedium(
+              votes.values
+                  .reduce((value, element) => value + element)
+                  .toString(),
+              color: AppTheme.theme.colorScheme.primary,
+              fontWeight: 700,
+            ),
+            Container(
+              margin: const EdgeInsets.only(top: 4),
+              child: const CustomText.labelSmall(
+                "Голосов",
+                fontWeight: 600,
+                letterSpacing: 0.2,
+                textAlign: TextAlign.center,
               ),
-            )
-            .toList(),
-      ),
-    );
+            ),
+          ],
+        ),
+      );
+    } else {
+      return SizedBox(
+        height: _computeMaxCardHeightByText(
+              _computeMaxCardOnScreenWidth(context, votes.length),
+              votes.keys.toList(),
+            ) +
+            10,
+        child: ListView(
+          shrinkWrap: true,
+          scrollDirection: Axis.horizontal,
+          children: votes.entries
+              .map(
+                (e) => CustomContainer.bordered(
+                  width: _computeMaxCardOnScreenWidth(context, votes.length),
+                  borderRadiusAll: 4,
+                  margin: const EdgeInsets.only(left: 12, right: 12),
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    children: [
+                      CustomText.titleMedium(
+                        e.value.toString(),
+                        color: AppTheme.theme.colorScheme.primary,
+                        fontWeight: 700,
+                      ),
+                      Container(
+                        margin: const EdgeInsets.only(top: 4),
+                        child: CustomText.labelSmall(
+                          e.key,
+                          fontWeight: 600,
+                          letterSpacing: 0.2,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              )
+              .toList(),
+        ),
+      );
+    }
   }
 }
