@@ -253,7 +253,7 @@ class _Drawer extends StatelessWidget {
 
   void _launchResource(e) async {
     String url = e.data['url'];
-    await launchUrlString(url);
+    await launchUrlString(url, mode: LaunchMode.externalApplication);
   }
 
   List<Color> _getResourceColorByName(String name) {
