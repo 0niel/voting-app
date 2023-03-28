@@ -396,30 +396,6 @@ class _Poll extends StatelessWidget {
 
   final ValueNotifier<int?> selectedOptionNotifier;
 
-  // Сортировки нужны, так как в БД не гарантируется порядок опций. Поэтому
-  // сортируем их во время отображения, чтобы у всех пользователей был одинаковый
-  // порядок опций.
-  List<String> _getSortedOptions() {
-    final sortedOptions = options.toList();
-    sortedOptions.sort((a, b) {
-      if (a.length == b.length) {
-        return a.compareTo(b);
-      } else {
-        return a.length.compareTo(b.length);
-      }
-    });
-    return sortedOptions;
-  }
-
-  Map<String, int> _getSortedVotes() {
-    final sortedVotes = <String, int>{};
-    final sortedOptions = _getSortedOptions();
-    for (final option in sortedOptions) {
-      sortedVotes[option] = votes[option] ?? 0;
-    }
-    return sortedVotes;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -457,32 +433,30 @@ class _Poll extends StatelessWidget {
                 if (isActive)
                   Column(
                     mainAxisSize: MainAxisSize.min,
-                    children: _getSortedOptions()
-                        .asMap()
-                        .entries
-                        .map(
-                          (e) => _PollAnswerOption(
-                            option: e.value,
-                            index: e.key,
-                            onTap: () {
-                              if (isActive) {
-                                BlocProvider.of<PollCubit>(context)
-                                    .sendVote(eventId, pollId, e.value);
-                              }
-                            },
-                            selectedOptionNotifier: selectedOptionNotifier,
-                          ),
-                        )
-                        .toList(),
+                    children: [
+                      for (var i = 0; i < options.length; i++)
+                        _PollAnswerOption(
+                          index: i,
+                          option: options[i],
+                          onTap: () {
+                            if (isActive) {
+                              BlocProvider.of<PollCubit>(context)
+                                  .sendVote(eventId, pollId, options[i]);
+                            }
+                          },
+                          selectedOptionNotifier: selectedOptionNotifier,
+                        ),
+                    ],
                   ),
               ],
             ),
           ),
         ),
         VotesBanner(
-            votes: _getSortedVotes(),
-            showOnlyVotersCount: showOnlyVotersCount,
-            isFinished: isFinished),
+          votes: votes,
+          showOnlyVotersCount: showOnlyVotersCount,
+          isFinished: isFinished,
+        ),
         if (options.indexWhere(
                 (element) => element.toLowerCase() == 'воздержусь') !=
             -1) ...[
