@@ -65,9 +65,11 @@ class VotesBanner extends StatelessWidget {
         child: Column(
           children: [
             CustomText.titleMedium(
-              votes.values
-                  .reduce((value, element) => value + element)
-                  .toString(),
+              votes.values.isNotEmpty
+                  ? votes.values
+                      .reduce((value, element) => value + element)
+                      .toString()
+                  : "0",
               color: AppTheme.theme.colorScheme.primary,
               fontWeight: 700,
             ),
