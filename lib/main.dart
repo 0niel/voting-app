@@ -43,14 +43,13 @@ void main() async {
 
   await SentryFlutter.init(
     (options) {
-      options.dsn =
-          const String.fromEnvironment('SENTRY_DSN', defaultValue: '');
+      options.dsn = const String.fromEnvironment('SENTRY_DSN',
+          defaultValue:
+              'https://73d7c290059e42089c241a331b63c029@error-monitoring.mirea.ru/7');
 
       // Set tracesSampleRate to 0.2 to capture 20% of transactions for
       // performance monitoring.
       options.tracesSampleRate = 0.2;
-
-      options.enableAutoPerformanceTracking = true;
 
       options.attachScreenshot = true;
 

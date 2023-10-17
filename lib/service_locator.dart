@@ -84,7 +84,8 @@ Future<void> setup() async {
   getIt.registerLazySingleton<dart_appwrite.Health>(
       () => dart_appwrite.Health(dartClient));
 
-  final dio = Dio(BaseOptions(receiveTimeout: 20000));
+  final dio =
+      Dio(BaseOptions(receiveTimeout: const Duration(milliseconds: 20000)));
   getIt.registerLazySingleton(() => dio);
   final SharedPreferences sharedPreferences =
       await SharedPreferences.getInstance();

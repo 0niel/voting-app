@@ -8,7 +8,7 @@ import 'package:face_to_face_voting/widgets/text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
-import 'package:material_floating_search_bar/material_floating_search_bar.dart';
+import 'package:material_floating_search_bar_2/material_floating_search_bar_2.dart';
 
 class SearchUsersScreen extends StatelessWidget {
   SearchUsersScreen({Key? key}) : super(key: key);
