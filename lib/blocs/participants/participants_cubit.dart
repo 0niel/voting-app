@@ -34,7 +34,7 @@ class ParticipantsCubit extends Cubit<ParticipantsState> {
     final participants = documentsResponse.data['participants_team_id'];
 
     final participantsResponse = await teams
-        .listMemberships(teamId: participants, queries: [Query.limit(300)]);
+        .listMemberships(teamId: participants, queries: [Query.limit(1000)]);
 
     final memberships = participantsResponse.memberships
         .where((el) =>
