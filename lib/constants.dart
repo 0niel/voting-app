@@ -12,5 +12,7 @@ const String resourcesCollectionId = '640f5fba811ffa978fc2';
 
 /// Api key with access to get server time. Used to sinchronize client time with
 /// server time to prevent time cheating in countdowns.
-const String appwriteClientHealthApiKey =
-    String.fromEnvironment('APPWRITE_CLIENT_HEALTH_API_KEY', defaultValue: "");
+const String appwriteClientHealthApiKey = String.fromEnvironment(
+    'APPWRITE_CLIENT_HEALTH_API_KEY',
+    defaultValue:
+        "6239571c43765d2c6d6cbbe478f6ef898ffc212fe0f00558accb103518fd8b71429549451a11bdf4ed850994444d263fbc56370060f1daf7c42a16746f819f7f21bc14bbf7b1be0c7c01c1ba40bc129f6c558e3125357ce9416ddb8547bed9574e3e59ac33e9b5f756acbfc186b1866d4813ad0b0ffa6982f060281f200dc4b6");
